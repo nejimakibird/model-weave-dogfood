@@ -1,0 +1,15 @@
+.obsidian/
+src/
+
+.trash/
+.DS_Store
+Thumbs.db
+package.json
+
+.vscode/
+manifest.json
+
+# Local working notes / AI task tracking
+TODO-*.md
+model/**/TODO-*.md
+samples/

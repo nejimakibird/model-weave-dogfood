@@ -1,0 +1,34 @@
+---
+type: class
+id: CLS-MW-RENDERER-DIAGNOSTICS-COLLECTOR
+name: DiagnosticsCollector
+kind: class
+package: model_weave.renderer
+tags:
+  - Renderer
+  - Diagnostic
+---
+
+# DiagnosticsCollector
+
+## Summary
+
+モデルの解析中や、グラフの構築・解決中に発生した各種警告（未解決参照、不正な種別など）を収集し、ビューアー向けの診断リスト（DATA-MW-CORE-DIAGNOSTIC）として統合します。
+
+## Attributes
+
+| name | type | visibility | static | notes |
+|---|---|---|---|---|
+
+## Methods
+
+| name | parameters | returns | visibility | static | notes |
+|---|---|---|---|---|---|
+| buildCurrentDiagramDiagnostics | diagram: ResolvedDiagram, warnings: Array<ValidationWarning> | Array<DATA-MW-CORE-DIAGNOSTIC> | public | Y | ダイアグラム用診断情報の収集 |
+| buildCurrentObjectDiagnostics | model: ParsedFileModel, index: ModelingVaultIndex, context: any, warnings: Array<ValidationWarning> | Array<DATA-MW-CORE-DIAGNOSTIC> | public | Y | 単体オブジェクト用診断情報の収集 |
+
+## Source Links
+
+| path | symbol | kind | notes |
+|---|---|---|---|
+| source/model-weave-repo/src/core/current-file-diagnostics.ts | buildCurrentDiagramDiagnostics | function | 診断情報の統合実装 |
