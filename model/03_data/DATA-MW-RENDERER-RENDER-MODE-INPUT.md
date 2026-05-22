@@ -18,15 +18,16 @@ tags:
 | name | label | type | length | required | path | ref | notes |
 |---|---|---|---|---|---|---|---|
 | modelType | モデル種別 | CODE-MW-CORE-MODEL-TYPE | | Y | | [[CODE-MW-CORE-MODEL-TYPE]] | 対象アセットのtype |
-| frontmatterRenderMode | フロントマター指定 | Optional<string> | | N | | | frontmatter.render_mode |
+| frontmatterRenderMode | フロントマター指定 | string | | N | | | frontmatter.render_mode |
 | defaultRenderMode | 既定描画モード | string | | Y | | | プラグイン設定のグローバル既定値 |
-| toolbarOverrideMode | ツールバー上書き | Optional<string> | | N | | | Viewer上での一時的な選択状態 |
-| supportedModes | サポートモード群 | Array<string> | | Y | | | 対象種別で実装済みのモードリスト |
+| toolbarOverrideMode | ツールバー上書き | string | | N | | | Viewer上での一時的な選択状態 |
+| supportedModes | サポートモード群 | string | | Y | | | 対象種別で実装済みのモードリスト。有効なモード名を保持する。論理的には複数値 |
 | isDfd | DFDフラグ | boolean | | Y | | | DFD系モデルかどうかの判定結果 |
 
 ## Notes
 
 - 本オブジェクトは解析フェーズ直後、レンダリングパイプラインの初期段階で構築されます。
+- defaultRenderMode は設定由来の入力値であり、最終的な effective render mode は [[RULE-MW-RENDERER-RENDER-MODE-RESOLUTION]] に従う。
 
 ## Source Links
 
