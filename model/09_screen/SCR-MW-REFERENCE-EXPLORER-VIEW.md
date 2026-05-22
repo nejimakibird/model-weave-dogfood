@@ -59,8 +59,8 @@ Vault内モデル資産間の参照関係を一覧表示する画面。
 | ACT-FILTER-KIND | 参照種別フィルタ変更 | ui_action | referenceKindFilterSelect | change | [[PROC-MW-REFERENCE-EXPLORER-FILTER]] | | | 参照種別で絞り込む |
 | ACT-SEARCH | 参照検索 | ui_action | referenceSearchInput | input | [[PROC-MW-REFERENCE-EXPLORER-FILTER]] | | | 参照文字列やAsset IDで検索 |
 | ACT-SELECT | 参照選択 | ui_action | referenceList | select | [[PROC-MW-REFERENCE-SELECT]] | | | 参照詳細を表示 |
-| ACT-OPEN-SOURCE | 参照元を開く | ui_action | openSourceAssetButton | click | openReferenceSource | | [[RULE-MW-PATH-SHORTENER]] | 完全な filePath を使用 |
-| ACT-OPEN-TARGET | 参照先を開く | ui_action | openTargetAssetButton | click | openReferenceTarget | | [[RULE-MW-PATH-SHORTENER]] | 完全な filePath を使用 |
+| ACT-OPEN-SOURCE | 参照元を開く | ui_action | openSourceAssetButton | click | [[PROC-MW-REFERENCE-FILE-OPEN]] | | [[RULE-MW-PATH-SHORTENER]] | openTargetRole=source で参照元ファイルを開く |
+| ACT-OPEN-TARGET | 参照先を開く | ui_action | openTargetAssetButton | click | [[PROC-MW-REFERENCE-FILE-OPEN]] | | [[RULE-MW-PATH-SHORTENER]] | openTargetRole=target で参照先ファイルを開く |
 | ACT-OPEN-DIAG | 診断箇所を開く | ui_action | openDiagnosticButton | click | openDiagnosticLocation | | | 関連診断箇所へ移動 |
 
 ## Messages
@@ -78,7 +78,8 @@ Vault内モデル資産間の参照関係を一覧表示する画面。
 - 表示上のパス短縮は [[RULE-MW-PATH-SHORTENER]] に従うが、ファイルジャンプでは完全なfilePathを使用する。
 - `filterReferenceExplorer` は [[PROC-MW-REFERENCE-EXPLORER-FILTER]] として詳細化済みである。
 - `selectReference` は [[PROC-MW-REFERENCE-SELECT]] として詳細化済みである。
-- `openReferenceSource` / `openReferenceTarget` / `openDiagnosticLocation` は現時点では論理プロセス名であり、必要に応じて後続で app_process 化する。
+- `openReferenceSource` / `openReferenceTarget` は [[PROC-MW-REFERENCE-FILE-OPEN]] として共通処理化済みである。
+- `openDiagnosticLocation` は現時点では論理プロセス名であり、必要に応じて後続で app_process 化する。
 
 ## Source Links
 
