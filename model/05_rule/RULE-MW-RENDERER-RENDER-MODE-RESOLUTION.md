@@ -34,8 +34,10 @@ tags:
 | path | symbol | kind | notes |
 |---|---|---|---|
 | source/model-weave-repo/src/core/render-mode.ts | resolveRenderMode | function | 優先順位に基づいた解決実装 |
+| source/model-weave-repo/src/core/render-mode.ts | getSupportedRenderModes | function | modelType から supportedModes を導出する実装 |
 
 ## Notes
 - class / er_entity の単体表示は custom を既定とする。
 - class_diagram / er_diagram は対応状況に応じて custom / mermaid を選択可能とする。
 - DFD は RULE-MW-DFD-MERMAID-ONLY に従い mermaid 固定とする。
+- supportedModes は getSupportedRenderModes により modelType から導出され、resolveRenderMode のサポート検証入力として扱う。

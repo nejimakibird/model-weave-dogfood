@@ -21,7 +21,7 @@ tags:
 | frontmatterRenderMode | フロントマター指定 | string | | N | | | frontmatter.render_mode |
 | defaultRenderMode | 既定描画モード | string | | Y | | | プラグイン設定のグローバル既定値 |
 | toolbarOverrideMode | ツールバー上書き | string | | N | | | Viewer上での一時的な選択状態 |
-| supportedModes | サポートモード群 | string | | Y | | | 対象種別で実装済みのモードリスト。有効なモード名を保持する。論理的には複数値 |
+| supportedModes | サポートモード群 | string | | Y | | | getSupportedRenderModes の結果を入力として利用する。対象種別で実装済みのモードリスト。有効なモード名を保持する。論理的には複数値 |
 | isDfd | DFDフラグ | boolean | | Y | | | DFD系モデルかどうかの判定結果 |
 
 ## Notes
@@ -34,3 +34,4 @@ tags:
 | path | symbol | kind | notes |
 |---|---|---|---|
 | source/model-weave-repo/src/core/render-mode.ts | ResolveRenderModeInput | interface | 実装上の入力型定義 |
+| source/model-weave-repo/src/core/render-mode.ts | getSupportedRenderModes | function | supportedModes 入力の導出元 |
