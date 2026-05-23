@@ -2,6 +2,7 @@
 type: app_process
 id: PROC-MW-RENDERER-GENERATE-MERMAID-SOURCE
 name: Mermaidソース生成
+process_type: transform
 kind: renderer
 tags:
   - Renderer

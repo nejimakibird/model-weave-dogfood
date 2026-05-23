@@ -3,6 +3,7 @@ type: screen
 id: SCR-MW-VIEWER-STATUS-BAR
 name: Viewerステータスバー
 screen_type: panel
+kind: status_bar
 tags:
   - Viewer
   - UI

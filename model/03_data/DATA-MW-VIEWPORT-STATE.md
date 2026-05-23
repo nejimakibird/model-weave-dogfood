@@ -3,6 +3,7 @@ type: data_object
 id: DATA-MW-VIEWPORT-STATE
 name: Viewport表示状態
 kind: state
+data_format: object
 tags:
   - Viewer
   - Viewport

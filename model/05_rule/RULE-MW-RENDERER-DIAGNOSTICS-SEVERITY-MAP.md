@@ -2,6 +2,7 @@
 type: rule
 id: RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP
 name: 診断情報深刻度判定ルール
+kind: diagnostics_rule
 tags:
   - Renderer
   - Core

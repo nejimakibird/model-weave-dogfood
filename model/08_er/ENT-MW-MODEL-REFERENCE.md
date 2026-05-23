@@ -3,6 +3,7 @@ type: er_entity
 id: ENT-MW-MODEL-REFERENCE
 logical_name: モデル間参照
 physical_name: mw_model_reference
+kind: model_reference
 tags:
   - ModelWeave
   - ER

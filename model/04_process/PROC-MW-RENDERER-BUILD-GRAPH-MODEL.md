@@ -2,6 +2,7 @@
 type: app_process
 id: PROC-MW-RENDERER-BUILD-GRAPH-MODEL
 name: 抽象グラフモデル構築
+process_type: transform
 kind: renderer
 tags:
   - Renderer

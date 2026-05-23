@@ -3,6 +3,7 @@ type: data_object
 id: DATA-MW-VAULT-MODEL-INDEX
 name: Vaultモデルインデックス
 kind: index
+data_format: object
 tags:
   - ModelWeave
   - Vault

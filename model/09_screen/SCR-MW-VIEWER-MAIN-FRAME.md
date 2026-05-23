@@ -3,6 +3,7 @@ type: screen
 id: SCR-MW-VIEWER-MAIN-FRAME
 name: Model Weave Viewer Main Frame
 screen_type: dashboard
+kind: view
 tags:
   - ModelWeave
   - Screen

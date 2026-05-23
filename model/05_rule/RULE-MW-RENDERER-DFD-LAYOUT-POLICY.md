@@ -2,6 +2,7 @@
 type: rule
 id: RULE-MW-RENDERER-DFD-LAYOUT-POLICY
 name: DFDレイアウト方針
+kind: renderer_rule
 tags:
   - DFD
   - Renderer

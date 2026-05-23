@@ -2,6 +2,7 @@
 type: mapping
 id: MAP-MW-DFD-FLOW-TO-GRAPH-EDGE
 name: DFDフロー行からグラフエッジへの変換
+kind: data_to_data
 source: "[[DATA-MW-DFD-FLOW-ENTRY]]"
 target: "[[DATA-MW-RENDERER-GRAPH-EDGE]]"
 tags:

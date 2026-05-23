@@ -2,6 +2,7 @@
 type: mapping
 id: MAP-MW-PARSER-RAW-TO-PARSED
 name: 物理ファイルから論理モデルへの変換
+kind: data_to_data
 source: "[[DATA-MW-CORE-VAULT-FILE]]"
 target: "[[DATA-MW-CORE-PARSED-MODEL]]"
 tags:

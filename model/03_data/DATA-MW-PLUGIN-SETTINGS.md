@@ -3,6 +3,7 @@ type: data_object
 id: DATA-MW-PLUGIN-SETTINGS
 name: Model Weaveプラグイン設定
 kind: settings
+data_format: object
 tags:
   - ModelWeave
   - Settings

@@ -2,6 +2,7 @@
 type: rule
 id: RULE-MW-DFD-MERMAID-ONLY
 name: DFD Mermaid固定ルール
+kind: renderer_rule
 tags:
   - DFD
   - Renderer

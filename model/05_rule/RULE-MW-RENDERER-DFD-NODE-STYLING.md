@@ -2,6 +2,7 @@
 type: rule
 id: RULE-MW-RENDERER-DFD-NODE-STYLING
 name: DFDノードスタイリングルール
+kind: renderer_rule
 tags:
   - DFD
   - Renderer

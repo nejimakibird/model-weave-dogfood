@@ -2,6 +2,8 @@
 type: data_object
 id: DATA-MW-RENDERER-GRAPH-NODE
 name: 抽象グラフノード
+kind: model
+data_format: object
 tags:
   - Renderer
   - Data
@@ -20,12 +22,13 @@ tags:
 | id | ノードID | string | | Y | | | 一意の識別子 |
 | label | 表示ラベル | string | | Y | | | |
 | kind | 種別 | string | | Y | | | process / actor / table 等 |
-| sourceRef | 原典参照 | Optional<string> | | N | | | 元となるモデルID |
-| metadata | メタデータ | Record<string, any> | | N | | | 座標やスタイル等のヒント |
+| sourceRef | 原典参照 | string | | N | | | 任意項目。元となるモデルID |
+| metadata | メタデータ | object | | N | | | 任意項目。Record構造。座標やスタイル等のヒント |
 
 ## Notes
 
 - `DATA-MW-RENDERER-GRAPH-MODEL` の構成要素です。
+- Markdownテーブル安全性のため、type列は単純型で表現し、任意性やRecord構造は required / notes で表現します。
 
 ## Source Links
 

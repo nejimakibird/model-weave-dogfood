@@ -3,6 +3,7 @@ type: er_entity
 id: ENT-MW-SOURCE-LINK
 logical_name: 実装ソース対応
 physical_name: mw_source_link
+kind: source_link
 tags:
   - ModelWeave
   - ER

@@ -3,6 +3,7 @@ type: data_object
 id: DATA-MW-REFERENCE-EXPLORER-STATE
 name: Reference Explorer表示状態
 kind: state
+data_format: object
 tags:
   - ModelWeave
   - Reference

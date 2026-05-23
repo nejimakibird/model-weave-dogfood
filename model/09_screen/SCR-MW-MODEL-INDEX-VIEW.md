@@ -3,6 +3,7 @@ type: screen
 id: SCR-MW-MODEL-INDEX-VIEW
 name: Model Index View
 screen_type: viewer
+kind: index_view
 tags:
   - ModelWeave
   - Vault

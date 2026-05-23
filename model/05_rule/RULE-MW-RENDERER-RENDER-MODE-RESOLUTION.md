@@ -2,6 +2,7 @@
 type: rule
 id: RULE-MW-RENDERER-RENDER-MODE-RESOLUTION
 name: 描画モード解決ルール
+kind: renderer_rule
 tags:
   - Renderer
   - Core

@@ -3,6 +3,7 @@ type: data_object
 id: DATA-MW-SOURCE-LINK-EXPLORER-STATE
 name: Source Links Explorer表示状態
 kind: state
+data_format: object
 tags:
   - ModelWeave
   - SourceLinks

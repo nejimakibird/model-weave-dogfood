@@ -3,6 +3,7 @@ type: screen
 id: SCR-MW-SOURCE-LINK-EXPLORER-VIEW
 name: Source Links Explorer View
 screen_type: viewer
+kind: explorer_view
 tags:
   - ModelWeave
   - SourceLinks

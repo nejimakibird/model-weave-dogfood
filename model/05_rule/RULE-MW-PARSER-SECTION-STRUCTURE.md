@@ -2,6 +2,7 @@
 type: rule
 id: RULE-MW-PARSER-SECTION-STRUCTURE
 name: セクション構造検証ルール
+kind: parser_rule
 tags:
   - Parser
   - Core

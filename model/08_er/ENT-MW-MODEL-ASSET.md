@@ -3,6 +3,7 @@ type: er_entity
 id: ENT-MW-MODEL-ASSET
 logical_name: モデル資産
 physical_name: mw_model_asset
+kind: model_asset
 tags:
   - ModelWeave
   - ER

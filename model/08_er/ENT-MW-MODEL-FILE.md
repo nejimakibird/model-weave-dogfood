@@ -3,6 +3,7 @@ type: er_entity
 id: ENT-MW-MODEL-FILE
 logical_name: モデルファイル
 physical_name: mw_model_file
+kind: model_file
 tags:
   - ModelWeave
   - ER

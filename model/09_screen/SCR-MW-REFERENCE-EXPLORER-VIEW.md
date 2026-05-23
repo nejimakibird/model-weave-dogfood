@@ -3,6 +3,7 @@ type: screen
 id: SCR-MW-REFERENCE-EXPLORER-VIEW
 name: Reference Explorer View
 screen_type: viewer
+kind: explorer_view
 tags:
   - ModelWeave
   - Reference

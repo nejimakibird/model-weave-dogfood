@@ -3,6 +3,7 @@ type: er_entity
 id: ENT-MW-DIAGNOSTIC
 logical_name: 診断結果
 physical_name: mw_diagnostic
+kind: diagnostic
 tags:
   - ModelWeave
   - ER
