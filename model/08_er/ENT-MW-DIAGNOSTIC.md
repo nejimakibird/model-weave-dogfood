@@ -50,4 +50,4 @@ N/A (inbound only)
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/models/core/diagnostics.ts | Diagnostic | type | 診断情報の内部表現 (未確認) |
+| src/models/core/diagnostics.ts | Diagnostic | type | 診断情報の内部表現 (未確認) |

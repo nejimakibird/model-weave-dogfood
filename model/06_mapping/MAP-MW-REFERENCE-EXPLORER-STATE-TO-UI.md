@@ -72,7 +72,7 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | VaultIndex | class | 参照情報の索引元 |
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDiagramRelations | function | 参照解決処理 |
-| source/model-weave-repo/src/main.ts | openDiagnosticLocation | function | 診断箇所ジャンプ |
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer表示更新の参考 |
+| src/core/vault-index.ts | VaultIndex | class | 参照情報の索引元 |
+| src/core/relation-resolver.ts | resolveDiagramRelations | function | 参照解決処理 |
+| src/main.ts | openDiagnosticLocation | function | 診断箇所ジャンプ |
+| src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer表示更新の参考 |

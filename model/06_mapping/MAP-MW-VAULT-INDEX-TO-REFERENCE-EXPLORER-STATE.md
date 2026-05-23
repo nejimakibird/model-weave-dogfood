@@ -66,6 +66,6 @@ DATA-MW-VAULT-MODEL-INDEX が保持するモデル間参照と診断情報を、
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | VaultIndex | class | 参照情報の索引元 |
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDiagramRelations | function | 参照解決処理 |
-| source/model-weave-repo/src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 参照関連診断の生成 |
+| src/core/vault-index.ts | VaultIndex | class | 参照情報の索引元 |
+| src/core/relation-resolver.ts | resolveDiagramRelations | function | 参照解決処理 |
+| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 参照関連診断の生成 |

@@ -34,4 +34,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/types/models.ts | ValidationWarning | type | 診断情報のデータ構造定義 |
+| src/types/models.ts | ValidationWarning | type | 診断情報のデータ構造定義 |

@@ -27,4 +27,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/types/models.ts | DfdDiagramObjectEntry | interface | 解析済みのオブジェクト行を保持する型 |
+| src/types/models.ts | DfdDiagramObjectEntry | interface | 解析済みのオブジェクト行を保持する型 |

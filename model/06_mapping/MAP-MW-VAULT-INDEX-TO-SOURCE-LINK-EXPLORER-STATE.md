@@ -76,6 +76,6 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | VaultIndex | class | Source Links情報の索引元 |
-| source/model-weave-repo/src/core/schema-detector.ts | detectModelType | function | モデル資産種別の検出 |
-| source/model-weave-repo/src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | Source Links関連診断の生成 |
+| src/core/vault-index.ts | VaultIndex | class | Source Links情報の索引元 |
+| src/core/schema-detector.ts | detectModelType | function | モデル資産種別の検出 |
+| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | Source Links関連診断の生成 |

@@ -73,6 +73,6 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer状態に応じたUI更新 |
-| source/model-weave-repo/src/views/modeling-preview-view.ts | prepareFileViewportState | method | viewport状態復元/初期化 |
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断情報の表示・集計元 |
+| src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer状態に応じたUI更新 |
+| src/views/modeling-preview-view.ts | prepareFileViewportState | method | viewport状態復元/初期化 |
+| src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断情報の表示・集計元 |

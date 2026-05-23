@@ -62,5 +62,5 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | Viewport状態更新の起点 |
-| source/model-weave-repo/src/renderers/zoom-toolbar.ts | createZoomToolbar | function | toolbar操作の発生元 |
+| src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | Viewport状態更新の起点 |
+| src/renderers/zoom-toolbar.ts | createZoomToolbar | function | toolbar操作の発生元 |

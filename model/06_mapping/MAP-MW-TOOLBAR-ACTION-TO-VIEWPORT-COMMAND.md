@@ -51,5 +51,5 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | UI操作とViewport処理のバインド |
-| source/model-weave-repo/src/renderers/zoom-toolbar.ts | createZoomToolbar | function | ツールバーボタンの生成 |
+| src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | UI操作とViewport処理のバインド |
+| src/renderers/zoom-toolbar.ts | createZoomToolbar | function | ツールバーボタンの生成 |

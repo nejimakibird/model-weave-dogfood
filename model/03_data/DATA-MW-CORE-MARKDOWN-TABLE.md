@@ -31,4 +31,4 @@ Markdownソースから抽出・解析された単一のテーブル構造を保
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/parsers/markdown-table.ts | getMarkdownTableCellRanges | function | パース結果の行・セル情報に対応 |
+| src/parsers/markdown-table.ts | getMarkdownTableCellRanges | function | パース結果の行・セル情報に対応 |

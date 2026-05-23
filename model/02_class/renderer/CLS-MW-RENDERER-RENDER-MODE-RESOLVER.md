@@ -31,5 +31,5 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/render-mode.ts | resolveRenderMode | function | 描画モードの解決 |
-| source/model-weave-repo/src/core/render-mode.ts | getSupportedRenderModes | function | modelType別の対応render mode導出 |
+| src/core/render-mode.ts | resolveRenderMode | function | 描画モードの解決 |
+| src/core/render-mode.ts | getSupportedRenderModes | function | modelType別の対応render mode導出 |

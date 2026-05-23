@@ -63,6 +63,6 @@ Model Weave設定タブのUIフィールドを、プラグイン設定データ 
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/settings-tab.ts | ModelWeaveSettingTab | class | Obsidian設定タブ |
-| source/model-weave-repo/src/settings.ts | ModelWeaveSettings | type | プラグイン設定構造 |
-| source/model-weave-repo/src/settings.ts | DEFAULT_SETTINGS | constant | 既定設定値 |
+| src/settings-tab.ts | ModelWeaveSettingTab | class | Obsidian設定タブ |
+| src/settings/model-weave-settings.ts | ModelWeaveSettings | type | プラグイン設定構造 |
+| src/settings/model-weave-settings.ts | DEFAULT_SETTINGS | constant | 既定設定値 |

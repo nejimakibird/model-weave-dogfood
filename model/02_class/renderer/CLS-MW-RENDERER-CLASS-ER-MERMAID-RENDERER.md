@@ -32,4 +32,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/renderers/class-er-mermaid.ts | buildClassOverviewMermaidSource | function | クラス図Mermaidソース生成 |
+| src/renderers/class-er-mermaid.ts | buildClassOverviewMermaidSource | function | クラス図Mermaidソース生成 |

@@ -31,4 +31,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/relation-resolver.ts | DiagramNode | type | グラフ構造における頂点情報の内部型 |
+| src/core/relation-resolver.ts | DiagramNode | type | グラフ構造における頂点情報の内部型 |

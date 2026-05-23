@@ -31,4 +31,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/current-file-diagnostics.ts | buildCurrentDiagramDiagnostics | function | 診断情報の統合実装 |
+| src/core/current-file-diagnostics.ts | buildCurrentDiagramDiagnostics | function | 診断情報の統合実装 |

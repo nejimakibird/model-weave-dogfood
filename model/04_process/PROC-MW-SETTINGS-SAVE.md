@@ -61,6 +61,6 @@ Model Weave設定タブで変更されたUI値を、[[DATA-MW-PLUGIN-SETTINGS]] 
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/settings-tab.ts | saveSettings | function | 設定保存処理 |
-| source/model-weave-repo/src/settings.ts | ModelWeaveSettings | type | プラグイン設定構造 |
-| source/model-weave-repo/src/settings.ts | DEFAULT_SETTINGS | constant | 既定設定値 |
+| src/settings-tab.ts | saveSettings | function | 設定保存処理 |
+| src/settings/model-weave-settings.ts | ModelWeaveSettings | type | プラグイン設定構造 |
+| src/settings/model-weave-settings.ts | DEFAULT_SETTINGS | constant | 既定設定値 |

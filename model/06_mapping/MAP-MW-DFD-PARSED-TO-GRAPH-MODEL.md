@@ -40,4 +40,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | DFDモデルの接続関係解決ロジック |
+| src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | DFDモデルの接続関係解決ロジック |

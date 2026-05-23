@@ -69,6 +69,6 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | VaultIndex | class | Vault内モデル資産の索引 |
-| source/model-weave-repo/src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の生成 |
-| source/model-weave-repo/src/main.ts | openDiagnosticLocation | function | ファイルジャンプ処理の参考 |
+| src/core/vault-index.ts | VaultIndex | class | Vault内モデル資産の索引 |
+| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の生成 |
+| src/main.ts | openDiagnosticLocation | function | ファイルジャンプ処理の参考 |

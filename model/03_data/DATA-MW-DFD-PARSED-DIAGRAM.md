@@ -34,4 +34,4 @@ dfd_diagram Markdownから解析されたDFD専用の論理データ構造です
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/types/models.ts | DfdDiagramModel | type | 実装上のDFDモデル型に対応 |
+| src/types/models.ts | DfdDiagramModel | type | 実装上のDFDモデル型に対応 |

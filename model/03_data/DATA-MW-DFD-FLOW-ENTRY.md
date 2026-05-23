@@ -27,4 +27,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/types/models.ts | DfdFlowModel | interface | 解析済みのフロー行を保持する型 |
+| src/types/models.ts | DfdFlowModel | interface | 解析済みのフロー行を保持する型 |

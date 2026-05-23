@@ -32,4 +32,4 @@ Obsidian Vault内に存在する物理ファイルの実体と、OS/プラグイ
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | indexSingleFile | function | 解析関数への入力オブジェクト構造に対応 |
+| src/core/vault-index.ts | indexSingleFile | function | 解析関数への入力オブジェクト構造に対応 |

@@ -62,6 +62,6 @@ Model Weave の各Markdownモデルファイルにおけるフロントマター
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/parsers/frontmatter-parser.ts | parseYamlLikeFrontmatter | function | YAML形式の解析 |
-| source/model-weave-repo/src/core/schema-detector.ts | detectFileType | function | 種別判定ロジック |
-| source/model-weave-repo/src/core/vault-index.ts | parseVaultFile | function | 検証とパーサーの振り分け |
+| src/parsers/frontmatter-parser.ts | parseYamlLikeFrontmatter | function | YAML形式の解析 |
+| src/core/schema-detector.ts | detectFileType | function | 種別判定ロジック |
+| src/core/vault-index.ts | parseVaultFile | function | 検証とパーサーの振り分け |

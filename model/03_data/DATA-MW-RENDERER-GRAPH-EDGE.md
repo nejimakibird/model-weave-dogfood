@@ -32,4 +32,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/relation-resolver.ts | DiagramEdge | type | グラフ構造における接続情報の内部型 |
+| src/core/relation-resolver.ts | DiagramEdge | type | グラフ構造における接続情報の内部型 |

@@ -40,4 +40,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDiagramRelations | function | グラフ構築プロセスの起点 |
+| src/core/relation-resolver.ts | resolveDiagramRelations | function | グラフ構築プロセスの起点 |

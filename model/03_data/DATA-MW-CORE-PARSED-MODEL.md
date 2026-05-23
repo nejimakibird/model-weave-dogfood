@@ -33,4 +33,4 @@ Markdownソースから解析された、Model Weaveの各種モデル（Class, 
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/types/models.ts | ModelFile | type | 各種モデル（ObjectModel, ErEntity等）の総称型 |
+| src/types/models.ts | ModelFile | type | 各種モデル（ObjectModel, ErEntity等）の総称型 |

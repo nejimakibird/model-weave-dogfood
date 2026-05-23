@@ -66,5 +66,5 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断情報表示の起点 |
-| source/model-weave-repo/src/core/current-file-diagnostics.ts | normalizeDiagnosticSeverity | function | severity正規化 |
+| src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断情報表示の起点 |
+| src/core/current-file-diagnostics.ts | normalizeDiagnosticSeverity | function | severity正規化 |

@@ -47,4 +47,4 @@ N/A (inbound only)
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/models/core/model-asset.ts | SourceLink | type | ソースリンク情報の内部表現 (未確認) |
+| src/models/core/model-asset.ts | SourceLink | type | ソースリンク情報の内部表現 (未確認) |

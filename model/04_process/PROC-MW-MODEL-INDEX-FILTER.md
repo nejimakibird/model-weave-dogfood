@@ -67,6 +67,6 @@ Model Index View 上のモデル種別フィルタ、診断状態フィルタ、
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | VaultIndex | class | Vault内モデル資産の索引 |
-| source/model-weave-repo/src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の生成 |
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer表示更新 |
+| src/core/vault-index.ts | VaultIndex | class | Vault内モデル資産の索引 |
+| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の生成 |
+| src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer表示更新 |

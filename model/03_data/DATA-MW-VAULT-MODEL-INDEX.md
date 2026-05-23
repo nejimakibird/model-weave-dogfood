@@ -48,7 +48,7 @@ Markdownファイル群をViewerや診断、参照解決で扱いやすくする
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | VaultIndex | class | Vault内モデル資産の索引 |
-| source/model-weave-repo/src/core/schema-detector.ts | detectModelType | function | Markdownファイル種別の検出 |
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDiagramRelations | function | モデル間参照の解決 |
-| source/model-weave-repo/src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の生成 |
+| src/core/vault-index.ts | VaultIndex | class | Vault内モデル資産の索引 |
+| src/core/schema-detector.ts | detectModelType | function | Markdownファイル種別の検出 |
+| src/core/relation-resolver.ts | resolveDiagramRelations | function | モデル間参照の解決 |
+| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の生成 |

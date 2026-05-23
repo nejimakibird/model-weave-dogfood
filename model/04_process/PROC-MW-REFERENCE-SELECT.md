@@ -64,6 +64,6 @@ Reference Explorer上で選択されたModelReferenceをもとに、選択中参
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | VaultIndex | class | 参照および診断情報の検索元 |
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDiagramRelations | function | 参照解決状態の判定ロジック |
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderCurrentState | method | 状態変更をUIへ通知する仕組みの参考 |
+| src/core/vault-index.ts | VaultIndex | class | 参照および診断情報の検索元 |
+| src/core/relation-resolver.ts | resolveDiagramRelations | function | 参照解決状態の判定ロジック |
+| src/views/modeling-preview-view.ts | renderCurrentState | method | 状態変更をUIへ通知する仕組みの参考 |

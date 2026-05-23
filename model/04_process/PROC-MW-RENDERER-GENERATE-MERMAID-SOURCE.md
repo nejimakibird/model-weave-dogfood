@@ -53,5 +53,5 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/renderers/dfd-mermaid.ts | buildDfdMermaidSource | function | DFD用Mermaidソースの組み立て |
-| source/model-weave-repo/src/renderers/class-er-mermaid.ts | buildClassOverviewMermaidSource | function | クラス図用Mermaidソースの組み立て |
+| src/renderers/dfd-mermaid.ts | buildDfdMermaidSource | function | DFD用Mermaidソースの組み立て |
+| src/renderers/class-er-mermaid.ts | buildClassOverviewMermaidSource | function | クラス図用Mermaidソースの組み立て |

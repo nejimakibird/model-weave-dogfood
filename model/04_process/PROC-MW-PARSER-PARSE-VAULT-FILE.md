@@ -63,7 +63,7 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | parseVaultFile | function | ファイル種別に応じたパース処理の振り分け |
-| source/model-weave-repo/src/core/vault-index.ts | indexSingleFile | function | 個別ファイルの解析とインデックス登録の制御 |
-| source/model-weave-repo/src/parsers/frontmatter-parser.ts | parseFrontmatter | function | YAMLフロントマターの抽出 |
-| source/model-weave-repo/src/core/vault-index.ts | indexSingleFile | function | 個別ファイルの解析とインデックス登録の制御 |
+| src/core/vault-index.ts | parseVaultFile | function | ファイル種別に応じたパース処理の振り分け |
+| src/core/vault-index.ts | indexSingleFile | function | 個別ファイルの解析とインデックス登録の制御 |
+| src/parsers/frontmatter-parser.ts | parseFrontmatter | function | YAMLフロントマターの抽出 |
+| src/core/vault-index.ts | indexSingleFile | function | 個別ファイルの解析とインデックス登録の制御 |

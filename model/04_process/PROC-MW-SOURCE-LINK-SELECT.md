@@ -63,5 +63,5 @@ Source Links Explorer上で選択されたSource Linkをもとに、選択中Sou
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | VaultIndex | class | Source Linksおよび診断情報の検索元 |
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderCurrentState | method | 状態変更をUIへ通知する仕組みの参考 |
+| src/core/vault-index.ts | VaultIndex | class | Source Linksおよび診断情報の検索元 |
+| src/views/modeling-preview-view.ts | renderCurrentState | method | 状態変更をUIへ通知する仕組みの参考 |

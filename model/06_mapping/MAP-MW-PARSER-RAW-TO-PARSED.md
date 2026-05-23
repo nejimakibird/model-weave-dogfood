@@ -39,4 +39,4 @@ Obsidian Vault上の物理ファイル（DATA-MW-CORE-VAULT-FILE）から、Mode
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | parseVaultFile | function | ファイル種別に応じたパース処理のディスパッチ |
+| src/core/vault-index.ts | parseVaultFile | function | ファイル種別に応じたパース処理のディスパッチ |

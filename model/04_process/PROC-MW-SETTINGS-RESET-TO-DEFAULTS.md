@@ -61,6 +61,6 @@ Model Weave設定タブのリセット操作により、[[DATA-MW-PLUGIN-SETTING
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/settings-tab.ts | resetToDefaultSettings | function | 設定リセット処理 |
-| source/model-weave-repo/src/settings.ts | DEFAULT_SETTINGS | constant | 既定設定値 |
-| source/model-weave-repo/src/settings.ts | ModelWeaveSettings | type | プラグイン設定構造 |
+| src/settings-tab.ts | resetToDefaultSettings | function | 設定リセット処理 |
+| src/settings/model-weave-settings.ts | DEFAULT_SETTINGS | constant | 既定設定値 |
+| src/settings/model-weave-settings.ts | ModelWeaveSettings | type | プラグイン設定構造 |

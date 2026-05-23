@@ -44,6 +44,6 @@ RendererまたはViewer shellがDOM/CSSへ反映するためのViewport表示制
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | zoom / pan 状態をDOMへ反映する処理 |
-| source/model-weave-repo/src/renderers/graph-view-shared.ts | applyTransform | function | transform値またはCSS変数への反映処理 |
-| source/model-weave-repo/src/renderers/zoom-toolbar.ts | createZoomToolbar | function | toolbar操作の発生元 |
+| src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | zoom / pan 状態をDOMへ反映する処理 |
+| src/renderers/graph-view-shared.ts | applyTransform | function | transform値またはCSS変数への反映処理 |
+| src/renderers/zoom-toolbar.ts | createZoomToolbar | function | toolbar操作の発生元 |

@@ -32,4 +32,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDiagramRelations | function | 関数の戻り値となるグラフモデル構造に対応 |
+| src/core/relation-resolver.ts | resolveDiagramRelations | function | 関数の戻り値となるグラフモデル構造に対応 |
