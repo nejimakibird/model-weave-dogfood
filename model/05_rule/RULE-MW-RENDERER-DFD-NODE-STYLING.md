@@ -2,6 +2,7 @@
 type: rule
 id: RULE-MW-RENDERER-DFD-NODE-STYLING
 name: DFDノードスタイリングルール
+kind: renderer_rule
 tags:
   - DFD
   - Renderer
@@ -52,5 +53,5 @@ DFDオブジェクトの種別（kind）を、抽象グラフモデル（GraphNo
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/renderers/dfd-mermaid.ts | toMermaidNodeDeclaration | function | ノード形状とクラスの割当 |
-| source/model-weave-repo/src/parsers/dfd-diagram-parser.ts | normalizeDfdDiagramObjectKind | function | 入力種別の正規化 |
+| src/renderers/dfd-mermaid.ts | toMermaidNodeDeclaration | function | ノード形状とクラスの割当 |
+| src/parsers/dfd-diagram-parser.ts | normalizeDfdDiagramObjectKind | function | 入力種別の正規化 |

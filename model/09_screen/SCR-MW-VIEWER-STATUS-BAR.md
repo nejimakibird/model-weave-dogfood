@@ -3,6 +3,7 @@ type: screen
 id: SCR-MW-VIEWER-STATUS-BAR
 name: Viewerステータスバー
 screen_type: panel
+kind: status_bar
 tags:
   - Viewer
   - UI
@@ -63,6 +64,6 @@ Viewerの現在状態を短く表示するステータスバーUIを定義する
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer状態に応じたUI更新 |
-| source/model-weave-repo/src/views/modeling-preview-view.ts | prepareFileViewportState | method | viewport状態復元/初期化 |
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断サマリーの元データ |
+| src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer状態に応じたUI更新 |
+| src/views/modeling-preview-view.ts | prepareFileViewportState | method | viewport状態復元/初期化 |
+| src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断サマリーの元データ |

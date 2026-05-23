@@ -24,11 +24,11 @@ tags:
 
 | name | parameters | returns | visibility | static | notes |
 |---|---|---|---|---|---|
-| buildCurrentDiagramDiagnostics | diagram: ResolvedDiagram, warnings: Array<ValidationWarning> | Array<DATA-MW-CORE-DIAGNOSTIC> | public | Y | ダイアグラム用診断情報の収集 |
-| buildCurrentObjectDiagnostics | model: ParsedFileModel, index: ModelingVaultIndex, context: any, warnings: Array<ValidationWarning> | Array<DATA-MW-CORE-DIAGNOSTIC> | public | Y | 単体オブジェクト用診断情報の収集 |
+| buildCurrentDiagramDiagnostics | diagram: ResolvedDiagram, warnings: object | object | public | Y | ダイアグラム用診断情報の収集。warningsは論理的には複数要素。DATA-MW-CORE-DIAGNOSTICを複数要素として返す |
+| buildCurrentObjectDiagnostics | model: ParsedFileModel, index: ModelingVaultIndex, context: any, warnings: object | object | public | Y | 単体オブジェクト用診断情報の収集。warningsは論理的には複数要素。DATA-MW-CORE-DIAGNOSTICを複数要素として返す |
 
 ## Source Links
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/current-file-diagnostics.ts | buildCurrentDiagramDiagnostics | function | 診断情報の統合実装 |
+| src/core/current-file-diagnostics.ts | buildCurrentDiagramDiagnostics | function | 診断情報の統合実装 |

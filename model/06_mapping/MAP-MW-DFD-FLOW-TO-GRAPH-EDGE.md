@@ -2,6 +2,7 @@
 type: mapping
 id: MAP-MW-DFD-FLOW-TO-GRAPH-EDGE
 name: DFDフロー行からグラフエッジへの変換
+kind: data_to_data
 source: "[[DATA-MW-DFD-FLOW-ENTRY]]"
 target: "[[DATA-MW-RENDERER-GRAPH-EDGE]]"
 tags:
@@ -44,7 +45,7 @@ DFDの `## Flows` テーブルから解析された1行分のデータ（[[DATA-
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | フロー端点の解決とエッジ生成の主導 |
-| source/model-weave-repo/src/renderers/dfd-mermaid.ts | sanitizeMermaidEdgeLabel | function | ラベルのサニタイズ処理 |
-| source/model-weave-repo/src/types/models.ts | DfdFlowModel | type | 入力データ構造 |
-| source/model-weave-repo/src/types/models.ts | DiagramEdge | type | 出力データ構造 |
+| src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | フロー端点の解決とエッジ生成の主導 |
+| src/renderers/dfd-mermaid.ts | sanitizeMermaidEdgeLabel | function | ラベルのサニタイズ処理 |
+| src/types/models.ts | DfdFlowModel | type | 入力データ構造 |
+| src/types/models.ts | DiagramEdge | type | 出力データ構造 |

@@ -2,6 +2,7 @@
 type: rule
 id: RULE-MW-PARSER-SECTION-STRUCTURE
 name: セクション構造検証ルール
+kind: parser_rule
 tags:
   - Parser
   - Core
@@ -115,6 +116,6 @@ Model Weave の各Markdownモデルファイルにおいて、`frontmatter.type`
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | parseVaultFile | function | パーサーの振り分けと初期検証 |
-| source/model-weave-repo/src/parsers/markdown-table.ts | parseMarkdownTable | function | テーブルヘッダーの検証ロジック |
-| source/model-weave-repo/src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の集約 |
+| src/core/vault-index.ts | parseVaultFile | function | パーサーの振り分けと初期検証 |
+| src/parsers/markdown-table.ts | parseMarkdownTable | function | テーブルヘッダーの検証ロジック |
+| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の集約 |

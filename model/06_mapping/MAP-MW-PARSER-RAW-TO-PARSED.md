@@ -2,6 +2,7 @@
 type: mapping
 id: MAP-MW-PARSER-RAW-TO-PARSED
 name: 物理ファイルから論理モデルへの変換
+kind: data_to_data
 source: "[[DATA-MW-CORE-VAULT-FILE]]"
 target: "[[DATA-MW-CORE-PARSED-MODEL]]"
 tags:
@@ -39,4 +40,4 @@ Obsidian Vault上の物理ファイル（DATA-MW-CORE-VAULT-FILE）から、Mode
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/vault-index.ts | parseVaultFile | function | ファイル種別に応じたパース処理のディスパッチ |
+| src/core/vault-index.ts | parseVaultFile | function | ファイル種別に応じたパース処理のディスパッチ |

@@ -2,6 +2,7 @@
 type: rule
 id: RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP
 name: 診断情報深刻度判定ルール
+kind: diagnostics_rule
 tags:
   - Renderer
   - Core
@@ -48,5 +49,5 @@ Model Weave 内部で発生したバリデーション警告（ValidationWarning
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/current-file-diagnostics.ts | normalizeDiagnosticSeverity | function | 深刻度の正規化ロジック |
-| source/model-weave-repo/src/types/models.ts | ValidationWarning | type | 診断情報の基本構造 |
+| src/core/current-file-diagnostics.ts | normalizeDiagnosticSeverity | function | 深刻度の正規化ロジック |
+| src/types/models.ts | ValidationWarning | type | 診断情報の基本構造 |

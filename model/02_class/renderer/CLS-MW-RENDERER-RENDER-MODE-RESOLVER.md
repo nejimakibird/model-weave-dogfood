@@ -25,9 +25,11 @@ tags:
 | name | parameters | returns | visibility | static | notes |
 |---|---|---|---|---|---|
 | resolveRenderMode | input: RenderModeInput | ResolvedRenderMode | public | Y | モード選択ロジックの実行 |
+| getSupportedRenderModes | modelType: string | string | public | Y | implemented。modelType に応じた利用可能render mode群を返す。論理的には複数値 |
 
 ## Source Links
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/render-mode.ts | resolveRenderMode | function | 描画モードの解決 |
+| src/core/render-mode.ts | resolveRenderMode | function | 描画モードの解決 |
+| src/core/render-mode.ts | getSupportedRenderModes | function | modelType別の対応render mode導出 |

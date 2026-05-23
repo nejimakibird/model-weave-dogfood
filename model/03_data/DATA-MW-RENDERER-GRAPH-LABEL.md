@@ -2,6 +2,8 @@
 type: data_object
 id: DATA-MW-RENDERER-GRAPH-LABEL
 name: 抽象グラフ内テキスト
+kind: model
+data_format: object
 tags:
   - Renderer
   - Data

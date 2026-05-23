@@ -30,4 +30,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/renderers/dfd-mermaid.ts | buildDfdMermaidSource | function | DFD Mermaidソース生成 |
+| src/renderers/dfd-mermaid.ts | buildDfdMermaidSource | function | DFD Mermaidソース生成 |

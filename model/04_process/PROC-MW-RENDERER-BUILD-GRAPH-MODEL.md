@@ -2,6 +2,7 @@
 type: app_process
 id: PROC-MW-RENDERER-BUILD-GRAPH-MODEL
 name: 抽象グラフモデル構築
+process_type: transform
 kind: renderer
 tags:
   - Renderer
@@ -60,4 +61,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDiagramRelations | function | 図面種別（ER/DFD等）に応じたノード・エッジの解決 |
+| src/core/relation-resolver.ts | resolveDiagramRelations | function | 図面種別（ER/DFD等）に応じたノード・エッジの解決 |

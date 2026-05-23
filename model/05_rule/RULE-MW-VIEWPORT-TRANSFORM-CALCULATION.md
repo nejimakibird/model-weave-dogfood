@@ -66,6 +66,6 @@ Viewport状態からCSS transform値またはCSS variablesを生成する計算�
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | transform計算と反映の起点 |
-| source/model-weave-repo/src/renderers/graph-view-shared.ts | applyTransform | function | CSS transformまたはCSS変数への反映処理 |
-| source/model-weave-repo/src/renderers/zoom-toolbar.ts | createZoomToolbar | function | zoom操作の発生元 |
+| src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | transform計算と反映の起点 |
+| src/renderers/graph-view-shared.ts | applyTransform | function | CSS transformまたはCSS変数への反映処理 |
+| src/renderers/zoom-toolbar.ts | createZoomToolbar | function | zoom操作の発生元 |

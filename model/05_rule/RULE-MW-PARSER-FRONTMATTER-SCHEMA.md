@@ -2,6 +2,7 @@
 type: rule
 id: RULE-MW-PARSER-FRONTMATTER-SCHEMA
 name: フロントマター検証ルール
+kind: parser_rule
 tags:
   - Parser
   - Core
@@ -23,7 +24,7 @@ Model Weave の各Markdownモデルファイルにおけるフロントマター
 
 | id | data | source | required | notes |
 |---|---|---|---|---|
-| fm | Record<string, any> | FrontmatterParser | Y | 解析済みのYAMLオブジェクト |
+| fm | object | FrontmatterParser | Y | 解析済みのYAMLオブジェクト。Record構造 |
 | types | [[CODE-MW-CORE-MODEL-TYPE]] | CodeSet | Y | 有効なモデル種別リスト |
 
 ## Required Frontmatter Policy
@@ -35,7 +36,7 @@ Model Weave の各Markdownモデルファイルにおけるフロントマター
 | type | Y | CODE-MW-CORE-MODEL-TYPE と一致すること | アセット種別の特定に必須 |
 | id | Y | 文字列であること | システム内のユニーク識別子 |
 | name | Y | 文字列であること | 表示名称。将来的に技術ファイルで緩和の可能性あり |
-| tags | N | Array<string> | 任意。分類用タグ |
+| tags | N | string | 任意。論理的には複数値の分類用タグ |
 | render_mode | N | auto / custom / mermaid | 対応フォーマットでのみ有効 |
 | kind | N | 文字列 | フォーマットごとの詳細分類（enum, status 等） |
 | package | N | 文字列 | class 等で使用される論理階層 |
@@ -57,11 +58,12 @@ Model Weave の各Markdownモデルファイルにおけるフロントマター
 ## Notes
 
 - 本ルールによる検証を通過しないファイルは、インデックス構築プロセスにおいて「不明なファイル（markdown）」として扱われる場合があります。
+- Markdownテーブル安全性のため、型の詳細は単純型とnotesで表現し、複数値やRecord構造は本文上の説明で補足します。
 
 ## Source Links
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/parsers/frontmatter-parser.ts | parseYamlLikeFrontmatter | function | YAML形式の解析 |
-| source/model-weave-repo/src/core/schema-detector.ts | detectFileType | function | 種別判定ロジック |
-| source/model-weave-repo/src/core/vault-index.ts | parseVaultFile | function | 検証とパーサーの振り分け |
+| src/parsers/frontmatter-parser.ts | parseYamlLikeFrontmatter | function | YAML形式の解析 |
+| src/core/schema-detector.ts | detectFileType | function | 種別判定ロジック |
+| src/core/vault-index.ts | parseVaultFile | function | 検証とパーサーの振り分け |

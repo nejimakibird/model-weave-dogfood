@@ -55,6 +55,6 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断情報の表示 |
-| source/model-weave-repo/src/views/modeling-preview-view.ts | renderDiagnosticSection | function | 診断セクションの描画 |
-| source/model-weave-repo/src/main.ts | openDiagnosticLocation | function | 診断対象へのジャンプ |
+| src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断情報の表示 |
+| src/views/modeling-preview-view.ts | renderDiagnosticSection | function | 診断セクションの描画 |
+| src/main.ts | openDiagnosticLocation | function | 診断対象へのジャンプ |

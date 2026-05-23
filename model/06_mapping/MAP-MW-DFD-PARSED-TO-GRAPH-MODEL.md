@@ -2,6 +2,7 @@
 type: mapping
 id: MAP-MW-DFD-PARSED-TO-GRAPH-MODEL
 name: DFD論理モデルから描画用グラフモデルへの変換
+kind: data_to_data
 source: "[[DATA-MW-DFD-PARSED-DIAGRAM]]"
 target: "[[DATA-MW-RENDERER-GRAPH-MODEL]]"
 tags:
@@ -40,4 +41,4 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | DFDモデルの接続関係解決ロジック |
+| src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | DFDモデルの接続関係解決ロジック |

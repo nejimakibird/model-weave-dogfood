@@ -32,5 +32,5 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDiagramRelations | function | 共通リレーション解決口 |
-| source/model-weave-repo/src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | DFDフロー解決の実装 |
+| src/core/relation-resolver.ts | resolveDiagramRelations | function | 共通リレーション解決口 |
+| src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | DFDフロー解決の実装 |
