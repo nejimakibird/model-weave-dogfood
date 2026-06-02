@@ -1,7 +1,7 @@
 ---
 type: app_process
 id: PROC-MW-SOURCE-LINKS-SECTION-SUPPORT
-name: Source Links Section Support
+name: Source Linksセクションサポート
 process_type: preview_support
 kind: renderer
 tags:
@@ -10,55 +10,81 @@ tags:
   - Process
 ---
 
-# Source Links Section Support
+# Source Linksセクションサポート
 
 ## Summary
 
-Supports implemented `## Source Links` sections in Model Weave preview.
-The process parses Source Links from model Markdown, renders them in the preview, resolves relative paths with `localSourceRoot`, provides preview Copy Path / Open actions, and includes related Source Links in relationship / impact summaries.
+Model Weave preview に実装済みの `## Source Links` セクション表示をサポートする。
+この処理はモデルMarkdownから Source Links を解析し、preview に表示し、`localSourceRoot` によって相対パスを解決し、preview内の Copy Path / Open 操作を提供し、relationship / impact summary に関連 Source Links を含める。
 
-This process does not model Source Links Explorer. Explorer screens, filtering, selection, indexing, and Explorer-specific copy/open workflows remain future/planned and out of scope.
+この処理は Source Links Explorer をモデル化しない。Explorer画面、フィルタ、選択、索引化、Explorer専用のcopy/open workflow は future / planned であり、本処理の対象外である。
 
 ## Inputs
 
 | id | data | source | required | notes |
 |---|---|---|---|---|
-| sourceLinksSection | Markdown section lines | Model file `## Source Links` | N | Table rows or simple line entries parsed from the model body |
-| localSourceRoot | string | Plugin settings / viewer preferences | N | Used when a Source Link path is relative |
-| parsedModel | Parsed model | Preview / relationship analysis | Y | Model that may contain parsed Source Links |
-| vaultIndex | Modeling vault index | Relationship / impact analysis | N | Used when collecting related Source Links |
+| sourceLinksSection | Markdown section lines | Model file `## Source Links` | N | モデル本文から解析されるテーブル行または単純な行エントリ |
+| localSourceRoot | string | Plugin settings / viewer preferences | N | Source Link のpathが相対パスの場合に使用する |
+| parsedModel | Parsed model | Preview / relationship analysis | Y | 解析済み Source Links を持つ可能性があるモデル |
+| vaultIndex | Modeling vault index | Relationship / impact analysis | N | 関連 Source Links の収集時に使用する |
 
 ## Outputs
 
-| id | data | target | notes |
-|---|---|---|---|
-| sourceLinks | SourceLink[] | Parsed model state | Parsed Source Links with path and optional label / notes |
-| previewSection | HTMLElement | Modeling preview | Source Links table with path status, resolved path, notes, and actions |
-| copiedPath | string | Clipboard | Resolved path copied by the Copy Path action |
-| openRequest | resolved path | OS/default app | Open action request for an openable resolved path |
-| relatedSourceLinks | ImpactSourceLink[] | Relationship / impact summary | Source Links from the current model and related inbound/outbound models |
+| id                 | data             | target                        | notes                                                         |
+| ------------------ | ---------------- | ----------------------------- | ------------------------------------------------------------- |
+| sourceLinks        | SourceLink       | Parsed model state            | path と任意の label / notes を持つ解析済み Source Links                  |
+| previewSection     | HTMLElement      | Modeling preview              | path status、resolved path、notes、actions を持つ Source Links テーブル |
+| copiedPath         | string           | Clipboard                     | Copy Path 操作でコピーされた resolved path                             |
+| openRequest        | resolved path    | OS/default app                | open可能な resolved path に対する Open 操作要求                          |
+| relatedSourceLinks | ImpactSourceLink | Relationship / impact summary | 現在のモデルおよび関連する inbound / outbound モデルから集約された Source Links      |
 
 ## Steps
 
-1. Parse the optional `## Source Links` section into Source Link entries.
-2. Accept either Markdown table rows or simple line entries.
-3. Normalize supported source path forms, including table headers such as `path`, `source`, `source_path`, or `file`.
-4. Keep optional label / notes values when present.
-5. Render a Source Links preview section only when at least one parsed Source Link has a non-empty path.
-6. Resolve each path for preview status display. Relative paths use `localSourceRoot` when it is configured as a supported absolute source root.
-7. Show the source path, status, resolved path, notes, and actions in the preview table.
-8. Copy Path writes the resolved path to the clipboard.
-9. Open requests the OS/default app to open the resolved path when the path is openable.
-10. Relationship / impact summary collection includes Source Links from the current model, resolved outbound target models, and inbound source models.
+| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| start | Preview | Source Linksサポート開始 | start | parsedModel |  |  |  |  | Preview描画またはrelationship summary処理を開始する |
+| receive | Preview | モデルファイル入力を受け取る | input | parsedModel | sourceLinksSection |  |  |  | モデル状態は `## Source Links` セクションを含む場合がある |
+| parse | Parser | Source Linksセクションを解析する | process | sourceLinksSection | sourceLinks |  |  |  | テーブル行または単純な行エントリを受け付ける |
+| hasLinks | Preview | 有効な Source Links があるか判定する | decision | sourceLinks |  |  |  |  | pathが空でない場合のみpreviewセクションを生成する |
+| normalize | Parser | path、label、notesを正規化する | process | sourceLinks | sourceLinks |  |  |  | `path`、`source`、`source_path`、`file` などのpath headerをサポートする |
+| resolve | Renderer | Source Link pathを解決する | process | sourceLinks, localSourceRoot | resolved path |  |  |  | file URI、absolute、UNC、relative pathを分類する |
+| relativePath | Renderer | source root付き相対パスか判定する | decision | resolved path, localSourceRoot |  |  |  |  | 対応するabsolute rootの場合、relative pathは `localSourceRoot` を使用する |
+| useLocalRoot | Renderer | 相対パスをlocalSourceRootへ結合する | process | localSourceRoot, source link path | resolved path |  |  |  | WindowsまたはPOSIX rootに対応するpath APIを使用する |
+| keepResolvedPath | Renderer | 解決済みpathを維持する | process | source link path | resolved path |  |  |  | absolute pathや未対応rootでは `localSourceRoot` を使用しない |
+| fileUri | Renderer | file URIが未対応か判定する | decision | resolved path |  |  |  |  | file URI pathはこのrendererではopenできない |
+| markUnsupported | Renderer | pathを未対応として扱う | process | resolved path | source link status |  |  |  | unsupported file URI status と action note を付与する |
+| renderPreview | Preview | Source Links preview tableを描画する | screen | source link status | previewSection |  |  |  | Path、Status、Resolved Path、Notes、Action列を表示する |
+| copyPath | Preview | resolved pathをコピーする | screen | resolved path | copiedPath |  |  |  | Copy Path は resolved path をクリップボードへ書き込む |
+| openable | Preview | resolved pathをopenできるか判定する | decision | source link status |  |  |  |  | open不可の場合、Open buttonをdisabledにする |
+| openResolved | Preview | resolved pathをopenする | screen | resolved path | openRequest |  |  |  | Electron shell 経由でOS/default appへ要求する |
+| collectRelated | Impact | 関連 Source Links を収集する | process | parsedModel, vaultIndex | relatedSourceLinks |  |  |  | self、resolved outbound target models、inbound source models を含める |
+| end | Preview | preview / impact outputで終了する | end | previewSection, relatedSourceLinks |  |  |  |  | Source Links Explorer は対象外のままとする |
+
+## Flows
+
+| from | to | condition | label | notes |
+|---|---|---|---|---|
+| hasLinks | collectRelated | `validSourceLinks.length === 0` | 有効なリンクなし | Rendererはpreview Source Linksセクションを返さない |
+| hasLinks | normalize |  | 有効なリンクあり | previewセクション描画を続行する |
+| relativePath | useLocalRoot | `linkPath.kind === "relative" && classified.kind !== "relative" && classified.kind !== "fileUri"` | localSourceRootを使用 | relative pathをlocalSourceRootへ結合する |
+| relativePath | keepResolvedPath |  | pathを維持 | absolute path、file URI、empty root、未対応rootではlocalSourceRootを使用しない |
+| useLocalRoot | fileUri |  | サポート確認 | status解決を続行する |
+| keepResolvedPath | fileUri |  | サポート確認 | status解決を続行する |
+| fileUri | markUnsupported | `resolved.kind === "fileUri"` | 未対応URI | file URI pathは表示されるがopen不可 |
+| fileUri | renderPreview |  | open可能なpath種別 | preview描画を続行する |
+| markUnsupported | renderPreview |  | statusを描画 | 未対応statusをテーブルへ描画する |
+| openable | openResolved | `status.openable === true` | Open | OS/default appでopenする |
+| openable | collectRelated | `status.openable === false` | openをスキップ | relationship / impact collectionへ進む |
+| openResolved | collectRelated |  | 続行 | relationship / impact collectionへ進む |
 
 ## Notes
 
-- Source Links section support is implemented in preview and relationship / impact summary behavior.
-- `localSourceRoot` is the implemented setting for resolving relative Source Link paths.
-- File URI paths are treated as unsupported for direct open behavior.
-- Missing paths may still be displayed with status and remain copyable/openable according to renderer behavior.
-- Source Links Explorer is not implemented by this process.
-- This process does not define a screen, Explorer state, Explorer filtering, or Explorer selection behavior.
+- Source Linksセクションサポートは、previewおよびrelationship / impact summaryの挙動として実装済みである。
+- `localSourceRoot` はrelative Source Link pathを解決するための実装済み設定である。
+- File URI pathは直接open動作では未対応として扱う。
+- missing pathであっても、rendererの挙動に従ってstatus付きで表示され、copy/open可能な場合がある。
+- Source Links Explorer はこの処理では実装済みとして扱わない。
+- この処理はscreen、Explorer state、Explorer filtering、Explorer selection behaviorを定義しない。
 
 ## Source Links
 
