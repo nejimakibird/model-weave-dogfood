@@ -22,15 +22,16 @@ tags:
 
 ## Logic
 
-1. **最優先 (Toolbar Override)**: `toolbarOverride` が有効な render mode（auto / custom / mermaid）であれば採用する。
-2. **次優先 (Frontmatter)**: `frontmatterRenderMode` が有効な render mode であれば採用する。不正値の場合は診断を出し、後続候補へフォールバックする。
-3. **第三優先 (Plugin Settings)**: `settingsDefaultRenderMode` が有効な render mode であれば採用する。
-4. **未指定時 (Format Default)**: 上記が未指定または無効の場合、選択値は `auto` とし、`formatType / modelKind` に基づく format default へ委譲する。
+1. **最優先 (Toolbar Override)**: `toolbarOverride` が有効な明示 render mode（`custom` / `mermaid` / `mermaid-detail`）で、対象形式の supportedModes に含まれる場合は採用する。
+2. **次優先 (Frontmatter)**: `frontmatterRenderMode` が有効な明示 render mode（`custom` / `mermaid` / `mermaid-detail`）で、対象形式の supportedModes に含まれる場合は採用する。不正値、非対応値、または deprecated な `auto` の場合は診断を出し、後続候補へフォールバックする。
+3. **第三優先 (Plugin Settings)**: `settingsDefaultRenderMode` が有効な明示 render mode（`custom` / `mermaid` / `mermaid-detail`）で、対象形式の supportedModes に含まれる場合は採用する。
+4. **未指定時 (Format Default / Fallback)**: 上記が未指定または無効の場合、`formatType / modelKind` に基づく format default を試し、未対応なら fallback mode を採用する。
     - `dfd-diagram`: `mermaid`
     - その他: 原則 `custom`
-5. **auto 解決**: `auto` は実レンダラーではなく、`formatType / modelKind` に基づき `effectiveMode` を `custom` または `mermaid` へ解決する。
-6. **サポート検証**: `custom / mermaid` が明示指定された場合、`formatType / modelKind` から導出されるサポート集合に含まれるか確認する。未対応の場合は診断または警告を出し、安全なmodeへフォールバックする。
-7. **DFD 例外**: `dfd-diagram` は Mermaid-first / mermaid固定方針とし、`custom` 指定は `mermaid` へフォールバックする。詳細は [[RULE-MW-DFD-MERMAID-ONLY]] に委ねる。
+5. **Deprecated auto**: `auto` は有効な selectedMode ではない。frontmatter.render_mode に `auto` が指定された場合のみ deprecated 値として診断を出し、format default へフォールバックする。
+6. **サポート検証**: `custom` / `mermaid` / `mermaid-detail` が明示指定された場合、`formatType / modelKind` から導出される supportedModes に含まれるか確認する。未対応の場合は診断またはフォールバックを適用する。
+7. **固定レンダリング形式**: `data-object` / `app-process` / `rule` / `codeset` / `message` / `mapping` は selectable render mode を持たず、実装上は table-text renderer を使う。`dfd-object` / `screen` / `markdown` も selectable render mode を持たず、固定または対象外の表示挙動に委ねる。
+8. **DFD 例外**: `dfd-diagram` は `mermaid` 固定方針とし、`custom` / `mermaid-detail` 指定は supportedModes に含まれないため採用されない。詳細は [[RULE-MW-DFD-MERMAID-ONLY]] に委ねる。
 
 ## Source Links
 
@@ -47,5 +48,6 @@ tags:
 - supportedModes は getSupportedRenderModes(formatType, modelKind) により導出される派生情報であり、ResolveRenderModeInput の生入力ではない。
 - isDfd は formatType / modelKind からの派生判定であり、ResolveRenderModeInput の生入力ではない。
 - class / er_entity の単体表示は custom を既定とする。
-- class_diagram / er_diagram は対応状況に応じて custom / mermaid を選択可能とする。
-- DFD は [[RULE-MW-DFD-MERMAID-ONLY]] に従い Mermaid-first / mermaid固定方針で扱う。
+- class / er_entity / class_diagram / er_diagram は対応状況に応じて custom / mermaid / mermaid-detail を選択可能とする。
+- `auto` は有効な RenderMode ではなく、frontmatter.render_mode の deprecated 値としてのみ扱う。
+- DFD diagram は [[RULE-MW-DFD-MERMAID-ONLY]] に従い mermaid固定方針で扱う。
