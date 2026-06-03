@@ -14,27 +14,45 @@ tags:
 ## Summary
 
 dfd_diagram Markdownから解析されたDFD専用の論理データ構造です。
-汎用の DATA-MW-CORE-PARSED-MODEL から、DFDレンダリングに必要な構造を取り出したものであり、Mermaidや描画エンジンには依存しません。
+現行ソースでは DfdDiagramModel に対応し、BaseFileModel の共通フィールドとDFD固有の objectEntries / flows / nodes / edges を保持します。
 
 ## Fields
 
 | name | label | type | length | required | path | ref | notes |
 |---|---|---|---|---|---|---|---|
-| id | ID | string | | Y | | | 原典dfd_diagramのID |
-| name | 名称 | string | | Y | | | 原典dfd_diagramの名称 |
-| level | 階層 | number | | N | | | 任意項目。DFD階層。未設定の場合あり |
-| objectEntries | オブジェクト群 | object | | Y | | [[DATA-MW-DFD-OBJECT-ENTRY]] | 論理的には複数要素。dfd_diagram.Objects由来 |
-| flows | フロー群 | object | | Y | | [[DATA-MW-DFD-FLOW-ENTRY]] | 論理的には複数要素。dfd_diagram.Flows由来 |
-| diagnostics | 診断情報 | object | | Y | | [[DATA-MW-CORE-DIAGNOSTIC]] | 論理的には複数要素。解析・解決時の診断情報 |
+| fileType | ファイル種別 | string | | Y | fileType | [[CODE-MW-CORE-MODEL-TYPE]] | dfd-diagram |
+| schema | schema | string | | Y | schema | | dfd_diagram |
+| path | ファイルパス | string | | Y | path | | Vault内Markdown path |
+| frontmatter | frontmatter | object | | Y | frontmatter | | parseFrontmatter結果 |
+| sourceLinks | Source Links | SourceLink list | | Y | sourceLinks | [[DATA-MW-SOURCE-LINK]] | parseSourceLinks結果 |
+| id | ID | string | | Y | id | | 原典dfd_diagramのID |
+| name | 名称 | string | | Y | name | | 原典dfd_diagramの名称 |
+| kind | 図面種別 | string | | Y | kind | | dfd |
+| level | 階層 | string | | N | level | | 任意項目。DFD階層 |
+| description | 説明 | string | | N | description | | Summary section由来 |
+| objectRefs | オブジェクト参照 | string list | | Y | objectRefs | | objectEntriesから生成 |
+| objectEntries | オブジェクト群 | DfdDiagramObjectEntry list | | Y | objectEntries | [[DATA-MW-DFD-OBJECT-ENTRY]] | dfd_diagram.Objects由来 |
+| nodes | ノード群 | DiagramNode list | | Y | nodes | [[DATA-MW-RENDERER-GRAPH-NODE]] | Objects由来の解析時node |
+| edges | エッジ群 | DiagramEdge list | | Y | edges | [[DATA-MW-RENDERER-GRAPH-EDGE]] | Flows由来の解析時edge |
+| flows | フロー群 | DfdFlowModel list | | Y | flows | [[DATA-MW-DFD-FLOW-ENTRY]] | dfd_diagram.Flows由来 |
+| warnings | warning | ValidationWarning list | | N | warnings | [[DATA-MW-CORE-DIAGNOSTIC]] | ParseResult.warnings |
 
 ## Notes
 
 - DATA-MW-CORE-PARSED-MODEL は汎用解析済みモデルとして残します。
-- 本オブジェクトはDFD専用の中間表現であり、描画モデル（Graph Model）生成前の論理データを表します。
-- Markdownテーブル安全性のため、type列は単純型で表現し、複数性や任意性は required / notes / ref で表現します。
+- 本オブジェクトはDFD専用の解析済みモデルであり、resolveDiagramRelations 後の ResolvedDiagram とは別である。
+- parser は `## Objects` から objectEntries / objectRefs / nodes を生成し、`## Flows` から flows / edges を生成する。
+- 現行実装のparser出力診断は ParseResult.warnings であり、diagnostics という直接フィールドではない。
+- legacy ref-only Objects table は parser互換モードとして扱われるが、本モデルでは主要フィールドとして過剰に展開しない。
+- Markdownテーブル安全性のため、複数性や任意性は list / required / notes / ref で表現します。
 
 ## Source Links
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| src/types/models.ts | DfdDiagramModel | type | 実装上のDFDモデル型に対応 |
+| src/types/models.ts | DfdDiagramModel | interface | 実装上のDFDモデル型 |
+| src/types/models.ts | DfdDiagramObjectEntry | interface | Objects行 |
+| src/types/models.ts | DfdFlowModel | interface | Flows行 |
+| src/types/models.ts | DiagramNode | interface | nodes要素 |
+| src/types/models.ts | DiagramEdge | interface | edges要素 |
+| src/parsers/dfd-diagram-parser.ts | parseDfdDiagramFile | function | DFD parser出力 |

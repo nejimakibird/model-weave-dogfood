@@ -15,41 +15,50 @@ tags:
 
 ## Summary
 
-Obsidian Vault内で検出されたModel Weaveモデル資産の一覧、ファイル情報、参照解決状態、診断状態を保持する論理インデックスデータ。
-Markdownファイル群をViewerや診断、参照解決で扱いやすくするための派生データであり、Markdownモデルの正本ではない。
+Obsidian Vault内のMarkdownファイルを解析して構築される、Model Weaveの実行時インデックスデータ。
+modelsByFilePath と各種ID別マップ、relation/member lookup、warningsByFilePath、構築済み状態を保持する。
 
 ## Fields
 
 | name | label | type | length | required | path | ref | notes |
 |---|---|---|---|---|---|---|---|
-| indexId | インデックスID | string | | Y | indexId | | Vaultインデックスの識別子 |
-| vaultPath | Vaultパス | string | | N | vaultPath | | 対象Vaultのルートまたは論理名 |
-| modelFileCount | モデルファイル数 | number | | N | summary.modelFileCount | [[ENT-MW-MODEL-FILE]] | 検出されたMarkdownモデルファイル数 |
-| modelAssetCount | モデル資産数 | number | | N | summary.modelAssetCount | [[ENT-MW-MODEL-ASSET]] | frontmatter等から認識されたModelAsset数 |
-| referenceCount | 参照数 | number | | N | summary.referenceCount | [[ENT-MW-MODEL-REFERENCE]] | 検出されたモデル間参照数 |
-| unresolvedReferenceCount | 未解決参照数 | number | | N | summary.unresolvedReferenceCount | [[ENT-MW-MODEL-REFERENCE]] | resolved=false の参照数 |
-| diagnosticCount | 診断件数 | number | | N | summary.diagnosticCount | [[DATA-MW-CORE-DIAGNOSTIC]] | error / warning / info / note の合計 |
-| errorCount | エラー件数 | number | | N | summary.errorCount | [[DATA-MW-CORE-DIAGNOSTIC]] | severity=error の件数 |
-| warningCount | 警告件数 | number | | N | summary.warningCount | [[DATA-MW-CORE-DIAGNOSTIC]] | severity=warning の件数 |
-| modelFiles | モデルファイル一覧 | object | | N | modelFiles | [[ENT-MW-MODEL-FILE]] | 複数のModelFileを保持するマップまたはリスト |
-| modelAssets | モデル資産一覧 | object | | N | modelAssets | [[ENT-MW-MODEL-ASSET]] | 複数のModelAssetを保持するマップまたはリスト |
-| modelReferences | モデル参照一覧 | object | | N | modelReferences | [[ENT-MW-MODEL-REFERENCE]] | 複数のModelReferenceを保持するマップまたはリスト |
-| diagnostics | 診断一覧 | object | | N | diagnostics | [[DATA-MW-CORE-DIAGNOSTIC]] | 複数のDiagnosticを保持するマップまたはリスト |
-| lastIndexedFilePath | 最終解析ファイル | string | | N | lastIndexedFilePath | | 増分更新時に最後に処理したファイル |
-| indexStatus | インデックス状態 | string | | N | indexStatus | | ready / indexing / error / stale など |
+| sourceFilesByPath | 入力ファイルマップ | object | | Y | sourceFilesByPath | [[DATA-MW-CORE-VAULT-FILE]] | path別のVaultFileInput |
+| modelsByFilePath | 解析済みモデルマップ | object | | Y | modelsByFilePath | [[DATA-MW-CORE-PARSED-MODEL]] | path別のParsedFileModel |
+| objectsById | Classモデルマップ | object | | N | objectsById | [[DATA-MW-CORE-PARSED-MODEL]] | object fileTypeのID別マップ |
+| appProcessesById | Processモデルマップ | object | | N | appProcessesById | [[DATA-MW-CORE-PARSED-MODEL]] | app-process fileTypeのID別マップ |
+| screensById | Screenモデルマップ | object | | N | screensById | [[DATA-MW-CORE-PARSED-MODEL]] | screen fileTypeのID別マップ |
+| dataObjectsById | Data Objectマップ | object | | N | dataObjectsById | [[DATA-MW-CORE-PARSED-MODEL]] | data-object fileTypeのID別マップ |
+| dfdObjectsById | DFD Objectマップ | object | | N | dfdObjectsById | [[DATA-MW-CORE-PARSED-MODEL]] | dfd-object fileTypeのID別マップ |
+| erEntitiesById | ER Entityマップ | object | | N | erEntitiesById | [[DATA-MW-CORE-PARSED-MODEL]] | er-entity fileTypeのID別マップ |
+| relationsFilesById | Relationsファイルマップ | object | | N | relationsFilesById | [[DATA-MW-CORE-PARSED-MODEL]] | relations fileTypeのID別マップ |
+| diagramsById | Diagramマップ | object | | N | diagramsById | [[DATA-MW-CORE-PARSED-MODEL]] | diagram / dfd-diagramのID別マップ |
+| relationsById | Relationマップ | object | | N | relationsById | | relation id別のRelationModel |
+| relationsByObjectId | Object別Relation lookup | object | | N | relationsByObjectId | | object id別のRelationModel list |
+| membersByOwnerId | Owner別Member lookup | object | | N | membersByOwnerId | | owner id別のQualifiedMemberCandidate list |
+| membersByOwnerPath | Path別Member lookup | object | | N | membersByOwnerPath | | owner path別のQualifiedMemberCandidate list |
+| warningsByFilePath | 診断マップ | object | | N | warningsByFilePath | [[DATA-MW-CORE-DIAGNOSTIC]] | file path別のValidationWarning list |
+| relationLookupsBuilt | Relation lookup構築済み | boolean | | Y | state.relationLookupsBuilt | | ensureRelationLookups の状態 |
+| memberLookupsBuilt | Member lookup構築済み | boolean | | Y | state.memberLookupsBuilt | | ensureMemberLookups の状態 |
+| vaultValidationBuilt | Vault検証済み | boolean | | Y | state.vaultValidationBuilt | | ensureVaultValidation の状態 |
+| fullParsedFilePaths | full parse済みファイル | object | | N | state.fullParsedFilePaths | | full parse済みpathのマップ |
 
 ## Notes
 
 - 本データはVault内Markdownファイルから生成される派生インデックスであり、Markdownモデルの正本ではない。
-- modelFiles / modelAssets / modelReferences / diagnostics は論理的には複数要素を保持するが、Markdownテーブル安全性のため type は object とし、複数性はnotesで表現する。
-- 参照解決や診断結果は、ファイル更新やVault再読込により再生成される。
-- [[ERD-MW-MODEL-REPOSITORY]] はこのインデックスの論理構造をERとして表したものである。
+- 現行実装には汎用の modelAssets / modelReferences マップはなく、fileType別のIDマップと modelsByFilePath を保持する。
+- 現行実装には専用の sourceLinks index はなく、SourceLink は各 ParsedFileModel の sourceLinks に保持される。
+- relationsByObjectId は ensureRelationLookups で再構築される。
+- membersByOwnerId / membersByOwnerPath は ensureMemberLookups で再構築される。
+- warningsByFilePath は parser warning、validator warning、重複ID warningを保持する。
+- Markdownテーブル安全性のため、mapやlistの詳細型は notes で表現する。
 
 ## Source Links
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| src/core/vault-index.ts | VaultIndex | class | Vault内モデル資産の索引 |
-| src/core/schema-detector.ts | detectModelType | function | Markdownファイル種別の検出 |
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | モデル間参照の解決 |
-| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の生成 |
+| src/core/vault-index.ts | ModelingVaultIndex | interface | Vault内モデル資産の索引 |
+| src/core/vault-index.ts | buildVaultIndex | function | Indexの新規構築 |
+| src/core/vault-index.ts | indexSingleFile | function | 個別ファイルの解析と登録 |
+| src/core/vault-index.ts | ensureRelationLookups | function | relation lookup構築 |
+| src/core/vault-index.ts | ensureMemberLookups | function | member lookup構築 |
+| src/core/vault-index.ts | ensureVaultValidation | function | Vault検証 |

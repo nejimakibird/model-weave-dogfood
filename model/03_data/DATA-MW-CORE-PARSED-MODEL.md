@@ -13,27 +13,39 @@ tags:
 
 ## Summary
 
-Markdownソースから解析された、Model Weaveの各種モデル（Class, ER, DFD等）の共通抽象表現です。
+Markdownソースから解析された、Model Weaveの各種モデルに共通するファイルモデル表現。
+実装上は BaseFileModel を共通形とし、ParsedFileModel は各 fileType 固有モデルのunionとして扱われる。
 
 ## Fields
 
 | name | label | type | length | required | path | ref | notes |
 |---|---|---|---|---|---|---|---|
-| id | モデルID | string | | Y | | | frontmatter.id |
-| name | モデル名称 | string | | Y | | | frontmatter.name |
-| type | モデル種別 | CODE-MW-CORE-MODEL-TYPE | | Y | | [[CODE-MW-CORE-MODEL-TYPE]] | class / er_entity / dfd_diagram 等 |
-| kind | 詳細分類 | string | | N | | | 任意項目。frontmatter.kind 等 |
-| sections | セクション群 | object | | Y | | | Map構造。セクション名ごとに本文行の複数値を保持 |
-| tables | テーブル群 | object | | Y | | [[DATA-MW-CORE-MARKDOWN-TABLE]] | 論理的には複数要素。セクション内から抽出されたテーブル |
-| diagnostics | 診断情報 | object | | Y | | [[DATA-MW-CORE-DIAGNOSTIC]] | 論理的には複数要素。解析時の診断情報 |
+| fileType | ファイル種別 | string | | Y | fileType | [[CODE-MW-CORE-MODEL-TYPE]] | ParsedFileModelの判別値 |
+| path | ファイルパス | string | | Y | path | | Vault内Markdown path |
+| title | 表示タイトル | string | | N | title | | 任意の表示名 |
+| frontmatter | frontmatter | object | | Y | frontmatter | | GenericFrontmatter |
+| sections | セクション群 | object | | Y | sections | | SectionMap |
+| sourceLinks | Source Links | object | | Y | sourceLinks | [[DATA-MW-SOURCE-LINK]] | SourceLink list |
+| id | モデルID | string | | N | id | | fileType固有モデルで保持 |
+| name | モデル名称 | string | | N | name | | fileType固有モデルで保持 |
+| content | Markdown本文 | string | | N | content | | markdown fileTypeのみ |
+| parseFile | 解析結果file | object | | N | file | | ParseResult.file |
+| warnings | 解析warning | object | | N | warnings | [[DATA-MW-CORE-DIAGNOSTIC]] | ParseResult.warnings |
 
 ## Notes
 
-- 物理ファイルの状態に依存せず、プラグイン内部で「設計図面」として扱うための論理データです。
-- Markdownテーブル安全性のため、type列は単純型で表現し、複数性・任意性・Map構造は required / notes / ref で表現します。
+- BaseFileModel の共通フィールドは fileType / path / title / frontmatter / sections / sourceLinks である。
+- ParsedFileModel は object / data-object / app-process / screen / codeset / message / rule / mapping / relations / diagram / dfd-object / dfd-diagram / er-entity / markdown のunionである。
+- id / name / kind などは fileType 固有モデルで保持されるため、共通必須とは扱わない。
+- ParseResult は file と warnings を返す。warnings は ParsedFileModel の直接フィールドではない。
+- 旧generic項目の type / tables / diagnostics は現行共通フィールドとしては扱わない。
+- Markdownテーブル安全性のため、mapやlistの詳細型は notes で表現する。
 
 ## Source Links
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| src/types/models.ts | ModelFile | type | 各種モデル（ObjectModel, ErEntity等）の総称型 |
+| src/types/models.ts | BaseFileModel | interface | 共通ファイルモデル形 |
+| src/types/models.ts | ParsedFileModel | type | 解析済みモデルのunion |
+| src/types/models.ts | ParseResult | interface | parser出力 |
+| src/types/models.ts | SourceLink | interface | sourceLinks要素 |
