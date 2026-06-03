@@ -13,26 +13,32 @@ tags:
 
 ## Summary
 
-特定の描画エンジン（Mermaid等）に依存しない、ノードとエッジから構成される図面データの論理構造です。
+特定の描画エンジン（Mermaid等）に依存しない、解決済み図面データの論理構造です。
+現行ソースでは ResolvedDiagram に対応し、元の diagram、解決済み nodes / edges、未解決オブジェクト、warningを保持します。
 
 ## Fields
 
 | name | label | type | length | required | path | ref | notes |
 |---|---|---|---|---|---|---|---|
-| nodes | ノードリスト | object | | Y | | [[DATA-MW-RENDERER-GRAPH-NODE]] | 論理的には複数要素。グラフを構成するノード |
-| edges | エッジリスト | object | | Y | | [[DATA-MW-RENDERER-GRAPH-EDGE]] | 論理的には複数要素。ノード間の接続 |
-| labels | ラベルリスト | object | | Y | | [[DATA-MW-RENDERER-GRAPH-LABEL]] | 論理的には複数要素。表示ラベル |
-| shape | 全体形状 | string | | N | | | 描画レイアウトのヒント |
-| sourceRefs | 元モデル参照 | string | | Y | | | 論理的には複数値。グラフを構成する原典モデルのID |
-| diagnostics | 構築時診断 | object | | Y | | [[DATA-MW-CORE-DIAGNOSTIC]] | 論理的には複数要素。構築時の診断情報 |
+| diagram | 元図面モデル | object | | Y | diagram | [[DATA-MW-CORE-PARSED-MODEL]] | DiagramModelまたはDfdDiagramModel |
+| nodes | 解決済みノード | DiagramNode list | | Y | nodes | [[DATA-MW-RENDERER-GRAPH-NODE]] | ResolvedDiagram.nodes |
+| edges | 解決済みエッジ | DiagramEdge list | | Y | edges | [[DATA-MW-RENDERER-GRAPH-EDGE]] | ResolvedDiagram.edges |
+| missingObjects | 未解決オブジェクト | string list | | Y | missingObjects | | 解決できなかったobject ref |
+| warnings | 解決warning | ValidationWarning list | | Y | warnings | [[DATA-MW-CORE-DIAGNOSTIC]] | 解決時のwarning |
 
 ## Notes
 
-- レンダラーの前段（中間データ）として、図面の意味的な繋がりを保持します。
-- Markdownテーブル安全性のため、type列は単純型で表現し、複数性は notes / ref で表現します。
+- 本データは resolveDiagramRelations の戻り値である ResolvedDiagram のdogfood表現である。
+- labels / shape / sourceRefs は現行 ResolvedDiagram の直接フィールドではないため、現在のフィールド一覧には含めない。
+- warnings は診断パネルやPreview表示で使われる ValidationWarning list であり、旧称 diagnostics では扱わない。
+- Mermaid source は別データモデルで扱い、本モデルには含めない。
+- Markdownテーブル安全性のため、複数性は list 表記で表現する。
 
 ## Source Links
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | 関数の戻り値となるグラフモデル構造に対応 |
+| src/types/models.ts | ResolvedDiagram | interface | 解決済み図面データ |
+| src/types/models.ts | DiagramNode | interface | nodes要素 |
+| src/types/models.ts | DiagramEdge | interface | edges要素 |
+| src/core/relation-resolver.ts | resolveDiagramRelations | function | ResolvedDiagramを生成 |

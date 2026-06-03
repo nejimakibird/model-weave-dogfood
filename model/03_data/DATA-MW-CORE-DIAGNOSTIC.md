@@ -14,27 +14,40 @@ tags:
 
 ## Summary
 
-モデルのパースやバリデーションの結果として生成される、エラー、警告、または情報を保持するデータオブジェクトです。
+モデルのパース、Vault検証、参照解決で生成される ValidationWarning を表すデータオブジェクト。
+warningsByFilePath や ParseResult.warnings に保持され、Viewerの診断表示に使われる。
 
 ## Fields
 
 | name | label | type | length | required | path | ref | notes |
 |---|---|---|---|---|---|---|---|
-| severity | 深刻度 | string | | Y | | | Error / Warning / Info |
-| code | 診断コード | string | | Y | | | 例: W-TAB-001 |
-| message | メッセージ内容 | string | | Y | | | ユーザー向けの説明文 |
-| filePath | 対象ファイル | string | | Y | | | 問題が検出されたファイルのパス |
-| section | 対象セクション | string | | N | | | 任意項目。未設定の場合あり |
-| row | 対象行番号 | number | | N | | | 任意項目。未設定の場合あり |
-| targetRef | 参照ターゲット | string | | N | | | 任意項目。未解決参照等の場合の対象識別子 |
+| code | 診断コード | string | | Y | code | | ValidationWarningCode |
+| message | メッセージ内容 | string | | Y | message | | 診断メッセージ |
+| severity | 深刻度 | string | | Y | severity | | info / warning / error |
+| path | 対象path | string | | N | path | | 主な対象ファイルpath |
+| filePath | 対象filePath | string | | N | filePath | | 互換的な対象ファイルpath |
+| line | 対象行 | number | | N | line | | 単一行の位置 |
+| fromLine | 開始行 | number | | N | fromLine | | 範囲開始行 |
+| toLine | 終了行 | number | | N | toLine | | 範囲終了行 |
+| section | 対象セクション | string | | N | section | | セクション名 |
+| field | 対象フィールド | string | | N | field | | テーブル列やfrontmatter field |
+| context | 補足context | object | | N | context | | Record形式の補足情報 |
 
 ## Notes
 
-- Viewerの診断パネルおよびエディタ内でのハイライト表示のソースとして使用されます。
-- Markdownテーブル安全性のため、type列は単純型で表現し、任意性は required / notes で表現します。
+- severity の有効値は info / warning / error である。
+- code の有効値は src/types/warnings.ts の VALIDATION_WARNING_CODES を正とする。
+- row / targetRef は現行 ValidationWarning の直接フィールドではないため、必要な場合は context に保持される。
+- warningsByFilePath では path がキーになり、warning自体にも path が補完される場合がある。
+- Markdownテーブル安全性のため、Record構造は notes で表現する。
 
 ## Source Links
 
 | path | symbol | kind | notes |
 |---|---|---|---|
 | src/types/models.ts | ValidationWarning | type | 診断情報のデータ構造定義 |
+| src/types/warnings.ts | VALIDATION_WARNING_SEVERITIES | constant | severityの有効値 |
+| src/types/warnings.ts | VALIDATION_WARNING_CODES | constant | codeの有効値 |
+| src/core/vault-index.ts | warningsByFilePath | field | file path別warning map |
+| src/core/validator.ts | validateVaultIndex | function | Vault検証warning生成 |
+| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 表示対象の診断生成 |

@@ -1,70 +1,70 @@
 ---
 type: app_process
 id: PROC-MW-SOURCE-PATH-COPY
-name: Source Links Explorerソースパスをコピー
+name: Source Linksソースパスをコピー
 process_type: ui_action
 tags:
   - ModelWeave
   - SourceLinks
-  - Explorer
   - Process
 ---
 
-# Source Links Explorerソースパスをコピー
+# Source Linksソースパスをコピー
 
 ## Summary
-Source Links Explorerで選択されたSource Linkのpath / symbol / kindを、外部エディタや検索で利用できるようにクリップボードへコピーする処理。
-表示上の短縮パスではなく、[[ENT-MW-SOURCE-LINK]].path の完全なパスを使用する。
+preview の `Source Links` セクションに表示された Source Link の resolved path を、外部エディタや検索で利用できるようにクリップボードへコピーする処理。
+現行実装では Source Links Explorer ではなく、preview 内の Copy Path button から実行される。
 
 ## Inputs
 
 | id | data | source | required | notes |
 |---|---|---|---|---|
-| selectedSourceLink | [[ENT-MW-SOURCE-LINK]] | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].selectedSourceLinkId | Y | 選択中のSource Link |
-| sourcePath | string | [[ENT-MW-SOURCE-LINK]].path | Y | コピー対象の実装ソースパス |
-| sourceSymbol | string | [[ENT-MW-SOURCE-LINK]].symbol | N | コピー対象に含めるsymbol |
-| sourceKind | string | [[ENT-MW-SOURCE-LINK]].kind | N | symbolの種別 |
-| pathShortenerRule | [[RULE-MW-PATH-SHORTENER]] | Rule | N | 表示上の短縮パス方針。コピーには完全pathを使用 |
+| sourceLink | [[DATA-MW-SOURCE-LINK]] | Preview Source Links table | Y | pathが空でないSource Link |
+| localSourceRoot | string | [[DATA-MW-PLUGIN-SETTINGS]].localSourceRoot | N | relative pathの解決に使用する |
+| resolvedPath | string | `resolveSourceLinkPath` | Y | Copy Path buttonがコピーするpath |
 
 ## Outputs
 
 | id | data | target | notes |
 |---|---|---|---|
-| copiedSourcePath | string | Clipboard | コピーされた完全path |
-| copiedSourceSymbol | string | Clipboard | 必要に応じてコピーされたsymbol |
-| copyResultStatus | string | Source Links Explorer | copied / failed 等 |
+| copiedPath | string | Clipboard | クリップボードへ書き込まれたresolved path |
 
 ## Steps
 
-1. [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].selectedSourceLinkId から選択中の [[ENT-MW-SOURCE-LINK]] を取得する。
-2. 選択中Source Linkから完全な path を取得する。
-3. 表示上の短縮パスではなく、Source Linkが保持する完全な path を使用する。
-4. path が空の場合は copySourcePathFailed メッセージを出して処理を中断する。
-5. symbol が存在する場合は、path と symbol を併せてコピー対象に含めてよい。
-6. kind が存在する場合は、symbolの補足情報としてコピー対象に含めてよい。
-7. クリップボードへ path、必要に応じて symbol / kind をコピーする。
-8. コピーに成功した場合は copyResultStatus=copied とする。
-9. コピーに失敗した場合は copyResultStatus=failed とし、利用者に確認可能なメッセージを表示する。
+| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| start | Preview | Copy Path操作を開始する | start | sourceLink |  |  |  |  | Source Links table の行操作から開始する |
+| receive | Preview | Source Link行を受け取る | input | sourceLink | sourceLink.path |  |  |  | `renderSourceLinks` はpathが空でない行だけを描画する |
+| resolve | Renderer | pathをresolved pathへ解決する | process | sourceLink.path, localSourceRoot | resolvedPath |  |  |  | relative pathでは `localSourceRoot` が使用される場合がある |
+| copy | Preview | resolved pathをコピーする | screen | resolvedPath | copiedPath |  |  |  | `navigator.clipboard?.writeText` に渡す |
+| end | Preview | コピー処理を終了する | end | copiedPath |  |  |  |  | 現行実装では完了通知は出さない |
+
+## Flows
+
+| from | to | condition | label | notes |
+|---|---|---|---|---|
+| start | receive |  | 開始 | preview行操作 |
+| receive | resolve |  | pathあり | 有効なSource Link行だけが対象 |
+| resolve | copy |  | resolved path | 解決後のpathをコピー対象にする |
+| copy | end |  | 終了 | clipboard書き込み要求後に終了する |
 
 ## Messages
 
 | id | text | severity | notes |
 |---|---|---|---|
-| sourcePathCopied | Source path copied. | info | 実装ソースパスをコピーした場合 |
-| copySourcePathFailed | Failed to copy source path. | error | pathが空、不正、またはコピーできない場合 |
-| noSourceLinkSelected | No Source Link selected. | warning | 選択中のSource Linkがない場合 |
+| none |  | info | 現行実装ではCopy Path成功/失敗のNoticeは明示されない |
 
 ## Notes
-- 本処理はSource Links Explorerから実装ソースパスをコピーするUI操作である。
+- 本処理は現行実装済みの preview Source Links table から実装ソースパスをコピーするUI操作である。
 - Markdownモデル本文やfrontmatterは変更しない。
-- [[RULE-MW-PATH-SHORTENER]] は表示用であり、コピーには完全なpathを使用する。
-- Source Linkの path / symbol / kind / notes は [[ENT-MW-SOURCE-LINK]] の物理名を使用する。
-- openSourcePathで直接開けない場合でも、copySourcePathにより外部エディタやOS検索へ渡せるようにする。
-- copySourcePath は [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] から呼び出される論理プロセスであり、本定義はその詳細に相当する。
+- コピー対象は `sourceLink.path` そのものではなく、Source Links renderer が解決した `resolvedPath` である。
+- `navigator.clipboard?.writeText` は失敗通知を明示的には出さない。
+- Source Links Explorer からのcopy workflowは future / planned であり、この処理では実装済みとして扱わない。
 
 ## Source Links
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| src/core/vault-index.ts | VaultIndex | class | Source Links情報の索引元 |
-| src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer表示更新の参考 |
+| src/renderers/source-links-renderer.ts | renderSourceLinks | function | Copy Path buttonを生成し、resolved pathをclipboardへ渡す |
+| src/renderers/source-links-renderer.ts | resolveSourceLinkPath | function | Source Link pathをresolved pathへ解決する |
+| src/views/modeling-preview-view.ts | renderSourceLinks | usage | previewへSource Links sectionを追加する |
