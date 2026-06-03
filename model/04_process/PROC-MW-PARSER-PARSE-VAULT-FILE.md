@@ -37,28 +37,69 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 
 ## Transitions
 
-| id | event | to | condition | notes |
-|---|---|---|---|---|
-| TR1 | 解析成功 | PROC-MW-RENDERER-BUILD-GRAPH-MODEL | type が diagram 系の場合 | インデックス登録後に構築へ |
-| TR2 | 解析失敗 | - | | 診断情報を更新して終了 |
+| id  | event | to                                     | condition                 | notes              |
+| --- | ----- | -------------------------------------- | ------------------------- | ------------------ |
+| TR1 | 解析成功  | [[PROC-MW-RENDERER-BUILD-GRAPH-MODEL]] | fileType が diagram 系の場合   | インデックス登録後に描画構築へ進む  |
+| TR2 | 解析対象外 | -                                      | parseResult.file が存在しない場合 | warnings を保持して終了する |
 
 ## Steps
 
-1. **Frontmatter解析**: `CLS-MW-PARSER-FRONTMATTER-PARSER.parseFrontmatter` を呼び出し、YAMLメタデータと本文を分離する。
-2. **モデル種別判定**: `CLS-MW-PARSER-MODEL-TYPE-DETECTOR.detectFileType` を用いて、`type` フィールドからアセット種別を特定する。
-3. **セクション分割**: 本文を `extractMarkdownSections` でヘッディング単位に分割し、文字列キーごとに複数の文字列値を保持するマップ構造を作る。
-4. **具象パース**: 特定された種別に応じたパーサ（`CLS-MW-PARSER-CLASS-PARSER` 等）を呼び出し、`DATA-MW-CORE-MARKDOWN-TABLE` 等の構造データを抽出する。
-5. **バリデーション**: `RULE-MW-PARSER-MARKDOWN-TABLE-SAFE-CELL` 等の運用ルールに基づき、整合性をチェックする。
-6. **結果集約**: パース結果と発生した `DATA-MW-CORE-DIAGNOSTIC` を一つの `DATA-MW-CORE-PARSED-MODEL` にまとめて返す。
+| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| start | Parser | Vaultファイル解析開始 | start | source |  |  |  |  | indexSingleFile から parseVaultFile が呼び出される |
+| receiveFile | Parser | Vault Markdownファイルを受け取る | input | source |  |  |  |  | path と content または frontmatter を入力とする |
+| chooseParseMode | Parser | parseModeを判定する | decision | source |  |  |  |  | shallow / full を分岐する |
+| parseShallowFrontmatter | Parser | shallow用frontmatterを取得する | process | source | frontmatter |  |  |  | 既存frontmatterがなければ parseFrontmatter を使う |
+| detectShallowType | Parser | shallow fileTypeを検出する | process | frontmatter | fileType |  |  |  | detectFileType で schema / type を判定する |
+| createShallowModel | Parser | shallowモデルを作成する | process | fileType | result |  |  |  | createShallowModel で最小モデルを返す |
+| readContent | Parser | Markdown本文を読み込む | process | source | content |  |  |  | content が未設定の場合は空文字として扱う |
+| parseFrontmatter | Parser | frontmatterを解析する | process | content | frontmatter |  |  |  | parseFrontmatter で本文とfrontmatterを分離する |
+| fastTypeDispatch | Parser | 直接type分岐を判定する | decision | frontmatter |  |  |  |  | 一部の `type` は detectFileType の前に直接分岐される |
+| runFastParser | Parser | type対応パーサへ委譲する | subflow | content | result |  |  |  | data_object / app_process / screen 等の直接分岐 |
+| detectFileType | Parser | schema / type からfileTypeを検出する | process | frontmatter | fileType |  |  |  | schema があれば schema mapping を優先する |
+| fileTypeDispatch | Parser | 検出fileTypeで分岐する | decision | fileType |  |  |  |  | object / relations / diagram / markdown 等へ分岐する |
+| runRelationsParser | Parser | Relationsパーサへ委譲する | subflow | content | result |  |  |  | `schema: model_relations_v1` は parseRelationsFile へ渡す |
+| runDetectedParser | Parser | fileType対応パーサへ委譲する | subflow | content | result |  |  |  | object / dfd / er_entity 等のパーサへ渡す |
+| createMarkdown | Parser | markdownモデルを作成する | process | content | result |  |  |  | unsupported schema / type は markdown として扱う |
+| collectResult | Parser | parseResultをまとめる | process | result | result, diag |  |  |  | parser warnings を diagnostics相当として保持する |
+| hasParsedModel | Index | parsed model があるか判定する | decision | result |  |  |  |  | null の場合は index 登録しない |
+| indexResult | Index | 解析済みモデルをindexへ登録する | process | result | result |  |  |  | indexSingleFile が fileType ごとの索引へ追加する |
+| endParsed | Parser | 解析結果を返す | end | result, diag |  |  |  |  | Vault Index とViewer描画の入力になる |
+| endNoModel | Parser | warningsのみで終了する | end | diag |  |  |  |  | parseResult.file が null の場合 |
+
+## Flows
+
+| from | to | condition | label | notes |
+|---|---|---|---|---|
+| chooseParseMode | parseShallowFrontmatter | `parseMode === "shallow"` | shallow | shallowモデル作成へ進む |
+| chooseParseMode | readContent | `parseMode !== "shallow"` | full | full parseへ進む |
+| createShallowModel | collectResult |  | shallow result | shallowモデルを結果へまとめる |
+| fastTypeDispatch | runFastParser | `frontmatter.type === direct type` | direct type | data_object / app_process / screen 等 |
+| fastTypeDispatch | detectFileType |  | schema/type検出 | 通常の detectFileType へ進む |
+| runFastParser | collectResult |  | parser result | 直接分岐パーサの結果をまとめる |
+| fileTypeDispatch | runRelationsParser | `fileType === "relations"` | relations | schema-driven Relations parserへ委譲する |
+| fileTypeDispatch | createMarkdown | `fileType === "markdown"` | markdown fallback | markdownモデルとして扱う |
+| fileTypeDispatch | runDetectedParser |  | detected parser | その他のfileType対応パーサへ委譲する |
+| runRelationsParser | collectResult |  | relations result | Relations parserの結果をまとめる |
+| runDetectedParser | collectResult |  | parser result | fileType対応パーサの結果をまとめる |
+| createMarkdown | collectResult |  | markdown result | markdown fallback結果をまとめる |
+| hasParsedModel | indexResult | `parseResult.file` | parsed | index登録へ進む |
+| hasParsedModel | endNoModel | `!parseResult.file` | no model | warningsのみで終了する |
+| indexResult | endParsed |  | indexed | 解析結果を返す |
 
 ## Errors
 
 - **E-PRS-001**: フロントマターの構文エラー（閉じ忘れ等）
-- **E-PRS-002**: 未知の `type` 指定
+- **E-PRS-002**: unsupported schema / type は markdown fallback として扱われる場合がある
 
 ## Notes
 
 - パース処理は、物理ファイルへの依存を最小限にするため、パス情報ではなくテキスト内容に基づいて行われます。
+- shallow parse は frontmatter から最小モデルを作成し、本文セクションの詳細解析を行わない。
+- full parse は一部 `frontmatter.type` の直接分岐を先に確認し、その後 `detectFileType` による schema / type detection を行う。
+- `schema: model_relations_v1` は `relations` fileType として扱われ、parseRelationsFile に委譲される。
+- unsupported schema / type は `markdown` fileType として createMarkdownModel へfallbackする。
+- indexSingleFile は parseResult.file が存在する場合のみ fileType ごとの索引へ登録する。
 - Markdown安全記法のため、複雑な型表現は山括弧表記ではなく自然文で説明します。
 
 ## Source Links
@@ -68,4 +109,5 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 | src/core/vault-index.ts | parseVaultFile | function | ファイル種別に応じたパース処理の振り分け |
 | src/core/vault-index.ts | indexSingleFile | function | 個別ファイルの解析とインデックス登録の制御 |
 | src/parsers/frontmatter-parser.ts | parseFrontmatter | function | YAMLフロントマターの抽出 |
-| src/core/vault-index.ts | indexSingleFile | function | 個別ファイルの解析とインデックス登録の制御 |
+| src/core/schema-detector.ts | detectFileType | function | schema / type による fileType 判定 |
+| src/parsers/relations-parser.ts | parseRelationsFile | function | schema-driven Relations ファイルの解析 |

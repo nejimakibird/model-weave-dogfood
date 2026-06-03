@@ -1,5 +1,6 @@
 .obsidian/
 src/
+exports/
 
 .trash/
 .DS_Store
