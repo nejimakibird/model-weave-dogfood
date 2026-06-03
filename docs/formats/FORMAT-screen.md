@@ -1,381 +1,832 @@
 # FORMAT-screen
 
-## Purpose
+Japanese Version: [日本語版](../ja/formats/FORMAT-screen.md)
 
-`screen` defines a UI-bearing design unit in Model Weave.
+## What this is for
 
-It describes screen purpose, rough layout blocks, UI targets, user/system events, invoked processes, screen transitions, messages, notes, and screen-local processes in Markdown.
+`screen` represents one UI screen or view.
 
-`screen` is not intended to be a pixel-perfect UI implementation specification. It focuses on meaningful UI targets and event/action relationships.
+Use this format when you want to describe:
 
-## Core policy
+* screen purpose
+* visible fields
+* buttons / actions
+* UI messages
+* screen-level conditions
+* transitions to other screens
+* app processes invoked by screen actions
+* lightweight screen-local processes
+* source links to UI implementation files
 
-- A `screen` file has `type: screen`.
-- It represents a UI design unit.
-- `Layout` is a rough semantic block definition, not an implementation layout.
-- `Fields` define UI targets, not only input fields.
-- `Fields.layout` can associate a target with a `Layout.id`.
-- `Actions` define event handlers as `target + event`.
-- `Actions.id` is optional.
-- `Actions.target` usually references `Fields.id`.
-- `Actions.invoke` can call an external `app_process` or a screen-local process.
-- `Actions.transition` represents outgoing screen transitions.
-- Screen transition source of truth is `Actions.transition`.
-- A standalone `Transitions` section is not part of the current canonical format.
-- `Actions.rule` can refer to execution/display/validation rules.
-- Lightweight logic can be written in `Actions.notes`.
-- Medium screen-local logic can be written in `Local Processes`.
-- Complex or reusable logic should be extracted to `app_process`.
+`screen` is for what the user sees and operates.
+
+Use `app_process` for the processing logic behind the screen, such as validation, business logic, persistence, batch processing, API processing, job flow, internal process flow, or Business Flow preview.
+
+## Important concept: screen vs app_process
+
+`screen` and `app_process` often work together, but they model different things.
+
+Use `screen` when you want to describe UI behavior:
+
+* fields shown on the screen
+* input values
+* buttons and actions
+* UI messages
+* UI state
+* navigation / transitions
+* which app process is invoked by an action
+* lightweight screen-local behavior such as clear/reset, initial display, validation, display control, or message control
+
+Use `app_process` when you want to describe processing behavior:
+
+* process inputs
+* process outputs
+* validation logic
+* business rules
+* internal processing steps
+* step-to-step flows
+* server-side / batch / API logic
+* job flow or internal process flow
+* Business Flow preview
+
+A screen can invoke an app process.
+An app process can return data to a screen or transition to another screen.
+
+Do not put full server-side process flows into `screen`.
+Do not put UI layout fields into `app_process`.
+
+Screen does not use `Flows` in V0.8.
+If a process needs explicit step-to-step flow or branching, model it as `app_process` and reference it from `Actions.invoke`.
+
+## Minimal example
+
+```markdown
+---
+type: screen
+id: SCR-INVENTORY-SEARCH
+name: Inventory Search Screen
+kind: search
+tags:
+  - Screen
+---
+
+# Inventory Search Screen
+
+## Summary
+
+Screen for searching inventory by item, warehouse, and status.
+
+## Fields
+
+| id | label | kind | layout | data_type | required | ref | condition | rule | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| item_id | Item ID | input | search | string | N | [[ENT-ITEM]].item_id |  |  | Search condition |
+| warehouse_id | Warehouse ID | input | search | string | N | [[ENT-WAREHOUSE]].warehouse_id |  |  | Search condition |
+| status | Status | select | search | string | N | [[CODE-INVENTORY-STATUS]] |  |  | Inventory status |
+
+## Actions
+
+| id | label | kind | target | event | condition | invoke | transition | rule | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| ACT-SEARCH | Search | submit | search_button | click |  | [[PROC-INVENTORY-SEARCH]] |  |  | Run inventory search |
+
+## Messages
+
+| id | text | severity | timing | condition | notes |
+|---|---|---|---|---|---|
+| MSG-NO-RESULT | No inventory rows found. | info | search_result |  | Search completed with no rows |
+```
+
+## Full example
+
+```markdown
+---
+type: screen
+id: SCR-ORDER-ENTRY
+name: Order Entry Screen
+kind: entry
+tags:
+  - Screen
+  - Order
+---
+
+# Order Entry Screen
+
+## Summary
+
+Screen for entering and submitting a new order.
+
+## Source Links
+
+| path | notes |
+|---|---|
+| src/screens/OrderEntryScreen.tsx | UI implementation |
+| src/screens/order-entry.css | Screen style |
+
+## Fields
+
+| id | label | kind | layout | data_type | required | ref | condition | rule | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| customer_id | Customer ID | input | main | string | Y | [[ENT-CUSTOMER]].customer_id |  |  | Required customer |
+| order_date | Order Date | input | main | date | Y | [[ENT-ORDER]].order_date |  |  | Default today |
+| item_id | Item ID | input | main | string | Y | [[ENT-ITEM]].item_id |  |  | Order item |
+| quantity | Quantity | input | main | number | Y | [[ENT-ORDER-LINE]].quantity |  | [[RULE-ORDER-QUANTITY]] | Must be greater than zero |
+| submit_button | Submit | button | footer |  |  |  | [[CODE-SWITCH-STATE]].ON |  | Enabled when submission is allowed |
+
+## Actions
+
+| id | label | kind | target | event | condition | invoke | transition | rule | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| ACT-SUBMIT | Submit | submit | submit_button | click | [[CODE-SWITCH-STATE]].ON | [[PROC-ORDER-ENTRY-FLOW]] |  |  | Submit order |
+| ACT-CLEAR | Clear | clear | clear_button | click |  |  |  |  | Clear entered values |
+| ACT-BACK | Back | navigate | back_button | click |  |  | [[SCR-MENU]] |  | Return to menu |
+
+## Messages
+
+| id | text | severity | timing | condition | notes |
+|---|---|---|---|---|---|
+| MSG-VALIDATION-ERROR | Please correct the highlighted fields. | warning | validation_error |  | Returned from app process |
+| MSG-SAVED | Order has been saved. | info | saved |  | Completion message |
+| MSG-SUBMIT-DISABLED | Submit is currently disabled. | warning | input_change | [[CODE-SWITCH-STATE]].OFF | Displayed when the submit action is not available |
+
+## Transitions
+
+| id | event | to | condition | notes |
+|---|---|---|---|---|
+| TRN-COMPLETE | success | [[SCR-ORDER-COMPLETE]] |  | Go to completion screen |
+| TRN-BACK | back | [[SCR-MENU]] |  | Return to menu |
+
+## Local Processes
+
+### PROC-CLEAR
+
+#### Summary
+
+Clears screen-local input values.
+
+#### Inputs
+
+| id | data | source | required | notes |
+|---|---|---|---|---|
+| INP-CURRENT-DRAFT | [[DATA-ORDER-DRAFT]] | screen | N | Current screen input values |
+
+#### Steps
+
+| id | label | kind | condition | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| STP-CLEAR-FIELDS | Clear fields | ui_control |  | [[DATA-ORDER-DRAFT]] | [[DATA-ORDER-DRAFT]] |  |  |  | Reset input values |
+| STP-DISABLE-SUBMIT | Disable submit | ui_control | [[CODE-SWITCH-STATE]].OFF |  |  |  |  |  | Disable submit button |
+
+#### Outputs
+
+| id | data | target | notes |
+|---|---|---|---|
+| OUT-CLEARED-DRAFT | [[DATA-ORDER-DRAFT]] | screen | Cleared input values |
+
+#### Errors
+
+| id | condition | message | notes |
+|---|---|---|---|
+| ERR-CLEAR-FAILED |  | MSG-VALIDATION-ERROR | Shown if local clear processing fails |
+
+## Notes
+
+- Server-side validation is modeled in `app_process`.
+- This screen defines visible fields, user actions, messages, and lightweight screen-local behavior.
+```
 
 ## Frontmatter
 
-Required:
+Required fields:
 
-- `type`
-- `id`
-- `name`
+| field  | required | notes                       |
+| ------ | -------- | --------------------------- |
+| `type` | yes      | Must be `screen`.           |
+| `id`   | yes      | Unique screen model ID.     |
+| `name` | yes      | Display name of the screen. |
 
-Optional:
+Optional fields:
 
-- `screen_type`
-- `tags`
-
-Expected `screen_type` values:
-
-- `entry`
-- `list`
-- `detail`
-- `confirm`
-- `complete`
-- `dialog`
-- `dashboard`
-- `admin`
-- `other`
+| field         | notes                                                                          |
+| ------------- | ------------------------------------------------------------------------------ |
+| `kind`        | Screen kind, such as `search`, `entry`, `detail`, `list`, `menu`, or `dialog`. |
+| `render_mode` | Optional. Supported value is `custom`. If omitted, the settings default is used. |
+| `tags`        | Obsidian / Markdown tags.                                                      |
 
 Example:
 
 ```yaml
 ---
 type: screen
-id: SCR-WAREHOUSE-TRANSFER-ENTRY
-name: Warehouse Transfer Entry
-screen_type: entry
+id: SCR-INVENTORY-SEARCH
+name: Inventory Search Screen
+kind: search
 tags:
   - Screen
-  - WMS
 ---
 ```
 
-## Recommended structure
+## Sections
+
+Recommended structure:
 
 ```text
 # <screen name>
 
 ## Summary
 
-## Layout
+## Source Links
 
 ## Fields
 
 ## Actions
 
 ## Messages
+
+## Transitions
+
+## Local Processes
 
 ## Notes
-
-## Local Processes
 ```
 
-Minimum:
+### Summary
 
-- `Summary`
-- `Fields`
-- `Actions`
+Use `## Summary` to describe the purpose of the screen, user role, main operation, and usage context.
 
-Parser/validator should not depend strictly on section order.
+This section is free text.
 
-Older files with `## Transitions` may be read for compatibility, but new files should use `Actions.transition`.
+Summary text is not parsed for codeset value usage.
 
-## Layout
+### Source Links
 
-Defines rough semantic screen blocks.
+`## Source Links` is optional.
 
-Columns:
+Use it to connect the screen model to UI implementation files, component files, templates, stylesheets, route definitions, or test files.
 
-- `id`
-- `label`
-- `kind`
-- `purpose`
-- `notes`
+Expected header:
 
-Expected `kind` values:
-
-- `header`
-- `body`
-- `detail`
-- `footer`
-- `section`
-- `form_area`
-- `table_area`
-- `action_area`
-- `search_area`
-- `result_area`
-- `message_area`
-- `other`
+```markdown
+| path | notes |
+|---|---|
+```
 
 Example:
 
 ```markdown
-## Layout
+## Source Links
 
-| id | label | kind | purpose | notes |
-|---|---|---|---|---|
-| header | Source / Destination | header | select warehouses |  |
-| detail | Transfer Items | table_area | enter item, lot, quantity |  |
-| footer | Actions | action_area | check stock, save, back |  |
+| path | notes |
+|---|---|
+| src/screens/InventorySearchScreen.tsx | UI implementation |
+| tests/screens/InventorySearchScreen.test.ts | UI tests |
 ```
 
-## Fields
+For details, see [FORMAT-common-sections](FORMAT-common-sections.md).
 
-Defines UI targets. A target can be a window, form, panel, table, input, button, label, etc.
+### Fields
+
+Use `## Fields` to define visible screen fields, input values, output values, table columns, hidden values, buttons, controls, or display-only values.
+
+Expected header:
+
+```markdown
+| id | label | kind | layout | data_type | required | ref | condition | rule | notes |
+|---|---|---|---|---|---|---|---|---|---|
+```
 
 Columns:
 
-- `id`
-- `label`
-- `kind`
-- `layout`
-- `data_type`
-- `required`
-- `ref`
-- `rule`
-- `notes`
-
-Expected `kind` values:
-
-- `window`
-- `form`
-- `panel`
-- `section`
-- `table`
-- `list`
-- `input`
-- `textarea`
-- `select`
-- `checkbox`
-- `radio`
-- `button`
-- `link`
-- `label`
-- `hidden`
-- `computed`
-- `table_input`
-- `table_select`
-- `other`
+| column      | meaning                                                                                |
+| ----------- | -------------------------------------------------------------------------------------- |
+| `id`        | Field/control ID.                                                                      |
+| `label`     | Display label.                                                                         |
+| `kind`      | Field/control kind, such as `input`, `label`, `select`, `button`, `grid`, or `hidden`. |
+| `layout`    | Layout area or group, such as `header`, `main`, `footer`, or `dialog`.                 |
+| `data_type` | Data type, such as `string`, `number`, `date`, `boolean`, or blank for controls.       |
+| `required`  | `Y`, `N`, or blank.                                                                    |
+| `ref`       | Related model reference, such as data object field, ER field, or CodeSet.              |
+| `condition` | Optional display / enabled / input / control condition.                                |
+| `rule`      | Related validation or business rule.                                                   |
+| `notes`     | Optional human explanation. Not parsed for codeset value usage.                        |
 
 Example:
 
 ```markdown
 ## Fields
 
-| id | label | kind | layout | data_type | required | ref | rule | notes |
-|---|---|---|---|---|---|---|---|---|
-| window | Warehouse Transfer Entry | window |  |  |  |  |  | whole screen |
-| shipper_id | Shipper | select | header | string | Y | [[er/ENT-SHIPPER|Shipper]] |  |  |
-| from_warehouse_id | Source Warehouse | select | header | string | Y | [[er/ENT-WAREHOUSE|Warehouse]] |  |  |
-| item_id | Item | table_select | detail | string | Y | [[er/ENT-ITEM|Item]] |  |  |
-| quantity | Quantity | table_input | detail | number | Y |  |  |  |
-| check_stock_button | Check Stock | button | footer |  |  |  |  |  |
-| save_button | Save | button | footer |  |  |  |  |  |
-| back_button | Back | button | footer |  |  |  |  |  |
+| id | label | kind | layout | data_type | required | ref | condition | rule | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| item_id | Item ID | input | search | string | N | [[ENT-ITEM]].item_id |  |  | Search condition |
+| status | Status | select | search | string | N | [[CODE-INVENTORY-STATUS]] |  |  | CodeSet |
+| order_button | Order | button | result |  |  |  | [[CODE-INVENTORY-STATUS]].available |  | Enabled only when inventory is available |
 ```
 
-## Actions
+Notes:
 
-Defines screen events, user operations, process invocation, and screen transitions.
+* `ref` may point to data object fields, ER fields, CodeSets, CodeSet values, or related model elements.
+* Use `condition` for display, enablement, input, validation, or state conditions.
+* Use `rule` for validation or business rule references.
+* Use `notes` for human explanation only.
+
+### Actions
+
+Use `## Actions` to define user operations available on the screen.
+
+Expected header:
+
+```markdown
+| id | label | kind | target | event | condition | invoke | transition | rule | notes |
+|---|---|---|---|---|---|---|---|---|---|
+```
 
 Columns:
 
-- `id`
-- `label`
-- `kind`
-- `target`
-- `event`
-- `invoke`
-- `transition`
-- `rule`
-- `notes`
+| column       | meaning                                                                                               |
+| ------------ | ----------------------------------------------------------------------------------------------------- |
+| `id`         | Action ID.                                                                                            |
+| `label`      | Display label.                                                                                        |
+| `kind`       | Action kind, such as `submit`, `search`, `clear`, `navigate`, `open`, `close`, or `delete`.           |
+| `target`     | Internal UI element/control ID affected by or triggering the action. Not an external model reference. |
+| `event`      | UI event, such as `click`, `load`, `change`, `submit`, or `select`.                                   |
+| `condition`  | Optional visibility / enablement / execution condition.                                               |
+| `invoke`     | Related `app_process` or callable process reference invoked by this action.                           |
+| `transition` | Destination screen reference when the action directly navigates to another screen.                    |
+| `rule`       | Related rule reference.                                                                               |
+| `notes`      | Optional human explanation.                                                                           |
 
-Expected `kind` values:
-
-- `ui_action`
-- `field_event`
-- `screen_event`
-- `form_event`
-- `system_event`
-- `shortcut`
-- `auto`
-- `other`
-
-Expected `event` values:
-
-- `load`
-- `unload`
-- `click`
-- `change`
-- `input`
-- `focus`
-- `blur`
-- `submit`
-- `select`
-- `keydown`
-- `timer`
-- `message`
-- `other`
-
-`target` should usually be a `Fields.id`.
-
-`invoke` may point to:
-
-- external `app_process`
-- local process heading such as `[[#PROC-INITIALIZE|Initialize]]`
-
-`transition` points to a destination screen. It should not be used for internal state updates, field recalculation, or message display.
-
-Examples:
+Example:
 
 ```markdown
 ## Actions
 
-| id | label | kind | target | event | invoke | transition | rule | notes |
-|---|---|---|---|---|---|---|---|---|
-|  | Initial Load | screen_event | window | load | [[#PROC-INITIALIZE|Initialize]] |  |  | set initial values |
-| ACT-CHECK-STOCK | Check Stock | ui_action | check_stock_button | click | [[process/PROC-ALLOCATE-INVENTORY|Allocate Inventory]] |  | [[rule/RULE-INVENTORY-ALLOCATION|Inventory Allocation Rule]] | show result on same screen |
-| ACT-SAVE | Save | ui_action | save_button | click | [[process/PROC-REGISTER-TRANSFER|Register Transfer]] | [[screen/SCR-TRANSFER-COMPLETE|Transfer Complete]] |  | transition on success |
-| ACT-BACK | Back | ui_action | back_button | click |  | [[screen/SCR-WMS-HOME|WMS Home]] |  | return to menu |
+| id | label | kind | target | event | condition | invoke | transition | rule | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| ACT-SEARCH | Search | search | search_button | click |  | [[PROC-INVENTORY-SEARCH]] |  |  | Run inventory search |
+| ACT-ORDER | Order | submit | order_button | click | [[CODE-INVENTORY-STATUS]].available | [[PROC-CREATE-ORDER]] | [[SCR-ORDER-ENTRY]] |  | Create an order when inventory is available |
+| ACT-CLEAR | Clear | clear | clear_button | click |  |  |  |  | Clear conditions |
 ```
 
+Notes:
+
+* Use `invoke` when the action invokes application processing.
+* Use `transition` when the action directly navigates to another screen.
+* `target` is an internal UI target/control ID.
+* Do not define full process steps in the screen. Put them in `app_process`.
+
+### Messages
+
+Use `## Messages` to define screen-level messages.
+
+Expected header:
+
+```markdown
+| id | text | severity | timing | condition | notes |
+|---|---|---|---|---|---|
+```
+
+Columns:
+
+| column      | meaning                                                                                                       |
+| ----------- | ------------------------------------------------------------------------------------------------------------- |
+| `id`        | Message ID.                                                                                                   |
+| `text`      | Message text or message model reference.                                                                      |
+| `severity`  | Message severity, such as `info`, `warning`, `error`, or `success`.                                           |
+| `timing`    | Timing when the message is displayed, such as `load`, `input_change`, `search_result`, or `validation_error`. |
+| `condition` | Condition where the message is shown.                                                                         |
+| `notes`     | Optional human explanation.                                                                                   |
+
+Example:
+
+```markdown
 ## Messages
 
-Optional local screen messages.
+| id | text | severity | timing | condition | notes |
+|---|---|---|---|---|---|
+| MSG-NO-RESULT | No inventory rows found. | info | search_result |  | Search completed with no rows |
+| MSG-SHORTAGE | Inventory is short. | warning | search_result | [[CODE-INVENTORY-STATUS]].shortage | Shown when inventory is short |
+| MSG-VALIDATION | Please correct the highlighted fields. | warning | validation_error |  | Returned from process |
+```
+
+### Transitions
+
+Use `## Transitions` to define screen navigation when navigation is better described separately from `Actions.transition`.
+
+Expected header:
+
+```markdown
+| id | event | to | condition | notes |
+|---|---|---|---|---|
+```
 
 Columns:
 
-- `id`
-- `text`
-- `severity`
-- `timing`
-- `notes`
+| column      | meaning                                     |
+| ----------- | ------------------------------------------- |
+| `id`        | Transition ID.                              |
+| `event`     | Event or outcome that triggers navigation.  |
+| `to`        | Destination screen or external destination. |
+| `condition` | Optional condition.                         |
+| `notes`     | Optional explanation.                       |
 
-`text` may be direct text or a reference to a `message` file.
+Example:
 
-## Local Processes
+```markdown
+## Transitions
 
-Use `Local Processes` for screen-local logic that is too large for `Actions.notes` but not yet worth extracting to `app_process`.
+| id | event | to | condition | notes |
+|---|---|---|---|---|
+| TRN-DETAIL | open_detail | [[SCR-INVENTORY-DETAIL]] | row_selected | Open detail screen |
+| TRN-BACK | back | [[SCR-MENU]] |  | Return to menu |
+```
 
-Structure:
+Notes:
+
+* `Transitions` describe UI navigation.
+* Simple action-triggered navigation can be written directly in `Actions.transition`.
+* Process exits should be described in `app_process.Transitions`.
+* Do not use screen `Transitions` to describe internal app process flow edges.
+
+### Local Processes
+
+`## Local Processes` is optional.
+
+Use it for lightweight screen-local behavior such as:
+
+* clear/reset
+* initial display
+* local input validation
+* display control
+* button enable/disable control
+* message control
+
+Local Processes should remain screen-local.
+
+If behavior needs explicit step-to-step flow, complex branching, persistence, API processing, batch processing, or reusable business logic, define it as `app_process` and reference it from `Actions.invoke`.
+
+Screen Local Processes do not use `Flows` in V0.8.
+
+Recommended skeleton:
 
 ```markdown
 ## Local Processes
 
-### PROC-INITIALIZE
+### PROC-CLEAR
 
 #### Summary
 
 #### Inputs
 
+| id | data | source | required | notes |
+|---|---|---|---|---|
+|  |  |  |  |  |
+
 #### Steps
+
+| id | label | kind | condition | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+|  |  |  |  |  |  |  |  |  |  |
 
 #### Outputs
 
+| id | data | target | notes |
+|---|---|---|---|
+|  |  |  |  |
+
 #### Errors
+
+| id | condition | message | notes |
+|---|---|---|---|
+|  |  |  |  |
 ```
 
-`Actions.invoke` can link to local processes with heading links:
+Subsections:
+
+| subsection | purpose                                                                        |
+| ---------- | ------------------------------------------------------------------------------ |
+| `Summary`  | Free text summary of the local process. Not parsed for codeset value usage.    |
+| `Inputs`   | Screen-local input data used by the local process.                             |
+| `Steps`    | Lightweight screen-local steps. `condition` may contain structured references. |
+| `Outputs`  | Screen-local output data or target UI elements.                                |
+| `Errors`   | Screen-local error or message conditions.                                      |
+
+Example:
 
 ```markdown
-[[#PROC-INITIALIZE|Initialize]]
+### PROC-CLEAR
+
+#### Summary
+
+Clear local input values and reset button state.
+
+#### Steps
+
+| id | label | kind | condition | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| STP-CLEAR-FIELDS | Clear fields | ui_control |  | [[DATA-ORDER-DRAFT]] | [[DATA-ORDER-DRAFT]] |  |  |  | Reset input values |
+| STP-DISABLE-SUBMIT | Disable submit | ui_control | [[CODE-SWITCH-STATE]].OFF |  |  |  |  |  | Disable submit button |
+
+#### Errors
+
+| id | condition | message | notes |
+|---|---|---|---|
+| ERR-CLEAR-DISABLED | [[CODE-SWITCH-STATE]].OFF | MSG-SUBMIT-DISABLED | Shown when clear cannot run |
+```
+
+### Notes
+
+Use `## Notes` for free-form design notes.
+
+Do not add unsupported columns to structured tables just to store extra information. Put extra information in `notes`, `## Notes`, or `## Source Links`.
+
+Notes text is not parsed for codeset value usage.
+
+## Tables
+
+### Fields table
+
+```markdown
+| id | label | kind | layout | data_type | required | ref | condition | rule | notes |
+|---|---|---|---|---|---|---|---|---|---|
+```
+
+### Actions table
+
+```markdown
+| id | label | kind | target | event | condition | invoke | transition | rule | notes |
+|---|---|---|---|---|---|---|---|---|---|
+```
+
+### Messages table
+
+```markdown
+| id | text | severity | timing | condition | notes |
+|---|---|---|---|---|---|
+```
+
+### Transitions table
+
+```markdown
+| id | event | to | condition | notes |
+|---|---|---|---|---|
+```
+
+### Local Process Inputs table
+
+```markdown
+| id | data | source | required | notes |
+|---|---|---|---|---|
+```
+
+### Local Process Steps table
+
+```markdown
+| id | label | kind | condition | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+```
+
+### Local Process Outputs table
+
+```markdown
+| id | data | target | notes |
+|---|---|---|---|
+```
+
+### Local Process Errors table
+
+```markdown
+| id | condition | message | notes |
+|---|---|---|---|
+```
+
+### Source Links table
+
+```markdown
+| path | notes |
+|---|---|
 ```
 
 ## Qualified Ref / Member Ref
 
-Current member candidates:
-
-- `Fields.id`
-- non-empty `Actions.id`
-
-Future candidates may include:
-
-- `Layout.id`
-- Local Process IDs
-- `Messages.id`
+For `screen`, structured IDs may be used as member references.
 
 Examples:
 
 ```markdown
-[[screen/SCR-WAREHOUSE-TRANSFER-ENTRY|Warehouse Transfer Entry]].shipper_id
-[[screen/SCR-WAREHOUSE-TRANSFER-ENTRY|Warehouse Transfer Entry]].ACT-SAVE
+[[SCR-INVENTORY-SEARCH]].item_id
+[[SCR-INVENTORY-SEARCH]].ACT-SEARCH
+[[SCR-INVENTORY-SEARCH]].MSG-NO-RESULT
 ```
 
-## Screen Preview policy
+Useful member candidates include:
 
-Screen Preview is not pixel-perfect UI rendering.
+* `Fields.id`
+* `Actions.id`
+* `Messages.id`
+* `Transitions.id`
+* `Local Processes` process IDs
+* `Local Processes > Steps.id`
+* `Local Processes > Errors.id`
 
-It may show:
+Use stable IDs when other models need to refer to screen fields, actions, messages, transitions, or local process elements.
 
-- Layout blocks
-- Fields grouped by layout
-- invoked processes
-- outgoing screens from `Actions.transition`
-- messages
-- diagnostics
+## Reference handling
 
-It should not try to show:
+Structured fields that may carry useful references include:
 
-- exact CSS/HTML/React structure
-- pixel-level layout
-- full modal/responsive behavior
-- detailed Local Process diagrams
+* `Fields.ref`
+* `Fields.condition`
+* `Fields.rule`
+* `Actions.condition`
+* `Actions.invoke`
+* `Actions.transition`
+* `Actions.rule`
+* `Messages.text`
+* `Messages.condition`
+* `Transitions.to`
+* `Transitions.condition`
+* `Local Processes > Inputs.data`
+* `Local Processes > Steps.condition`
+* `Local Processes > Steps.input`
+* `Local Processes > Steps.output`
+* `Local Processes > Steps.rule`
+* `Local Processes > Steps.invoke`
+* `Local Processes > Steps.screen`
+* `Local Processes > Outputs.data`
+* `Local Processes > Outputs.target`
+* `Local Processes > Errors.condition`
+* `Local Processes > Errors.message`
 
-## Validation candidates
+`Actions.target` is an internal UI element/control ID and should not be treated as an external model reference.
 
-Error candidates:
+Plain prose may contain readable references, but analyzers should use structured fields only.
 
-- duplicate `Fields.id`
-- `Actions.target` references unknown `Fields.id`
-- unresolved external `Actions.invoke`
-- unresolved `Actions.transition`
-- unresolved `Fields.ref`
-- `Fields.layout` references unknown `Layout.id`
-- duplicate `Layout.id`
+## CodeSet value usage
 
-Warning candidates:
+CodeSet value usage can be detected from explicit qualified value references in structured fields.
 
-- duplicate `Actions.id`
-- duplicate `target + event`
-- unresolved `Actions.rule`
-- unresolved `Fields.rule`
-- local heading link in `Actions.invoke` not found
-- button without click action
-- input/select/textarea with empty `ref`
-- old `## Transitions` section detected
+Examples:
 
-Note candidates:
+```markdown
+[[CODE-SWITCH-STATE]].ON
+[[04_codeset/CODE-INVENTORY-STATUS]].available
+CODE-INVENTORY-STATUS.available
+```
 
-- empty `Actions.id`
-- `screen_event` with empty target
-- `target = window` used without a `window` field
+These references mean:
 
-## Not required in V0.7
+* codeset: `CODE-INVENTORY-STATUS`
+* value: `available`
 
-- pixel-perfect UI layout
-- CSS / HTML / React structure
-- dedicated screen diagram file
-- dedicated screen transition diagram file
-- chart rendering for Local Processes
-- strict Local Process validation
-- full resolver support for Obsidian heading links
-- strict uniqueness for `target + event`
-- complete message/rule/mapping integration
-- structured success/failure branching in `Actions.transition`
-- automatic conversion from old `Transitions` sections
+Useful locations include:
+
+* `Fields.condition`
+* `Actions.condition`
+* `Messages.condition`
+* `Transitions.condition`
+* `Local Processes > Steps.condition`
+* `Local Processes > Errors.condition`
+
+Model Weave does not infer CodeSet value usage from:
+
+* value code alone, such as `available`
+* value label alone, such as `良品利用可`
+* `Summary`
+* `Notes`
+* arbitrary prose
+* `Actions.target`
+
+Structured condition fields are the recommended way to make CodeSet/state usage analyzable.
+
+## Relationship with app_process
+
+A typical UI-to-process relationship is:
+
+1. The user performs a screen action.
+2. `Actions.invoke` references an `app_process`.
+3. The app process receives input data from the screen.
+4. The app process returns output data or navigates to another screen.
+
+Use `screen` for:
+
+* visible fields
+* UI actions
+* UI messages
+* UI transitions
+* screen-local conditions
+* lightweight screen-local behavior
+
+Use `app_process` for:
+
+* process inputs and outputs
+* validation / business logic
+* internal processing steps
+* step-to-step flows
+* Business Flow preview
+* server-side / API / batch logic
+* job flow or internal process flow
+
+## Common mistakes
+
+### Putting full processing flows into screen
+
+Do not describe full server-side processing flows or job flows in `screen`.
+
+Use `app_process` for process steps, flows, and business logic.
+
+### Adding Flows to screen
+
+Do not add `Flows` to `screen` in V0.8.
+
+If you need step-to-step edges, use `app_process.Flows`.
+
+### Defining UI fields in app_process
+
+Do not define UI layout fields in `app_process`.
+
+Use `screen.Fields` for visible fields and UI data binding.
+
+### Adding unsupported columns
+
+Do not add columns such as `description`, `source`, or `target` unless the FORMAT explicitly defines them.
+
+Use `notes`, `## Notes`, or `## Source Links`.
+
+### Treating Actions.target as a model reference
+
+`Actions.target` is an internal UI element/control ID.
+
+Use `Actions.invoke`, `Actions.transition`, or `Actions.rule` for external model references.
+
+### Parsing Notes as structured usage
+
+Do not rely on `Notes` or free-form prose for CodeSet/state usage tracking.
+
+Use structured condition fields.
+
+### Confusing screen transitions with process transitions
+
+Screen `Transitions` describe UI navigation.
+
+App process `Transitions` describe exits from a process.
+
+Do not use screen `Transitions` to describe internal Business Flow step-to-step edges. Use `app_process.Flows`.
+
+### Unsafe table syntax
+
+Avoid raw `|` characters inside table cells.
+
+Avoid Wikilink aliases such as `[[SCR-ORDER|Order Screen]]` inside tables. Use `[[SCR-ORDER]]` and put display meaning in `label` or `notes`.
+
+## AI generation notes
+
+When generating `screen` files with AI:
+
+* Use `type: screen`.
+* One file should define one screen or view.
+* Preserve exact table headers.
+* Do not add unsupported columns.
+* Use `Fields` for visible fields and UI-bound values.
+* Use `Fields.condition` for field display, enablement, input, or control conditions.
+* Use `Actions` for user operations.
+* Use `Actions.invoke` to reference `app_process`.
+* Use `Actions.transition` for direct screen navigation.
+* Use `Actions.condition` for action execution conditions.
+* Use `Messages` for screen-level messages.
+* Use `Messages.condition` for message display conditions.
+* Use `Transitions` for UI navigation when navigation is better described separately from `Actions.transition`.
+* Use `Local Processes` only for lightweight screen-local behavior.
+* Do not add `Flows` to `screen`.
+* Keep server-side logic and process flows in `app_process`.
+* Use stable IDs for fields, actions, messages, transitions, and local process elements.
+* Put extra explanation in `notes` or `## Notes`.
+* Use `## Source Links` for UI implementation files, templates, styles, routes, and tests.
+
+If AI creates a screen model from UI code or screenshots, verify:
+
+* field IDs
+* field labels
+* field kinds
+* layouts
+* data bindings
+* action IDs
+* action targets
+* action events
+* process references
+* message conditions
+* transition destinations
+* Local Processes scope
+* Source Links
+
+## Related samples
+
+* [Inventory search screen](../../samples/screen/SCR-INVENTORY-SEARCH.md)
+* [Screen samples index](../../samples/screen/README.md)
+
+## Related formats
+
+* [app_process](FORMAT-app_process.md)
+* [data_object](FORMAT-data_object.md)
+* [message](FORMAT-message.md)
+* [codeset](FORMAT-codeset.md)
+* [Common sections](FORMAT-common-sections.md)

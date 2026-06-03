@@ -19,12 +19,12 @@ tags:
 
 | name | label | type | length | required | path | ref | notes |
 |---|---|---|---|---|---|---|---|
-| id | エッジID | string | | N | | | 任意項目。未設定の場合あり |
-| source | 始点ノードID | string | | Y | | | |
-| target | 終点ノードID | string | | Y | | | |
-| kind | 種別 | string | | Y | | | flow / association / dependency 等 |
-| label | 表示ラベル | string | | N | | | 任意項目。未設定の場合あり |
-| metadata | メタデータ | object | | N | | | 任意項目。Record構造。濃度（Cardinality）等の詳細情報 |
+| id | エッジID | string | | N | id | | 任意項目。未設定の場合あり |
+| source | 始点ノードID | string | | Y | source | | 始点のnode id |
+| target | 終点ノードID | string | | Y | target | | 終点のnode id |
+| kind | 種別 | string | | N | kind | | RelationKind |
+| label | 表示ラベル | string | | N | label | | 任意項目。未設定の場合あり |
+| metadata | メタデータ | object | | N | metadata | | CardinalityやDFD flow情報など |
 
 ## Notes
 
@@ -35,4 +35,5 @@ tags:
 
 | path | symbol | kind | notes |
 |---|---|---|---|
-| src/core/relation-resolver.ts | DiagramEdge | type | グラフ構造における接続情報の内部型 |
+| src/types/models.ts | DiagramEdge | interface | グラフ構造における接続情報 |
+| src/core/relation-resolver.ts | resolveDiagramRelations | function | edge解決 |

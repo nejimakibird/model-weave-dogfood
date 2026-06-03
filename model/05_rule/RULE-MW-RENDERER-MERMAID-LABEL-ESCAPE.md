@@ -11,6 +11,13 @@ kind: transformation
 
 Mermaid 構文において、構文エラーを引き起こさずに正しく表示・制御するためのエスケープおよび ID 安全化規則を定義します。
 
+## Inputs
+
+| id | data | source | required | notes |
+|---|---|---|---|---|
+| nodeLabel | Mermaid label text | Mermaid renderer | Y | ノード表示ラベル |
+| edgeLabel | Mermaid edge label text | Mermaid renderer | N | エッジ表示ラベル |
+
 ## Conditions
 
 | no | condition | result | notes |

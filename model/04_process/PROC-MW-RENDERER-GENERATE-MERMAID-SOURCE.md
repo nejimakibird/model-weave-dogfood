@@ -40,15 +40,45 @@ tags:
 
 ## Steps
 
-1. **ダイアグラム種別判定**: グラフモデルの `kind` に基づき、`flowchart` や `erDiagram` などのヘッダー行を決定する。
-2. **スタイル定義生成**: 共通の `classDef` 行を生成し、ノード種別（external / process 等）に応じたスタイルを定義する。
-3. **ノード行生成**: 各ノードを `id["label"]:::class` 形式の文字列に変換する。ラベル内の改行は `<br/>` に置換する。
-4. **エッジ行生成**: 始点・終点 ID を結ぶ接続線（`-->` 等）を生成する。エッジラベルがある場合は `|label|` を挿入する。
-5. **サニタイズ**: ラベル内の引用符、括弧、パイプ記号（`|`）を Mermaid 構文を破壊しないようにエスケープまたは置換する。
+| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| start | Renderer | Mermaidソース生成開始 | start | graph |  |  |  |  | ResolvedDiagram を受け取る |
+| chooseGenerator | Renderer | 生成関数を選択する | decision | graph |  |  |  |  | DFD / Class / ER / objectで分岐する |
+| initLines | Renderer | ヘッダー行を作る | process | graph | sourceLines |  |  |  | flowchart / classDiagram / erDiagram |
+| addStyles | Renderer | 必要なstyle行を追加する | process | sourceLines | sourceLines |  |  |  | classDef と palette を使う |
+| mapNodes | Renderer | node IDを割り当てる | process | graph | nodeMap |  |  |  | sanitizeMermaidId 等を使う |
+| emitNodes | Renderer | node行を生成する | process | nodeMap | sourceLines |  |  |  | labelをMermaid用に整形する |
+| emitEdges | Renderer | edge行を生成する | process | graph | sourceLines |  |  |  | source / target を接続する |
+| hasEdgeLabel | Renderer | edge label有無を判定する | decision | graph |  |  |  |  | labelがあれば edge に出す |
+| addLabeledEdge | Renderer | label付きedgeを追加する | process | sourceLines | sourceLines |  |  |  | edge labelをsanitizeする |
+| addPlainEdge | Renderer | labelなしedgeを追加する | process | sourceLines | sourceLines |  |  |  | 通常の接続線を出す |
+| joinSource | Renderer | Mermaidソースを結合する | process | sourceLines | source |  |  |  | linesを改行で結合する |
+| end | Renderer | Mermaidソース生成完了 | end | source |  |  |  |  | Mermaid Rendererへ渡す |
+
+## Flows
+
+| from | to | condition | label | notes |
+|---|---|---|---|---|
+| chooseGenerator | initLines | `diagram.kind === "dfd"` | DFD | buildDfdMermaidSource |
+| chooseGenerator | initLines | `renderMode === "mermaid"` | overview | overview生成 |
+| chooseGenerator | initLines | `renderMode === "mermaid-detail"` | detail | detail生成 |
+| hasEdgeLabel | addLabeledEdge | `edge.label` | labeled | label付きedge |
+| hasEdgeLabel | addPlainEdge | `!edge.label` | plain | labelなしedge |
+| addLabeledEdge | joinSource |  | join | sourceへ結合する |
+| addPlainEdge | joinSource |  | join | sourceへ結合する |
 
 ## Errors
 
-- **E-GEN-001**: 非対応のダイアグラム種別
+- **E-GEN-001**: 対応する Mermaid 生成関数がない場合
+
+## Notes
+
+- DFD は buildDfdMermaidSource で flowchart LR を生成する。
+- Class / ER の overview は flowchart LR を生成する。
+- Class detail は classDiagram、ER detail は erDiagram を生成する。
+- detail系では classDef を出さない生成経路がある。
+- node ID と label は Mermaid 構文を壊さないように整形される。
+- edge の endpoint が nodeMap にない場合、そのedge行は出力されない。
 
 ## Source Links
 
@@ -56,3 +86,8 @@ tags:
 |---|---|---|---|
 | src/renderers/dfd-mermaid.ts | buildDfdMermaidSource | function | DFD用Mermaidソースの組み立て |
 | src/renderers/class-er-mermaid.ts | buildClassOverviewMermaidSource | function | クラス図用Mermaidソースの組み立て |
+| src/renderers/class-er-mermaid.ts | buildClassDetailMermaidSource | function | クラス詳細Mermaidソースの組み立て |
+| src/renderers/class-er-mermaid.ts | buildErOverviewMermaidSource | function | ER概要Mermaidソースの組み立て |
+| src/renderers/class-er-mermaid.ts | buildErDetailMermaidSource | function | ER詳細Mermaidソースの組み立て |
+| src/renderers/mermaid-helpers.ts | sanitizeMermaidId | function | Mermaid ID整形 |
+| src/renderers/mermaid-helpers.ts | escapeMermaidLabel | function | Mermaid label整形 |
