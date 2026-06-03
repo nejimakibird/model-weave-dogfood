@@ -14,6 +14,13 @@ tags:
 
 V0.7以降の DFD（dfd_diagram）における描画エンジンの方針を定義します。DFDは高度な保守性と標準性を重視し、Mermaid.js を正本レンダラーとして扱います。
 
+## Inputs
+
+| id | data | source | required | notes |
+|---|---|---|---|---|
+| diagram | [[DATA-MW-DFD-PARSED-DIAGRAM]] | DFD parser | Y | dfd_diagram の解析結果 |
+| renderMode | [[DATA-MW-RENDERER-RENDER-MODE-INPUT]] | RenderModeResolver | Y | DFD の supportedModes 判定に使う |
+
 ## Conditions
 
 - `modelType` が `dfd_diagram` である場合に適用する。

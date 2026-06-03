@@ -39,7 +39,7 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 
 | id  | event | to                                     | condition                 | notes              |
 | --- | ----- | -------------------------------------- | ------------------------- | ------------------ |
-| TR1 | 解析成功  | [[PROC-MW-RENDERER-BUILD-GRAPH-MODEL]] | fileType が diagram 系の場合   | インデックス登録後に描画構築へ進む  |
+| TR1 | 解析成功  | PROC-MW-RENDERER-BUILD-GRAPH-MODEL | fileType が diagram 系の場合   | インデックス登録後に描画構築へ進む  |
 | TR2 | 解析対象外 | -                                      | parseResult.file が存在しない場合 | warnings を保持して終了する |
 
 ## Steps

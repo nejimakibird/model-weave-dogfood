@@ -32,11 +32,11 @@ DATA-MW-VAULT-MODEL-INDEX が保持するモデル間参照と診断情報を、
 
 | source_ref | target_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| [[DATA-MW-VAULT-MODEL-INDEX]].indexId | [[DATA-MW-REFERENCE-EXPLORER-STATE]].sourceIndexId | そのまま保持 | | N | 元インデックスID |
-| [[DATA-MW-VAULT-MODEL-INDEX]].referenceCount | [[DATA-MW-REFERENCE-EXPLORER-STATE]].referenceCount | 件数をそのまま反映 | | N | 参照総数 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].unresolvedReferenceCount | [[DATA-MW-REFERENCE-EXPLORER-STATE]].unresolvedReferenceCount | 件数をそのまま反映 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 未解決参照数 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].modelReferences | [[DATA-MW-REFERENCE-EXPLORER-STATE]].visibleReferences | 初期表示では全参照を表示対象にする | | Y | 複数のModelReferenceを表示用に保持 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].diagnostics | [[DATA-MW-REFERENCE-EXPLORER-STATE]].relatedDiagnostics | 参照に関連する診断だけを抽出 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 未解決参照など |
+| [[DATA-MW-VAULT-MODEL-INDEX]] | [[DATA-MW-REFERENCE-EXPLORER-STATE]].sourceIndexId | 表示用IDを派生 | | N | 実装IndexにindexId fieldはない |
+| [[DATA-MW-VAULT-MODEL-INDEX]].relationsById | [[DATA-MW-REFERENCE-EXPLORER-STATE]].referenceCount | relation件数を集計 | | N | 参照総数の表示用派生値 |
+| [[DATA-MW-VAULT-MODEL-INDEX]].warningsByFilePath | [[DATA-MW-REFERENCE-EXPLORER-STATE]].unresolvedReferenceCount | unresolved-reference件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 未解決参照数の表示用派生値 |
+| [[DATA-MW-VAULT-MODEL-INDEX]].relationsById | [[DATA-MW-REFERENCE-EXPLORER-STATE]].visibleReferences | 初期表示では全relationを表示対象にする | | Y | Explorerはfuture/planned。現行Indexのrelation lookupを元にする |
+| [[DATA-MW-VAULT-MODEL-INDEX]].warningsByFilePath | [[DATA-MW-REFERENCE-EXPLORER-STATE]].relatedDiagnostics | 参照に関連する診断だけを抽出 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 未解決参照など |
 | [[ENT-MW-MODEL-REFERENCE]].referenceId | [[DATA-MW-REFERENCE-EXPLORER-STATE]].selectedReferenceId | 初期状態では空または未選択 | | N | ユーザー選択後に設定 |
 | [[ENT-MW-MODEL-REFERENCE]].sourceAssetId | [[DATA-MW-REFERENCE-EXPLORER-STATE]].selectedSourceAssetId | 選択参照から導出 | | N | 選択時に設定 |
 | [[ENT-MW-MODEL-REFERENCE]].targetAssetId | [[DATA-MW-REFERENCE-EXPLORER-STATE]].selectedTargetAssetId | 選択参照から導出 | | N | 解決済みの場合 |
@@ -47,9 +47,9 @@ DATA-MW-VAULT-MODEL-INDEX が保持するモデル間参照と診断情報を、
 | [[DATA-MW-REFERENCE-EXPLORER-STATE]].visibleReferences | [[DATA-MW-REFERENCE-EXPLORER-STATE]].explorerStatus | 件数や診断状態から決定 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | ready / empty / error |
 
 ## Rules
-- 初期表示では DATA-MW-VAULT-MODEL-INDEX.modelReferences を visibleReferences に反映する。
-- unresolvedReferenceCount は resolved=false の参照数と一致させる。
-- relatedDiagnostics は未解決参照や参照解決に関係するDiagnosticを抽出する。
+- 初期表示では DATA-MW-VAULT-MODEL-INDEX.relationsById を visibleReferences の主な入力として扱う。
+- unresolvedReferenceCount は warningsByFilePath 内の unresolved-reference 診断から派生計算する。
+- relatedDiagnostics は warningsByFilePath から未解決参照や参照解決に関係するDiagnosticを抽出する。
 - referenceFilterMode / referenceKindFilter / searchText は初期状態として all / all / 空文字にする。
 - selectedReferenceId / selectedSourceAssetId / selectedTargetAssetId は初期状態では未選択として扱う。
 - filteredReferenceCount は visibleReferences の件数から計算する。
@@ -58,6 +58,7 @@ DATA-MW-VAULT-MODEL-INDEX が保持するモデル間参照と診断情報を、
 
 ## Notes
 - DATA-MW-REFERENCE-EXPLORER-STATE は DATA-MW-VAULT-MODEL-INDEX から導出される表示用状態である。
+- Reference Explorer はfuture/plannedであり、このmappingは現行Index構造から導出可能な表示状態を示す。
 - 選択参照やフィルタ条件はReference Explorerの一時状態であり、Markdownモデルには保存しない。
 - ファイルパスの表示短縮はUIマッピング側で [[RULE-MW-PATH-SHORTENER]] に委ねる。
 - 参照元/参照先ファイルパスは [[ENT-MW-MODEL-REFERENCE]] ではなく、sourceAssetId / targetAssetId から [[ENT-MW-MODEL-ASSET]] を解決して取得する。

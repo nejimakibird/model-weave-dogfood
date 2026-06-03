@@ -28,20 +28,21 @@ tags:
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
-|---|---|---|---|---|---|
-| [[DATA-MW-CORE-DIAGNOSTIC]].severity | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSeverity | severityに対応するアイコン/ラベルへ変換 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | Y | error / warning / info / note |
-| [[DATA-MW-CORE-DIAGNOSTIC]].code | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticCode | そのまま表示 |  | Y | 診断コード |
-| [[DATA-MW-CORE-DIAGNOSTIC]].message | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticMessage | そのまま表示 |  | Y | ユーザー向け説明 |
-| [[DATA-MW-CORE-DIAGNOSTIC]].filePath | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSourceFile | RULE-MW-PATH-SHORTENER に従って表示用に短縮 | [[RULE-MW-PATH-SHORTENER]] | N | 完全パスはジャンプ処理用に保持 |
-| [[DATA-MW-CORE-DIAGNOSTIC]].section | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSection | そのまま表示 |  | N | 対象セクション |
-| [[DATA-MW-CORE-DIAGNOSTIC]].row | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticRow | 数値表示 |  | N | 対象行番号 |
-| [[DATA-MW-CORE-DIAGNOSTIC]].targetRef | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticTargetRef | そのまま表示 |  | N | 未解決参照等の対象 |
+| source_ref                            | target_ref                                               | transform                         | rule                                          | required | notes                         |
+| ------------------------------------- | -------------------------------------------------------- | --------------------------------- | --------------------------------------------- | -------- | ----------------------------- |
+| [[DATA-MW-CORE-DIAGNOSTIC]].severity  | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSeverity   | severityに対応するアイコン/ラベルへ変換          | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | Y        | error / warning / info / note |
+| [[DATA-MW-CORE-DIAGNOSTIC]].code      | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticCode       | そのまま表示                            |                                               | Y        | 診断コード                         |
+| [[DATA-MW-CORE-DIAGNOSTIC]].message   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticMessage    | そのまま表示                            |                                               | Y        | ユーザー向け説明                      |
+| [[DATA-MW-CORE-DIAGNOSTIC]].filePath  | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSourceFile | RULE-MW-PATH-SHORTENER に従って表示用に短縮 | [[RULE-MW-PATH-SHORTENER]]                    | N        | 完全パスはジャンプ処理用に保持               |
+| [[DATA-MW-CORE-DIAGNOSTIC]].section   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSection    | そのまま表示                            |                                               | N        | 対象セクション                       |
+| [[DATA-MW-CORE-DIAGNOSTIC]].line      | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticRow        | 数値表示                              |                                               | N        | 対象行番号                         |
+| [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticTargetRef  | context内の関連情報を表示                     |                                               | N        | 未解決参照等の補足情報                  |
 
 ## Rules
 
-- `jumpToSource` アクションは、選択中の診断行に紐づく `filePath` と `row` を使用して、エディタの該当箇所へフォーカスを移動させる。
-- `filePath` は `diagnosticSourceFile` に表示され、`row` は `diagnosticRow` に表示される。
+- `jumpToSource` アクションは、選択中の診断行に紐づく `filePath` と `line` を使用して、エディタの該当箇所へフォーカスを移動させる。
+- `line` がない場合、openDiagnosticLocation は `fromLine`、`toLine`、section / field / context 由来の位置を順に利用する。
+- `filePath` は `diagnosticSourceFile` に表示され、`line` は `diagnosticRow` に表示される。
 - `jumpToSource` は表示項目ではなくActionであるため、`Mappings` では個別のtarget_refとして重複定義しない。
 - diagnosticSourceFile は [[RULE-MW-PATH-SHORTENER]] に従い、長い場合はファイル名を優先して短縮表示する。
 - openDiagnosticLocation / jumpToSource では短縮表示ではなく、[[DATA-MW-CORE-DIAGNOSTIC]].filePath の完全パスを使用する。

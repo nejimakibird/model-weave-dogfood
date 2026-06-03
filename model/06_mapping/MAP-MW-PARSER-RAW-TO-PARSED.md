@@ -31,10 +31,10 @@ Obsidian Vault上の物理ファイル（DATA-MW-CORE-VAULT-FILE）から、Mode
 | filePath | id | | | Y | getModelIdロジックによりIDを特定 |
 | basename | name | | | Y | 拡張子を除いたファイル基本名 |
 | content | type | detectFileType | | Y | フロントマターのtype/schemaから特定 |
-| | kind | | | N | モデル固有のサブタイプ（Enum/Process等） |
+| content | kind | parser-specific kind extraction | | N | モデル固有のサブタイプ（Enum/Process等） |
 | content | sections | extractMarkdownSections | | Y | ヘッディングによる論理ブロック分割 |
 | content | tables | parseMarkdownTable | | Y | セクション内の表構造を抽出 |
-| | diagnostics | | | Y | 解析プロセスで発生した検証警告の集約 |
+| content | diagnostics | parser warnings aggregation | | Y | 解析プロセスで発生した検証警告の集約 |
 
 ## Source Links
 

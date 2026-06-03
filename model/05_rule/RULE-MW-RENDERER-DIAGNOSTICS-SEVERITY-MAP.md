@@ -21,6 +21,15 @@ Model Weave 内部で発生したバリデーション警告（ValidationWarning
 |---|---|---|---|---|
 | warning | [[DATA-MW-CORE-DIAGNOSTIC]] | DiagnosticsCollector | Y | 判定対象の診断情報 |
 
+## Conditions
+
+| id | expression | severity | message | notes |
+|---|---|---|---|---|
+| C1 | warning.severity が `info` | info | そのまま扱う | normalizeDiagnosticSeverity |
+| C2 | warning.severity が `error` | error | そのまま扱う | normalizeDiagnosticSeverity |
+| C3 | error対象コード | error | errorへ正規化する | frontmatter / schema / table / 必須名 |
+| C4 | その他のwarning | warning | 元のseverityを維持する | fallback |
+
 ## Severity Mapping
 
 以下のマッピングに基づき、深刻度を正規化します。

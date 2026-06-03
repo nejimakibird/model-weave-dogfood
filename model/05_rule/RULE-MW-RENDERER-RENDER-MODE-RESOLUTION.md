@@ -20,6 +20,17 @@ tags:
 |---|---|---|---|---|
 | input | [[DATA-MW-RENDERER-RENDER-MODE-INPUT]] | RenderModeResolver | Y | ResolveRenderModeInput と dogfood上の派生情報を含む判定入力 |
 
+## Conditions
+
+| id | expression | severity | message | notes |
+|---|---|---|---|---|
+| C1 | toolbarOverride が supportedModes に含まれる | info | toolbar override を採用 | 最優先 |
+| C2 | frontmatterRenderMode が supportedModes に含まれる | info | frontmatter render_mode を採用 | 第二優先 |
+| C3 | frontmatterRenderMode が `auto` | warning | deprecated値としてfallback | `auto` は selectedMode ではない |
+| C4 | frontmatterRenderMode が不正または非対応 | warning | format defaultへfallback | diagnostics を返す |
+| C5 | settingsDefaultRenderMode が supportedModes に含まれる | info | settings default を採用 | 第三優先 |
+| C6 | format default が非対応 | warning | fallback mode を採用 | 最終fallback |
+
 ## Logic
 
 1. **最優先 (Toolbar Override)**: `toolbarOverride` が有効な明示 render mode（`custom` / `mermaid` / `mermaid-detail`）で、対象形式の supportedModes に含まれる場合は採用する。

@@ -16,6 +16,13 @@ tags:
 DFDをMermaid flowchartとして表示する際のレイアウト方針を定義します。
 Mermaid sourceは解析済みのモデルから生成される派生出力であり、Markdownモデル（source of truth）の内容を視覚化するためのレンダリング規則として機能します。
 
+## Inputs
+
+| id | data | source | required | notes |
+|---|---|---|---|---|
+| graph | [[DATA-MW-RENDERER-GRAPH-MODEL]] | RelationResolver | Y | DFD Mermaid source の入力になる resolved diagram |
+| diagram | [[DATA-MW-DFD-PARSED-DIAGRAM]] | DFD parser | Y | DFD objects / flows の解析結果 |
+
 ## Conditions
 
 - 対象モデルの `type` が `dfd_diagram` であること。
