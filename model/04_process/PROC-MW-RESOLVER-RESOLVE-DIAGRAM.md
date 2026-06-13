@@ -82,11 +82,9 @@ parsed diagram と Vaultモデルインデックスから、rendererが利用す
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | diagram kindごとの解決入口 |
-| src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | DFD object / flow解決 |
-| src/core/reference-resolver.ts | resolveReferenceIdentity | function | endpointや参照の同一性解決 |
-| src/types/models.ts | ResolvedDiagram | interface | resolver出力 |
-| src/types/models.ts | DiagramNode | interface | node構造 |
-| src/types/models.ts | DiagramEdge | interface | edge構造 |
+| path | notes |
+|---|---|
+| src/core/relation-resolver.ts | Steps: start, detectKind, resolveClassNodes, resolveClassEdges, resolveErNodes, resolveErEdges. resolveDiagramRelations がdiagram kindごとに解決する |
+| src/core/relation-resolver.ts | Steps: resolveDfdObjects, resolveDfdFlows, collectWarnings, buildResolved. resolveDfdDiagramRelations がDFD object / flowを解決する |
+| src/core/reference-resolver.ts | Steps: resolveClassNodes, resolveErNodes, resolveDfdObjects, resolveDfdFlows. resolveReferenceIdentity がendpointや参照の同一性を解決する |
+| src/types/models.ts | Steps: buildResolved, end. ResolvedDiagram / DiagramNode / DiagramEdge がresolver出力構造を定義する |

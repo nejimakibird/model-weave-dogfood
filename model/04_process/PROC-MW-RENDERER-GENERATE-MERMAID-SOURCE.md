@@ -88,12 +88,8 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/renderers/dfd-mermaid.ts | buildDfdMermaidSource | function | DFD用Mermaidソースの組み立て |
-| src/renderers/class-er-mermaid.ts | buildClassOverviewMermaidSource | function | クラス図用Mermaidソースの組み立て |
-| src/renderers/class-er-mermaid.ts | buildClassDetailMermaidSource | function | クラス詳細Mermaidソースの組み立て |
-| src/renderers/class-er-mermaid.ts | buildErOverviewMermaidSource | function | ER概要Mermaidソースの組み立て |
-| src/renderers/class-er-mermaid.ts | buildErDetailMermaidSource | function | ER詳細Mermaidソースの組み立て |
-| src/renderers/mermaid-helpers.ts | sanitizeMermaidId | function | Mermaid ID整形 |
-| src/renderers/mermaid-helpers.ts | escapeMermaidLabel | function | Mermaid label整形 |
+| path | notes |
+|---|---|
+| src/renderers/dfd-mermaid.ts | Steps: chooseGenerator, initLines, addStyles, mapNodes, emitNodes, emitEdges. buildDfdMermaidSource がDFD用Mermaid sourceを組み立てる |
+| src/renderers/class-er-mermaid.ts | Steps: chooseGenerator, initLines, emitNodes, emitEdges. Class / ER overview and detail Mermaid sourceを生成する |
+| src/renderers/mermaid-helpers.ts | Steps: mapNodes, emitNodes. sanitizeMermaidId / escapeMermaidLabel がMermaid IDとlabelを整形する |

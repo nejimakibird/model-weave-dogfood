@@ -42,23 +42,23 @@ parseMode に応じて shallow / full の入力を作り、full parse では関�
 
 ## Steps
 
-| id | domain | label | kind | input | output | rule | invoke | screen | notes |
-|---|---|---|---|---|---|---|---|---|---|
-| start | editor_integration | Index再構築開始 | start | vaultFiles |  |  |  |  | rebuildIndex から開始する |
-| collectFiles | vault_content | Markdownファイルを列挙する | input | vaultFiles | markdownFiles |  |  |  | getMarkdownFiles を使う |
-| chooseMode | editor_integration | parseModeを判定する | decision | parseMode |  |  |  |  | 既定は shallow |
-| readFullContent | vault_content | 本文を読み込む | process | markdownFiles | fullFiles |  |  |  | full parse では cachedRead を使う |
-| readFrontmatterCache | vault_content | frontmatterを取得する | process | markdownFiles | shallowFiles |  |  |  | shallow parse では cache を使う |
-| buildIndex | model_storage | Vault Indexを構築する | subflow | fileInput | rebuiltIndex |  | PROC-MW-PARSER-PARSE-VAULT-FILE |  | buildVaultIndex が各ファイルを解析する |
-| markFullParsed | model_storage | full解析済みを記録する | process | rebuiltIndex | rebuiltIndex |  |  |  | full parse のファイルパスを保持する |
-| duplicateDiagnostics | diagnostics | 重複ID診断を再計算する | process | rebuiltIndex | diagnostics |  |  |  | recomputeDuplicateModelIdDiagnostics |
-| shouldResolve | model_storage | relation lookup要否を判定する | decision | buildOptions |  |  |  |  | resolveRelations option |
-| relationLookups | relation_resolution | relation lookupを構築する | process | rebuiltIndex | rebuiltIndex |  |  |  | ensureRelationLookups |
-| shouldIndexMembers | model_storage | member lookup要否を判定する | decision | buildOptions |  |  |  |  | indexMembers option |
-| memberLookups | model_storage | member lookupを構築する | process | rebuiltIndex | rebuiltIndex |  |  |  | ensureMemberLookups |
-| shouldValidate | model_storage | Vault検証要否を判定する | decision | buildOptions |  |  |  |  | validate option |
-| vaultValidation | diagnostics | Vault検証を実行する | process | rebuiltIndex | diagnostics |  |  |  | ensureVaultValidation |
-| end | model_storage | Index再構築完了 | end | rebuiltIndex |  |  |  |  | this.index に保持される |
+| id                   | domain              | label                  | kind     | input         | output        | rule | invoke                          | screen | notes                                |
+| -------------------- | ------------------- | ---------------------- | -------- | ------------- | ------------- | ---- | ------------------------------- | ------ | ------------------------------------ |
+| start                | editor_integration  | Index再構築開始             | start    | vaultFiles    |               |      |                                 |        | rebuildIndex から開始する                  |
+| collectFiles         | vault_content       | Markdownファイルを列挙する      | input    | vaultFiles    | markdownFiles |      |                                 |        | getMarkdownFiles を使う                 |
+| chooseMode           | editor_integration  | parseModeを判定する         | decision | parseMode     |               |      |                                 |        | 既定は shallow                          |
+| readFullContent      | vault_content       | 本文を読み込む                | process  | markdownFiles | fullFiles     |      |                                 |        | full parse では cachedRead を使う         |
+| readFrontmatterCache | vault_content       | frontmatterを取得する       | process  | markdownFiles | shallowFiles  |      |                                 |        | shallow parse では cache を使う           |
+| buildIndex           | model_storage       | Vault Indexを構築する       | subflow  | fileInput     | rebuiltIndex  |      | [[PROC-MW-PARSER-PARSE-VAULT-FILE]] |        | buildVaultIndex が各ファイルを解析する          |
+| markFullParsed       | model_storage       | full解析済みを記録する          | process  | rebuiltIndex  | rebuiltIndex  |      |                                 |        | full parse のファイルパスを保持する              |
+| duplicateDiagnostics | diagnostics         | 重複ID診断を再計算する           | process  | rebuiltIndex  | diagnostics   |      |                                 |        | recomputeDuplicateModelIdDiagnostics |
+| shouldResolve        | model_storage       | relation lookup要否を判定する | decision | buildOptions  |               |      |                                 |        | resolveRelations option              |
+| relationLookups      | relation_resolution | relation lookupを構築する   | process  | rebuiltIndex  | rebuiltIndex  |      |                                 |        | ensureRelationLookups                |
+| shouldIndexMembers   | model_storage       | member lookup要否を判定する   | decision | buildOptions  |               |      |                                 |        | indexMembers option                  |
+| memberLookups        | model_storage       | member lookupを構築する     | process  | rebuiltIndex  | rebuiltIndex  |      |                                 |        | ensureMemberLookups                  |
+| shouldValidate       | model_storage       | Vault検証要否を判定する         | decision | buildOptions  |               |      |                                 |        | validate option                      |
+| vaultValidation      | diagnostics         | Vault検証を実行する           | process  | rebuiltIndex  | diagnostics   |      |                                 |        | ensureVaultValidation                |
+| end                  | model_storage       | Index再構築完了             | end      | rebuiltIndex  |               |      |                                 |        | this.index に保持される                    |
 
 ## Flows
 
@@ -101,11 +101,10 @@ parseMode に応じて shallow / full の入力を作り、full parse では関�
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/main.ts | ModelWeavePlugin.rebuildIndex | method | Vaultファイル入力の作成 |
-| src/core/vault-index.ts | buildVaultIndex | function | Vault Index構築 |
-| src/core/vault-index.ts | indexSingleFile | function | 個別ファイル解析と登録 |
-| src/core/vault-index.ts | ensureRelationLookups | function | relation lookup構築 |
-| src/core/vault-index.ts | ensureMemberLookups | function | member lookup構築 |
-| src/core/vault-index.ts | ensureVaultValidation | function | Vault検証 |
+| path | notes |
+|---|---|
+| src/main.ts | Steps: start, collectFiles, readFullContent, readFrontmatterCache. ModelWeavePlugin.rebuildIndex がVaultファイル入力を作る |
+| src/core/vault-index.ts | Steps: buildIndex, markFullParsed. buildVaultIndex / indexSingleFile が解析とindex登録を行う |
+| src/core/vault-index.ts | Steps: shouldResolve, relationLookups. ensureRelationLookups がrelation lookupを構築する |
+| src/core/vault-index.ts | Steps: shouldIndexMembers, memberLookups. ensureMemberLookups がmember lookupを構築する |
+| src/core/vault-index.ts | Steps: duplicateDiagnostics, shouldValidate, vaultValidation. duplicate diagnostics / ensureVaultValidation が診断を構築する |

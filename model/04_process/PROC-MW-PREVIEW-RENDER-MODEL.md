@@ -91,10 +91,8 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/main.ts | syncPreviewToActiveFile | method | active fileからpreview stateを構築する主経路 |
-| src/main.ts | buildImpactPreviewProps | method | relationship summary propsを構築する |
-| src/views/modeling-preview-view.ts | updateContent | method | preview stateを受け取り再描画する |
-| src/views/modeling-preview-view.ts | renderCurrentState | method | state.modeごとに描画関数へdispatchする |
-| src/renderers/diagram-renderer.ts | renderDiagramModel | function | ResolvedDiagramをkind別rendererへdispatchする |
+| path | notes |
+|---|---|
+| src/main.ts | Steps: start, resolveRenderMode, prepareImpact, detectPreviewMode. syncPreviewToActiveFile / buildImpactPreviewProps がpreview stateを組み立てる |
+| src/views/modeling-preview-view.ts | Steps: updateDiagram, updateSummary, updateEmpty, renderState, renderSections, end. updateContent / renderCurrentState がstateを受け取り再描画する |
+| src/renderers/diagram-renderer.ts | Steps: renderDiagram. renderDiagramModel がResolvedDiagramをkind別rendererへdispatchする |

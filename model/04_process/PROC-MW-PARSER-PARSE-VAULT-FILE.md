@@ -45,7 +45,7 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 
 | id  | event | to                                     | condition                 | notes              |
 | --- | ----- | -------------------------------------- | ------------------------- | ------------------ |
-| TR1 | 解析成功  | PROC-MW-RENDERER-BUILD-GRAPH-MODEL | fileType が diagram 系の場合   | インデックス登録後に描画構築へ進む  |
+| TR1 | 解析成功  | [[PROC-MW-RENDERER-BUILD-GRAPH-MODEL]] | fileType が diagram 系の場合   | インデックス登録後に描画構築へ進む  |
 | TR2 | 解析対象外 | -                                      | parseResult.file が存在しない場合 | warnings を保持して終了する |
 
 ## Steps
@@ -110,10 +110,9 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | parseVaultFile | function | ファイル種別に応じたパース処理の振り分け |
-| src/core/vault-index.ts | indexSingleFile | function | 個別ファイルの解析とインデックス登録の制御 |
-| src/parsers/frontmatter-parser.ts | parseFrontmatter | function | YAMLフロントマターの抽出 |
-| src/core/schema-detector.ts | detectFileType | function | schema / type による fileType 判定 |
-| src/parsers/relations-parser.ts | parseRelationsFile | function | schema-driven Relations ファイルの解析 |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | Steps: start, hasParsedModel, indexResult. parseVaultFile / indexSingleFile による解析とindex登録 |
+| src/parsers/frontmatter-parser.ts | Steps: parseShallowFrontmatter, parseFrontmatter. YAML frontmatter抽出 |
+| src/core/schema-detector.ts | Steps: detectShallowType, detectFileType. schema / type による fileType 判定 |
+| src/parsers/relations-parser.ts | Steps: runRelationsParser. schema-driven Relations ファイル解析 |
