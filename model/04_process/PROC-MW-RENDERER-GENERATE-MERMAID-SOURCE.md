@@ -14,6 +14,12 @@ tags:
 
 `DATA-MW-RENDERER-GRAPH-MODEL` を、Mermaid.js エンジンで描画可能なテキストソース（DSL）に変換します。
 
+## Domain Sources
+
+| ref | notes |
+|---|---|
+| [[DOMAINS-MW-ARCHITECTURE]] | Model Weave architecture domains |
+
 ## Triggers
 
 | id | kind | source | event | notes |
@@ -40,20 +46,20 @@ tags:
 
 ## Steps
 
-| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| start | Renderer | Mermaidソース生成開始 | start | graph |  |  |  |  | ResolvedDiagram を受け取る |
-| chooseGenerator | Renderer | 生成関数を選択する | decision | graph |  |  |  |  | DFD / Class / ER / objectで分岐する |
-| initLines | Renderer | ヘッダー行を作る | process | graph | sourceLines |  |  |  | flowchart / classDiagram / erDiagram |
-| addStyles | Renderer | 必要なstyle行を追加する | process | sourceLines | sourceLines |  |  |  | classDef と palette を使う |
-| mapNodes | Renderer | node IDを割り当てる | process | graph | nodeMap |  |  |  | sanitizeMermaidId 等を使う |
-| emitNodes | Renderer | node行を生成する | process | nodeMap | sourceLines |  |  |  | labelをMermaid用に整形する |
-| emitEdges | Renderer | edge行を生成する | process | graph | sourceLines |  |  |  | source / target を接続する |
-| hasEdgeLabel | Renderer | edge label有無を判定する | decision | graph |  |  |  |  | labelがあれば edge に出す |
-| addLabeledEdge | Renderer | label付きedgeを追加する | process | sourceLines | sourceLines |  |  |  | edge labelをsanitizeする |
-| addPlainEdge | Renderer | labelなしedgeを追加する | process | sourceLines | sourceLines |  |  |  | 通常の接続線を出す |
-| joinSource | Renderer | Mermaidソースを結合する | process | sourceLines | source |  |  |  | linesを改行で結合する |
-| end | Renderer | Mermaidソース生成完了 | end | source |  |  |  |  | Mermaid Rendererへ渡す |
+| start | renderer_area | Mermaidソース生成開始 | start | graph |  |  |  |  | ResolvedDiagram を受け取る |
+| chooseGenerator | renderer_area | 生成関数を選択する | decision | graph |  |  |  |  | DFD / Class / ER / objectで分岐する |
+| initLines | renderer_area | ヘッダー行を作る | process | graph | sourceLines |  |  |  | flowchart / classDiagram / erDiagram |
+| addStyles | renderer_area | 必要なstyle行を追加する | process | sourceLines | sourceLines |  |  |  | classDef と palette を使う |
+| mapNodes | renderer_area | node IDを割り当てる | process | graph | nodeMap |  |  |  | sanitizeMermaidId 等を使う |
+| emitNodes | renderer_area | node行を生成する | process | nodeMap | sourceLines |  |  |  | labelをMermaid用に整形する |
+| emitEdges | renderer_area | edge行を生成する | process | graph | sourceLines |  |  |  | source / target を接続する |
+| hasEdgeLabel | renderer_area | edge label有無を判定する | decision | graph |  |  |  |  | labelがあれば edge に出す |
+| addLabeledEdge | renderer_area | label付きedgeを追加する | process | sourceLines | sourceLines |  |  |  | edge labelをsanitizeする |
+| addPlainEdge | renderer_area | labelなしedgeを追加する | process | sourceLines | sourceLines |  |  |  | 通常の接続線を出す |
+| joinSource | renderer_area | Mermaidソースを結合する | process | sourceLines | source |  |  |  | linesを改行で結合する |
+| end | renderer_area | Mermaidソース生成完了 | end | source |  |  |  |  | Mermaid Rendererへ渡す |
 
 ## Flows
 

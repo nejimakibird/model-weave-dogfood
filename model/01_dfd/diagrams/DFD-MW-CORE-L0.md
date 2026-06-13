@@ -15,19 +15,25 @@ tags:
 Model Weave プラグイン内部の主要なデータフローを示します。
 Markdown ソースの読み込みからパース、Vault Index構築、参照解決、Source Links、Impact Summary、Rendererを介した Preview View 表示までの実装境界を示します。
 
+## Domain Sources
+
+| ref | notes |
+|---|---|
+| [[DOMAINS-MW-ARCHITECTURE]] | Model Weave architecture domains |
+
 ## Objects
 
-| id | label | kind | ref | notes |
-|---|---|---|---|---|
-| MD_FILES | Markdown Model Files | external | | Obsidian Vault 内の設計アセット群 |
-| PARSER | Core Parser | process | [[DFD-MW-OBJ-PARSER]] | schema/type検出とparser dispatch |
-| VAULT_INDEX | Vault Index | datastore | [[DFD-MW-OBJ-VAULT-INDEX]] | 解析済みモデルとlookupの実行時index |
-| RESOLVER | Resolver | process | [[DFD-MW-OBJ-RESOLVER]] | 参照解決とResolvedDiagram生成 |
-| SOURCE_LINKS | Source Links | process | [[DFD-MW-OBJ-SOURCE-LINKS]] | Source Links section解析とPreview action |
-| IMPACT_ANALYZER | Impact Analyzer | process | [[DFD-MW-OBJ-IMPACT-ANALYZER]] | 関係/影響summary生成 |
-| SETTINGS | Plugin Settings | datastore | [[DFD-MW-OBJ-SETTINGS]] | 正規化済み設定とviewer preferences |
-| RENDERER | Renderer | process | [[DFD-MW-OBJ-RENDERER]] | Preview DOM / Mermaid / Business Flow描画 |
-| VIEWER | Preview View | external | [[DFD-MW-OBJ-PREVIEW-VIEW]] | ModelingPreviewView |
+| id | label | kind | ref | domain | notes |
+|---|---|---|---|---|---|
+| MD_FILES | Markdown Model Files | external | | vault_content | Obsidian Vault 内の設計アセット群 |
+| PARSER | Core Parser | process | [[DFD-MW-OBJ-PARSER]] | parser_resolver | schema/type検出とparser dispatch |
+| VAULT_INDEX | Vault Index | datastore | [[DFD-MW-OBJ-VAULT-INDEX]] | model_storage | 解析済みモデルとlookupの実行時index |
+| RESOLVER | Resolver | process | [[DFD-MW-OBJ-RESOLVER]] | relation_resolution | 参照解決とResolvedDiagram生成 |
+| SOURCE_LINKS | Source Links | process | [[DFD-MW-OBJ-SOURCE-LINKS]] | source_links | Source Links section解析とPreview action |
+| IMPACT_ANALYZER | Impact Analyzer | process | [[DFD-MW-OBJ-IMPACT-ANALYZER]] | impact_analysis | 関係/影響summary生成 |
+| SETTINGS | Plugin Settings | datastore | [[DFD-MW-OBJ-SETTINGS]] | settings_configuration | 正規化済み設定とviewer preferences |
+| RENDERER | Renderer | process | [[DFD-MW-OBJ-RENDERER]] | renderer_area | Preview DOM / Mermaid / Business Flow描画 |
+| VIEWER | Preview View | external | [[DFD-MW-OBJ-PREVIEW-VIEW]] | viewer_ui | ModelingPreviewView |
 
 ## Flows
 
