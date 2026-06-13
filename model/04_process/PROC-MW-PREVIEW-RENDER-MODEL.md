@@ -18,6 +18,12 @@ tags:
 現在のモデルファイルを解析済みモデルとして受け取り、render mode、diagnostics、relationship summary、renderer入力を組み立てて Modeling Preview View に表示する処理。
 現行実装では `main.ts` 側が `view.updateContent` に状態を渡し、`ModelingPreviewView.renderCurrentState` がmode別の描画関数へdispatchする。
 
+## Domain Sources
+
+| ref | notes |
+|---|---|
+| [[DOMAINS-MW-ARCHITECTURE]] | Model Weave architecture domains |
+
 ## Inputs
 
 | id | data | source | required | notes |
@@ -39,21 +45,21 @@ tags:
 
 ## Steps
 
-| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| start | Preview Controller | Preview描画を開始する | start | parsedModel |  |  |  |  | active fileの解析結果から開始する |
-| resolveRenderMode | Preview Controller | render modeを解決する | process | parsedModel, rendererSelection | rendererSelection | [[RULE-MW-RENDERER-RENDER-MODE-RESOLUTION]] |  |  | toolbar / frontmatter / settings / fallbackを反映する |
-| prepareImpact | Impact Analyzer | impact summaryを準備する | process | parsedModel, vaultIndex | impactSummary |  | [[PROC-MW-IMPACT-SUMMARY-BUILD]] |  | relationship viewが有効な場合に生成する |
-| detectPreviewMode | Preview Controller | preview modeを判定する | decision | parsedModel | previewState |  |  |  | fileTypeごとのmodeへ分岐する |
-| resolveDiagram | Resolver | diagram relationsを解決する | subflow | parsedModel, vaultIndex | resolvedDiagram |  | [[PROC-MW-RESOLVER-RESOLVE-DIAGRAM]] |  | diagram / dfd-diagramで使用する |
-| buildDiagnostics | Preview Controller | diagnosticsを組み立てる | process | parsedModel, resolvedDiagram | diagnostics |  |  |  | parser warningsとcurrent file diagnosticsをまとめる |
-| updateDiagram | Preview View | diagram preview stateを渡す | screen | resolvedDiagram, diagnostics | previewState |  |  |  | `mode: "diagram"` または `dfd-object` |
-| updateSummary | Preview View | summary preview stateを渡す | screen | parsedModel, diagnostics | previewState |  |  |  | data_object / app_process / screenなど |
-| updateEmpty | Preview View | empty preview stateを渡す | screen | parsedModel | previewState |  |  |  | unsupportedやmarkdown fallback |
-| renderState | Preview View | renderCurrentStateで描画する | screen | previewState | preview DOM |  |  |  | mode別のrender関数へdispatchする |
-| renderDiagram | Renderer | diagram rendererを実行する | subflow | resolvedDiagram | mermaidSource |  |  |  | `renderDiagramModel` がkind別rendererへdispatchする |
-| renderSections | Preview View | diagnosticsと補助sectionを描画する | screen | diagnostics, impactSummary | preview DOM |  |  |  | Source Linksやrelationship sectionを含む場合がある |
-| end | Preview View | Preview描画を終了する | end | preview DOM |  |  |  |  | viewport / scroll stateはview側で保持される |
+| start | preview_pipeline | Preview描画を開始する | start | parsedModel |  |  |  |  | active fileの解析結果から開始する |
+| resolveRenderMode | preview_pipeline | render modeを解決する | process | parsedModel, rendererSelection | rendererSelection | [[RULE-MW-RENDERER-RENDER-MODE-RESOLUTION]] |  |  | toolbar / frontmatter / settings / fallbackを反映する |
+| prepareImpact | impact_analysis | impact summaryを準備する | process | parsedModel, vaultIndex | impactSummary |  | [[PROC-MW-IMPACT-SUMMARY-BUILD]] |  | relationship viewが有効な場合に生成する |
+| detectPreviewMode | preview_pipeline | preview modeを判定する | decision | parsedModel | previewState |  |  |  | fileTypeごとのmodeへ分岐する |
+| resolveDiagram | relation_resolution | diagram relationsを解決する | subflow | parsedModel, vaultIndex | resolvedDiagram |  | [[PROC-MW-RESOLVER-RESOLVE-DIAGRAM]] |  | diagram / dfd-diagramで使用する |
+| buildDiagnostics | diagnostics | diagnosticsを組み立てる | process | parsedModel, resolvedDiagram | diagnostics |  |  |  | parser warningsとcurrent file diagnosticsをまとめる |
+| updateDiagram | viewer_ui | diagram preview stateを渡す | screen | resolvedDiagram, diagnostics | previewState |  |  |  | `mode: "diagram"` または `dfd-object` |
+| updateSummary | viewer_ui | summary preview stateを渡す | screen | parsedModel, diagnostics | previewState |  |  |  | data_object / app_process / screenなど |
+| updateEmpty | viewer_ui | empty preview stateを渡す | screen | parsedModel | previewState |  |  |  | unsupportedやmarkdown fallback |
+| renderState | viewer_ui | renderCurrentStateで描画する | screen | previewState | preview DOM |  |  |  | mode別のrender関数へdispatchする |
+| renderDiagram | renderer_area | diagram rendererを実行する | subflow | resolvedDiagram | mermaidSource |  |  |  | `renderDiagramModel` がkind別rendererへdispatchする |
+| renderSections | viewer_ui | diagnosticsと補助sectionを描画する | screen | diagnostics, impactSummary | preview DOM |  |  |  | Source Linksやrelationship sectionを含む場合がある |
+| end | viewer_ui | Preview描画を終了する | end | preview DOM |  |  |  |  | viewport / scroll stateはview側で保持される |
 
 ## Flows
 
@@ -85,10 +91,8 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/main.ts | syncPreviewToActiveFile | method | active fileからpreview stateを構築する主経路 |
-| src/main.ts | buildImpactPreviewProps | method | relationship summary propsを構築する |
-| src/views/modeling-preview-view.ts | updateContent | method | preview stateを受け取り再描画する |
-| src/views/modeling-preview-view.ts | renderCurrentState | method | state.modeごとに描画関数へdispatchする |
-| src/renderers/diagram-renderer.ts | renderDiagramModel | function | ResolvedDiagramをkind別rendererへdispatchする |
+| path | notes |
+|---|---|
+| src/main.ts | Steps: start, resolveRenderMode, prepareImpact, detectPreviewMode. syncPreviewToActiveFile / buildImpactPreviewProps がpreview stateを組み立てる |
+| src/views/modeling-preview-view.ts | Steps: updateDiagram, updateSummary, updateEmpty, renderState, renderSections, end. updateContent / renderCurrentState がstateを受け取り再描画する |
+| src/renderers/diagram-renderer.ts | Steps: renderDiagram. renderDiagramModel がResolvedDiagramをkind別rendererへdispatchする |

@@ -14,6 +14,27 @@
 - AIによる設計レビュー、影響調査、ドキュメント生成の材料にする
 - 将来機能を、現行実装済み機能と混同しないように整理する
 
+## Source Links による実装追跡
+
+このdogfoodモデルでは、`Source Links` を使ってモデル上の処理Stepと実装ソースの対応を記録しています。
+
+`app_process` では処理の流れを `Steps` として表現し、`Source Links` では各Stepに関係する実装ファイルを `notes` に記載しています。これにより、DomainやProcessで全体像を把握したあと、該当Stepから実装箇所へ降りることができます。
+
+おすすめの確認順序:
+
+1. Domain Diagram で機能領域を把握する
+2. DFD / app_process で処理やデータの流れを確認する
+3. Step と Wikilink で関連モデルを辿る
+4. Source Links notes から対応する実装ファイルを確認する
+
+代表例:
+
+- `model/00_domains/DOMAIN-DIAGRAM-MW-ARCHITECTURE.md`
+- `model/01_dfd/diagrams/DFD-MW-CORE-L0.md`
+- `model/04_process/PROC-MW-VAULT-INDEX-REBUILD.md`
+- `model/04_process/PROC-MW-PREVIEW-RENDER-MODEL.md`
+- `model/04_process/PROC-MW-PARSER-PARSE-VAULT-FILE.md`
+
 ## ディレクトリ構成
 
 | ディレクトリ | 内容 |
