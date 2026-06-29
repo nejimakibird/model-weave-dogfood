@@ -30,6 +30,8 @@ dfd_diagram Markdownから解析されたDFD専用の論理データ構造です
 | kind | 図面種別 | string | | Y | kind | | dfd |
 | level | 階層 | string | | N | level | | 任意項目。DFD階層 |
 | description | 説明 | string | | N | description | | Summary section由来 |
+| domainSources | Domain Sources | DomainSourceRef list | | N | domainSources | | Domain Sources section由来。再利用可能なdomainsファイル参照 |
+| domains | ローカルDomains | DomainEntry list | | N | domains | | Domains section由来。Domain Sourcesより後に適用され、同じidではローカル定義が優先される |
 | objectRefs | オブジェクト参照 | string list | | Y | objectRefs | | objectEntriesから生成 |
 | objectEntries | オブジェクト群 | DfdDiagramObjectEntry list | | Y | objectEntries | [[DATA-MW-DFD-OBJECT-ENTRY]] | dfd_diagram.Objects由来 |
 | nodes | ノード群 | DiagramNode list | | Y | nodes | [[DATA-MW-RENDERER-GRAPH-NODE]] | Objects由来の解析時node |
@@ -42,6 +44,8 @@ dfd_diagram Markdownから解析されたDFD専用の論理データ構造です
 - DATA-MW-CORE-PARSED-MODEL は汎用解析済みモデルとして残します。
 - 本オブジェクトはDFD専用の解析済みモデルであり、resolveDiagramRelations 後の ResolvedDiagram とは別である。
 - parser は `## Objects` から objectEntries / objectRefs / nodes を生成し、`## Flows` から flows / edges を生成する。
+- parser は `## Domain Sources` と `## Domains` も読み取り、DFD objectのdomain解決とDomain subgraph描画に使う。
+- DFDのColor Scheme適用では、object kindに `target=dfd`、Domain groupに `target=domain` が使われる。
 - 現行実装のparser出力診断は ParseResult.warnings であり、diagnostics という直接フィールドではない。
 - legacy ref-only Objects table は parser互換モードとして扱われるが、本モデルでは主要フィールドとして過剰に展開しない。
 - Markdownテーブル安全性のため、複数性や任意性は list / required / notes / ref で表現します。
@@ -56,3 +60,4 @@ dfd_diagram Markdownから解析されたDFD専用の論理データ構造です
 | src/types/models.ts | DiagramNode | interface | nodes要素 |
 | src/types/models.ts | DiagramEdge | interface | edges要素 |
 | src/parsers/dfd-diagram-parser.ts | parseDfdDiagramFile | function | DFD parser出力 |
+| src/renderers/dfd-mermaid.ts | buildDfdMermaidSource | function | Domain subgraphとColor Schemeを含むDFD Mermaid source生成 |

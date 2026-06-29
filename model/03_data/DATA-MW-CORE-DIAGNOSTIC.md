@@ -14,8 +14,8 @@ tags:
 
 ## Summary
 
-モデルのパース、Vault検証、参照解決で生成される ValidationWarning を表すデータオブジェクト。
-warningsByFilePath や ParseResult.warnings に保持され、Viewerの診断表示に使われる。
+モデルのパース、Vault検証、参照解決、Preview表示時の追加チェックで生成される `ValidationWarning` を表すデータオブジェクト。
+Markdown正本として保存されるデータではなく、`warningsByFilePath` や `ParseResult.warnings`、Preview state の warnings として扱われる派生診断である。
 
 ## Fields
 
@@ -36,9 +36,11 @@ warningsByFilePath や ParseResult.warnings に保持され、Viewerの診断表
 ## Notes
 
 - severity の有効値は info / warning / error である。
+- Viewerでは info がNotesとして表示される。`note` は `ValidationWarning.severity` の保存値ではない。
 - code の有効値は src/types/warnings.ts の VALIDATION_WARNING_CODES を正とする。
 - row / targetRef は現行 ValidationWarning の直接フィールドではないため、必要な場合は context に保持される。
 - warningsByFilePath では path がキーになり、warning自体にも path が補完される場合がある。
+- Viewerのコピー支援は message / code / severity / context などから生成されるUI出力であり、このDATAモデルの別フィールドではない。導出ルールは [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] に分ける。
 - Markdownテーブル安全性のため、Record構造は notes で表現する。
 
 ## Source Links
@@ -51,3 +53,5 @@ warningsByFilePath や ParseResult.warnings に保持され、Viewerの診断表
 | src/core/vault-index.ts | warningsByFilePath | field | file path別warning map |
 | src/core/validator.ts | validateVaultIndex | function | Vault検証warning生成 |
 | src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 表示対象の診断生成 |
+| src/core/current-file-diagnostics.ts | normalizeDiagnosticSeverity | function | severityの正規化 |
+| src/views/modeling-preview-view.ts | renderDiagnosticCard | function | 診断カードとコピー支援の表示 |

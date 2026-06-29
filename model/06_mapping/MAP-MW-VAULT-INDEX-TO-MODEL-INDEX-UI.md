@@ -17,7 +17,8 @@ tags:
 
 ## Summary
 
-[[DATA-MW-VAULT-MODEL-INDEX]] が保持するVault内モデル資産の件数、診断状態、モデル一覧を、[[SCR-MW-MODEL-INDEX-VIEW]] の各UI表示項目へ反映するためのマッピングを定義する。
+[[DATA-MW-VAULT-MODEL-INDEX]] が保持するVault内モデル資産の件数、診断状態、モデル一覧を、future / plannedの [[SCR-MW-MODEL-INDEX-VIEW]] の各UI表示項目へ反映するためのマッピングを定義する。
+Model Weave 0.1.17時点では内部Vault Indexは実装済みだが、独立したModel Index ViewへのUI反映は本体srcで確認できない。
 
 ## Scope
 
@@ -61,7 +62,8 @@ tags:
 ## Notes
 
 - [[DATA-MW-VAULT-MODEL-INDEX]] はVault内Markdownファイルから生成される派生データである。
-- [[SCR-MW-MODEL-INDEX-VIEW]] はインデックスを閲覧するUIであり、正本のMarkdownモデルを直接変更しない。
+- [[SCR-MW-MODEL-INDEX-VIEW]] はfuture / plannedのインデックス閲覧UIであり、正本のMarkdownモデルを直接変更しない。
+- 現行実装済みのVault Index利用はPreview、Relationship View、診断、描画支援の内部処理であり、この独立画面への表示mappingとは別に扱う。
 - `filterModelIndex` / `rebuildVaultModelIndex` / `openModelFile` は論理プロセス名であり、後続でapp_process化できる。
 - `modelAssetList` 内の行表示は [[SCR-MW-MODEL-INDEX-VIEW]] の `model_asset_row` レイアウトに従う。
 

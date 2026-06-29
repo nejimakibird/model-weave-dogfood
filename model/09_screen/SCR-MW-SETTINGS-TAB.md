@@ -15,7 +15,7 @@ tags:
 ## Summary
 
 Model Weaveプラグインの設定値を表示・変更するObsidian設定タブのUIを定義する。
-Renderer、Viewer、Relationship View、Mermaid debug、UI language、Local source rootに関する設定項目を扱う。
+Renderer、Business Flow、Domains表示、Viewer、Relationship View、Mermaid debug、UI language、Local source root、Color Schemeに関する設定項目を扱う。
 
 ## Layout
 
@@ -23,9 +23,12 @@ Renderer、Viewer、Relationship View、Mermaid debug、UI language、Local sour
 |---|---|---|---|---|
 | settings_root | 設定タブルート | container | 設定画面全体のコンテナ | |
 | renderer_settings_area | Renderer設定領域 | section | 形式別の既定描画モード設定 | implemented。ModelWeaveSettingTab.display では Viewer heading 配下に表示される論理区分 |
+| business_flow_settings_area | Business Flow設定領域 | section | app_process Business Flowの既定方向設定 | implemented。app_process Business Flow限定 |
+| domain_view_settings_area | Domain表示設定領域 | section | domains / domain_diagram の既定表示モード設定 | implemented |
 | viewport_settings_area | Viewport設定領域 | section | 既定ズーム設定 | implemented。Auto Fit / 状態保持の個別設定は現行UIにはない |
 | viewer_ui_settings_area | Viewer UI設定領域 | section | フォント、ノード密度、Relationship View、Mermaid debug、UI言語の設定 | implemented |
 | source_link_settings_area | Source Links設定領域 | section | Local source root の設定 | partial。Source Links有効化トグルではなく、relative Source Links 解決用の root を扱う |
+| color_scheme_settings_area | Color Scheme設定領域 | section | 既定Color Scheme参照の設定 | implemented |
 | settings_action_area | 設定操作領域 | section | 表示更新などの操作 | implemented。Reset操作は現行UIにはない |
 
 ## Fields
@@ -36,7 +39,10 @@ Renderer、Viewer、Relationship View、Mermaid debug、UI language、Local sour
 | defaultErRenderModeSelect | ER既定レンダリングモード | select | renderer_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultErRenderMode | [[RULE-MW-RENDERER-RENDER-MODE-RESOLUTION]] | implemented。Default ER render mode。custom / mermaid / mermaid-detail |
 | defaultDfdRenderModeSelect | DFD既定レンダリングモード | select | renderer_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultDfdRenderMode | [[RULE-MW-RENDERER-RENDER-MODE-RESOLUTION]] | implemented。Default DFD render mode。mermaid |
 | defaultProcessRenderModeSelect | Process既定レンダリングモード | select | renderer_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultProcessRenderMode | [[RULE-MW-RENDERER-RENDER-MODE-RESOLUTION]] | implemented。Default Process render mode。custom |
+| defaultBusinessFlowDirectionSelect | Business Flow既定方向 | select | business_flow_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultBusinessFlowDirection | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。Default Business Flow direction。LR / TD |
 | defaultScreenRenderModeSelect | Screen既定レンダリングモード | select | renderer_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultScreenRenderMode | [[RULE-MW-RENDERER-RENDER-MODE-RESOLUTION]] | implemented。Default Screen render mode。custom |
+| defaultDomainsViewModeSelect | Domains既定表示モード | select | domain_view_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultDomainsViewMode | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。Default Domains view mode。mindmap / area / tree |
+| defaultDomainDiagramViewModeSelect | Domain Diagram既定表示モード | select | domain_view_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultDomainDiagramViewMode | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。Default Domain Diagram view mode。mindmap / area / tree |
 | defaultRenderModeSelect | 旧既定レンダリングモード | select | renderer_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultRenderMode | [[RULE-MW-RENDERER-RENDER-MODE-RESOLUTION]] | legacy / not current UI。normalizeModelWeaveSettings の移行補助として旧 defaultRenderMode は読まれるが、現行Settings Tabには単一selectとして表示されない |
 | mermaidThemeModeSelect | Mermaidテーマモード | select | renderer_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].mermaidThemeMode | | planned。現行ModelWeaveSettingsには未実装 |
 | defaultZoomSelect | 既定ズーム | select | viewport_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultZoom | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | implemented。Default zoom。fit / 100 |
@@ -51,6 +57,7 @@ Renderer、Viewer、Relationship View、Mermaid debug、UI language、Local sour
 | diagnosticsVisibleToggle | 診断パネル表示 | checkbox | viewer_ui_settings_area | boolean | N | [[DATA-MW-PLUGIN-SETTINGS]].diagnosticsVisible | | planned。診断パネル表示制御の将来設定。現行ModelWeaveSettingsには未実装 |
 | statusBarVisibleToggle | ステータスバー表示 | checkbox | viewer_ui_settings_area | boolean | N | [[DATA-MW-PLUGIN-SETTINGS]].statusBarVisible | | planned。ステータスバー表示制御の将来設定。現行ModelWeaveSettingsには未実装 |
 | localSourceRootText | ローカルソースルート | text | source_link_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].localSourceRoot | | implemented。Local source root。relative Source Links outside vault の解決基準 |
+| defaultColorSchemeRefText | 既定Color Scheme参照 | text | color_scheme_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultColorSchemeRef | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。Default color scheme。color_scheme へのvault refまたはpath |
 | enableSourceLinksToggle | Source Links有効化 | checkbox | source_link_settings_area | boolean | N | [[DATA-MW-PLUGIN-SETTINGS]].enableSourceLinks | | future。Source Links Explorer / Source Links索引化がfutureのため現行実装済みではない |
 | refreshOpenViewsButton | 開いているビューを更新 | button | settings_action_area | action | N | [[DATA-MW-PLUGIN-SETTINGS]] | | implemented。Refresh open views。open previewを現在設定で再描画する |
 | resetSettingsButton | 設定リセット | button | settings_action_area | action | N | [[DATA-MW-PLUGIN-SETTINGS]] | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | planned process。既定設定へ戻す論理操作。現行Settings Tabには未実装 |
@@ -63,7 +70,10 @@ Renderer、Viewer、Relationship View、Mermaid debug、UI language、Local sour
 | changeDefaultErRenderMode | ER既定レンダリングモード変更 | ui_action | defaultErRenderModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultErRenderMode }) |
 | changeDefaultDfdRenderMode | DFD既定レンダリングモード変更 | ui_action | defaultDfdRenderModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultDfdRenderMode }) |
 | changeDefaultProcessRenderMode | Process既定レンダリングモード変更 | ui_action | defaultProcessRenderModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultProcessRenderMode }) |
+| changeDefaultBusinessFlowDirection | Business Flow既定方向変更 | ui_action | defaultBusinessFlowDirectionSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultBusinessFlowDirection }) |
 | changeDefaultScreenRenderMode | Screen既定レンダリングモード変更 | ui_action | defaultScreenRenderModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultScreenRenderMode }) |
+| changeDefaultDomainsViewMode | Domains既定表示モード変更 | ui_action | defaultDomainsViewModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultDomainsViewMode }) |
+| changeDefaultDomainDiagramViewMode | Domain Diagram既定表示モード変更 | ui_action | defaultDomainDiagramViewModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultDomainDiagramViewMode }) |
 | changeDefaultRenderMode | 旧既定レンダリングモード変更 | ui_action | defaultRenderModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | legacy / not current UI。現行Settings Tabには単一defaultRenderMode変更UIはない |
 | changeMermaidThemeMode | Mermaidテーマモード変更 | ui_action | mermaidThemeModeSelect | change | saveSettings | | | planned process。現行ModelWeaveSettingsには未実装の設定UI |
 | changeDefaultZoom | 既定ズーム変更 | ui_action | defaultZoomSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultZoom }) |
@@ -75,10 +85,11 @@ Renderer、Viewer、Relationship View、Mermaid debug、UI language、Local sour
 | toggleShowMermaidRenderDebug | Mermaid描画デバッグ表示切替 | ui_action | showMermaidRenderDebugToggle | change | saveSettings | | | implemented。updateSettings({ showMermaidRenderDebug }) |
 | changeUiLanguage | UI言語変更 | ui_action | uiLanguageSelect | change | saveSettings | | | implemented。updateSettings({ uiLanguage }) |
 | changeLocalSourceRoot | ローカルソースルート変更 | ui_action | localSourceRootText | change | saveSettings | | | implemented。updateSettings({ localSourceRoot }) |
+| changeDefaultColorSchemeRef | 既定Color Scheme参照変更 | ui_action | defaultColorSchemeRefText | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultColorSchemeRef }) |
 | changeViewerFontScale | Viewer文字サイズ変更 | ui_action | viewerFontScaleSelect | change | saveSettings | | | planned process。現行ModelWeaveSettingsには未実装の設定UI |
 | toggleDiagnosticsVisible | 診断パネル表示切替 | ui_action | diagnosticsVisibleToggle | change | saveSettings | | | planned process。現行ModelWeaveSettingsには未実装の設定UI |
 | toggleStatusBarVisible | ステータスバー表示切替 | ui_action | statusBarVisibleToggle | change | saveSettings | | | planned process。現行ModelWeaveSettingsには未実装の設定UI |
-| toggleSourceLinks | Source Links切替 | ui_action | enableSourceLinksToggle | change | saveSettings | | | future process。Source Links関連機能はfuture |
+| toggleSourceLinks | Source Links切替 | ui_action | enableSourceLinksToggle | change | saveSettings | | | future process。Source Links Explorer向けの想定。section解析、Preview表示、Copy / Open actionは現行実装済み |
 | refreshOpenViews | 開いているビューを更新 | ui_action | refreshOpenViewsButton | click | refreshOpenModelWeaveViews | | | implemented。クリック後に Refreshed open views notice を表示 |
 | resetSettings | 設定リセット | ui_action | resetSettingsButton | click | resetToDefaultSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | logical / planned process。既定設定へ戻す |
 
@@ -99,11 +110,18 @@ Renderer、Viewer、Relationship View、Mermaid debug、UI language、Local sour
 - この screen は現行実装済み設定とdogfood先行設計項目を含むため、全体としては partial / planned と扱う。
 - 現行Settings Tabは単一のdefaultRenderModeではなく、defaultClassRenderMode / defaultErRenderMode / defaultDfdRenderMode / defaultProcessRenderMode / defaultScreenRenderMode の形式別selectを表示する。
 - defaultRenderMode は旧設定名であり、normalizeModelWeaveSettings の移行補助としてのみ扱う。現行Settings Tabの主UI項目ではない。
+- defaultBusinessFlowDirection は現行Settings Tabに実装済みで、app_process Business Flowの既定方向を設定する。toolbar direction controlは一時的なViewer状態であり、この保存設定より優先される。
+- defaultDomainsViewMode / defaultDomainDiagramViewMode は現行Settings Tabに実装済みで、domains / domain_diagram の既定表示モードを設定する。
+- defaultColorSchemeRef は現行Settings Tabに実装済みで、描画時に color_scheme を解決するための保存設定である。
+- defaultColorSchemeRefを変更すると、開いているPreviewの再表示時に解決済みColor SchemeとApplied Color Scheme sectionへ反映される。Markdownモデル本文は変更しない。
+- defaultColorSchemeRefが空または未解決の場合、Previewは組み込み配色へのfallback結果を表示する。
 - defaultZoom / fontSize / nodeDensity / enableRelationshipView / showMermaidRenderDebug / uiLanguage / localSourceRoot は現行Settings Tabに実装済みの設定UI項目として扱う。
+- localSourceRoot は Source Links Open action のrelative path解決にも使われるが、Source Links Explorerの索引化や選択UIを有効化する設定ではない。
 - autoFitOnOpen / preserveViewportState / mermaidThemeMode / viewerFontScale / diagnosticsVisible / statusBarVisible はdogfood先行設計項目であり、現行実装済みとは断定しない。
 - enableSourceLinks は Source Links Explorer / Source Links索引化が future のため、現行実装済みとは扱わない。
 - `saveSettings` は updateSettings / saveData に対応する論理名として扱う。`resetToDefaultSettings` は現行Settings Tabには未実装のplanned操作として扱う。
 - Refresh open views は現行Settings Tabに実装済みの操作であり、refreshOpenModelWeaveViews を呼び出す。
+- 各onChangeは updateSettings を呼び出し、保存後に開いているModel Weave previewへ設定を反映する。
 - 実効値の解決は [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] に委ねる。
 - 設定変更はObsidianプラグイン設定へ保存され、Markdownモデル本文やfrontmatterは変更しない。
 - 診断パネルやステータスバーの表示制御はUI表示のみを対象とし、内部診断生成やViewer状態の保持そのものを止めるものではない。
@@ -116,3 +134,8 @@ Renderer、Viewer、Relationship View、Mermaid debug、UI language、Local sour
 | src/settings/model-weave-settings.ts | ModelWeaveSettings | type | プラグイン設定構造 |
 | src/settings/model-weave-settings.ts | DEFAULT_MODEL_WEAVE_SETTINGS | constant | 既定設定値 |
 | src/settings/model-weave-settings.ts | normalizeModelWeaveSettings | function | 設定値の正規化と旧defaultRenderModeの移行補助 |
+| src/main.ts | ModelWeavePlugin.updateSettings | method | 設定変更の正規化、saveData、Preview更新 |
+| src/main.ts | ModelWeavePlugin.refreshOpenModelWeaveViews | method | 開いているPreviewへ設定を再反映 |
+| src/main.ts | ModelWeavePlugin.getViewerPreferences | method | Viewerへ渡す表示設定の構成 |
+| src/core/color-scheme.ts | resolveDefaultColorScheme | function | defaultColorSchemeRef の解決 |
+| src/views/applied-color-scheme-renderer.ts | renderAppliedColorSchemeSectionContent | function | Applied Color Scheme sectionの表示 |

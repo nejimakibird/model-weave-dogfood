@@ -15,6 +15,7 @@ tags:
 
 特定の描画エンジン（Mermaid等）に依存しない、解決済み図面データの論理構造です。
 現行ソースでは ResolvedDiagram に対応し、元の diagram、解決済み nodes / edges、未解決オブジェクト、warningを保持します。
+Class / ER object previewでは、object contextから作られる関連subgraphも同じResolvedDiagram形でRendererへ渡されます。
 
 ## Fields
 
@@ -29,6 +30,8 @@ tags:
 ## Notes
 
 - 本データは resolveDiagramRelations の戻り値である ResolvedDiagram のdogfood表現である。
+- object contextから生成される関連subgraphも、Markdown正本ではなくPreview用の派生ResolvedDiagramとして扱う。
+- internal edge adapters は Class / ER / relations由来の内部関係をDiagramEdge相当へ変換する補助であり、ユーザーが直接編集するMarkdown表ではない。
 - labels / shape / sourceRefs は現行 ResolvedDiagram の直接フィールドではないため、現在のフィールド一覧には含めない。
 - warnings は診断パネルやPreview表示で使われる ValidationWarning list であり、旧称 diagnostics では扱わない。
 - Mermaid source は別データモデルで扱い、本モデルには含めない。
@@ -42,3 +45,6 @@ tags:
 | src/types/models.ts | DiagramNode | interface | nodes要素 |
 | src/types/models.ts | DiagramEdge | interface | edges要素 |
 | src/core/relation-resolver.ts | resolveDiagramRelations | function | ResolvedDiagramを生成 |
+| src/core/object-context-resolver.ts | resolveObjectContext | function | Class / ER objectの関連object contextを生成 |
+| src/core/object-subgraph-builder.ts | buildObjectSubgraphScene | function | object contextからPreview用ResolvedDiagramを生成 |
+| src/core/internal-edge-adapters.ts | toClassRelationEdge | function | relations由来の内部関係をClass edgeへ変換 |

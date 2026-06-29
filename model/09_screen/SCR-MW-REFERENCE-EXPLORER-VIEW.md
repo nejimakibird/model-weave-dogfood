@@ -14,8 +14,9 @@ tags:
 # Reference Explorer View
 
 ## Summary
-Vault内モデル資産間の参照関係を一覧表示する画面。
+Vault内モデル資産間の参照関係を一覧表示するfuture / plannedの画面。
 未解決参照、参照元、参照先、参照種別、関連診断を確認し、必要に応じて参照元ファイルや診断箇所へ移動できるようにする。
+Model Weave 0.1.17時点では、Impact Summary / Relationship View / Weave Mapは実装済みだが、独立したReference Explorer Viewは本体srcで確認できない。
 
 ## Layout
 
@@ -74,8 +75,9 @@ Vault内モデル資産間の参照関係を一覧表示する画面。
 | openReferenceFailed | Failed to open reference target. | error | on_open_failed | 参照先を開けない場合 |
 
 ## Notes
-- このScreenは参照関係を確認するための表示UIであり、Markdownモデルの正本を変更しない。
+- このScreenはfuture / plannedの参照確認UIであり、Markdownモデルの正本を変更しない。
 - [[DATA-MW-REFERENCE-EXPLORER-STATE]] は [[DATA-MW-VAULT-MODEL-INDEX]] から導出される派生状態である。
+- 現行実装済みのRelationship View / Impact Summary / Weave MapはViewer内の派生表示であり、この横断Explorerとは別機能である。
 - 表示上のパス短縮は [[RULE-MW-PATH-SHORTENER]] に従うが、ファイルジャンプでは完全なfilePathを使用する。
 - `filterReferenceExplorer` は [[PROC-MW-REFERENCE-EXPLORER-FILTER]] として詳細化済みである。
 - `selectReference` は [[PROC-MW-REFERENCE-SELECT]] として詳細化済みである。

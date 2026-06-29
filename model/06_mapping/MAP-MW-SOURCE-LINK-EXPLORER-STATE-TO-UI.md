@@ -17,7 +17,8 @@ tags:
 
 ## Summary
 
-[[DATA-MW-SOURCE-LINK-EXPLORER-STATE]] が保持するSource Link一覧、件数、検索条件、選択状態、関連診断を [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] の各表示項目へ反映するマッピングを定義する。
+future / plannedの [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]] が保持するSource Link一覧、件数、検索条件、選択状態、関連診断を [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] の各表示項目へ反映するマッピングを定義する。
+Model Weave 0.1.17時点では、Preview内Source Links sectionの表示・Copy/Openは実装済みだが、このExplorer画面へのUI反映は本体srcで確認できない。
 
 ## Scope
 
@@ -69,6 +70,7 @@ tags:
 ## Notes
 
 - [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]] は [[DATA-MW-VAULT-MODEL-INDEX]] から導出される派生状態である。
+- 本mappingはfuture / plannedのSource Links Explorer向けであり、現行Preview内Source Links tableの表示mappingとは分けて扱う。
 - Source Linksはモデル資産から実装ソースへ辿るためのナビゲーション情報である。
 - `filterSourceLinks` / `selectSourceLink` / `openModelFile` / `openSourcePath` / `copySourcePath` は論理プロセス名であり、後続でapp_process化できる。
 - 表示上のパス短縮はUI表示にのみ適用する。

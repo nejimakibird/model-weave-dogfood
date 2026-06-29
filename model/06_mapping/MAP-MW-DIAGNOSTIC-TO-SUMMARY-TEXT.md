@@ -33,17 +33,16 @@ tags:
 |---|---|---|---|---|---|
 | severity | errorCount | severity=error の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | error件数 |
 | severity | warningCount | severity=warning の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | warning件数 |
-| severity | infoCount | severity=info の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | info件数 |
-| severity | noteCount | severity=note の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | note件数 |
+| severity | infoCount | severity=info の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | UIではNotesとして表示 |
 | severity | diagnosticsSummaryText | 件数を優先度順に結合して短い文字列を生成 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | Y | 例: 2 Errors / 3 Warnings |
 
 ## Rules
 
 - error が1件以上ある場合は、error件数を先頭に表示する。
 - warning が1件以上ある場合は、warning件数を error の後に表示する。
-- info / note は通常は省略してよいが、error / warning がない場合に表示してよい。
+- info は通常は省略してよいが、error / warning がない場合にNotesとして表示してよい。
 - 診断が0件の場合は "No diagnostics" と表示する。
-- 表示順は error > warning > info > note とする。
+- 表示順は error > warning > info とする。
 - severity は [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] によって正規化済みとして扱う。
 - ステータスバーでは短く表示し、詳細は [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]] に委ねる。
 
