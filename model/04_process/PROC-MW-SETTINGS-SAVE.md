@@ -16,6 +16,12 @@ tags:
 ModelWeavePlugin.updateSettings が受け取った部分設定を現在の設定へ反映し、normalizeModelWeaveSettings で正規化して Obsidian プラグイン設定へ保存する処理。
 保存後は options.refreshViews に応じて、開いている Model Weave preview view へ設定を反映する。
 
+## Domain Sources
+
+| ref | notes |
+|---|---|
+| [[DOMAINS-MW-ARCHITECTURE]] | Settings保存とViewer反映に関わる実装領域 |
+
 ## Inputs
 
 | id | data | source | required | notes |
@@ -33,21 +39,21 @@ ModelWeavePlugin.updateSettings が受け取った部分設定を現在の設定
 
 ## Steps
 
-| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| start | Settings | 設定保存開始 | start | partialSettings |  |  |  |  | updateSettings が呼び出される |
-| receivePartial | Settings | 部分設定を受け取る | input | partialSettings | partialSettings |  |  | SCR-MW-SETTINGS-TAB | Settings Tab から呼び出される |
-| mergeSettings | Settings | 現在設定へ反映する | process | currentSettings | mergedSettings |  |  |  | this.settings と partial をマージする |
-| normalizeSettings | Settings | 設定を正規化する | process | mergedSettings | updatedSettings | RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION |  |  | normalizeModelWeaveSettings を使う |
-| saveSettings | Settings | 設定を保存する | process | updatedSettings | updatedSettings |  |  |  | saveData に渡す |
-| shouldRefresh | Settings | View更新要否を判定する | decision | saveOptions |  |  |  |  | refreshViews false でなければ更新する |
-| skipRefresh | Settings | View更新を省略する | end | updatedSettings |  |  |  |  | refreshViews false の場合 |
-| getOpenViews | Viewer | 開いているViewを取得する | process | updatedSettings | openViews |  |  |  | getLeavesOfType を使う |
-| applyPreferences | Viewer | Viewer設定を反映する | process | openViews | refreshedViews |  |  |  | applyViewerSettings を呼ぶ |
-| canRerenderFile | Viewer | 表示ファイルを再描画できるか判定する | decision | openViews |  |  |  |  | currentFilePath と TFile を確認する |
-| rerenderFile | Viewer | 対象ファイルを再描画する | process | openViews | refreshedViews |  |  |  | showPreviewForFile を rerender で呼ぶ |
-| refreshView | Viewer | Viewのみ更新する | process | openViews | refreshedViews |  |  |  | refreshForSettingsChange を呼ぶ |
-| endSaved | Settings | 設定保存完了 | end | updatedSettings |  |  |  |  | 保存結果を保持する |
+| start | settings_configuration | 設定保存開始 | start | partialSettings |  |  |  |  | updateSettings が呼び出される |
+| receivePartial | settings_configuration | 部分設定を受け取る | input | partialSettings | partialSettings |  |  | [[SCR-MW-SETTINGS-TAB]] | Settings Tab から呼び出される |
+| mergeSettings | settings_configuration | 現在設定へ反映する | process | currentSettings | mergedSettings |  |  |  | this.settings と partial をマージする |
+| normalizeSettings | settings_configuration | 設定を正規化する | process | mergedSettings | updatedSettings | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] |  |  | normalizeModelWeaveSettings を使う |
+| saveSettings | settings_configuration | 設定を保存する | process | updatedSettings | updatedSettings |  |  |  | saveData に渡す |
+| shouldRefresh | settings_configuration | View更新要否を判定する | decision | saveOptions |  |  |  |  | refreshViews false でなければ更新する |
+| skipRefresh | settings_configuration | View更新を省略する | end | updatedSettings |  |  |  |  | refreshViews false の場合 |
+| getOpenViews | viewer_ui | 開いているViewを取得する | process | updatedSettings | openViews |  |  |  | getLeavesOfType を使う |
+| applyPreferences | viewer_ui | Viewer設定を反映する | process | openViews | refreshedViews |  |  |  | applyViewerSettings を呼ぶ |
+| canRerenderFile | viewer_ui | 表示ファイルを再描画できるか判定する | decision | openViews |  |  |  |  | currentFilePath と TFile を確認する |
+| rerenderFile | viewer_ui | 対象ファイルを再描画する | process | openViews | refreshedViews |  |  |  | showPreviewForFile を rerender で呼ぶ |
+| refreshView | viewer_ui | Viewのみ更新する | process | openViews | refreshedViews |  |  |  | refreshForSettingsChange を呼ぶ |
+| endSaved | settings_configuration | 設定保存完了 | end | updatedSettings |  |  |  |  | 保存結果を保持する |
 
 ## Flows
 
@@ -79,6 +85,7 @@ ModelWeavePlugin.updateSettings が受け取った部分設定を現在の設定
 - options.refreshViews が false の場合、保存後のView更新は行わない。
 - refreshOpenModelWeaveViews は開いている Model Weave preview view に viewer preferences を適用する。
 - 表示中ファイルが TFile として取得できる場合は showPreviewForFile で再描画し、それ以外は refreshForSettingsChange を呼ぶ。
+- `Steps.domain` は [[DOMAINS-MW-ARCHITECTURE]] のDomain idを参照する。Flow Connect Modeの対象ではなく、設定保存後のViewer更新フローである。
 
 ## Source Links
 

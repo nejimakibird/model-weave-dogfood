@@ -14,7 +14,8 @@ tags:
 
 ## Summary
 
-Model Index View 上のモデル種別フィルタ、診断状態フィルタ、検索テキストをもとに、[[DATA-MW-VAULT-MODEL-INDEX]] の modelAssets から表示対象のModelAsset一覧を絞り込む処理。
+Model Index View 上のモデル種別フィルタ、診断状態フィルタ、検索テキストをもとに、[[DATA-MW-VAULT-MODEL-INDEX]] の modelAssets から表示対象のModelAsset一覧を絞り込む将来構想の処理。
+Model Weave 0.1.17時点では、Vault Index rebuildやRelationship Viewで使う内部indexは実装済みだが、独立したModel Index Viewとしての一覧・検索・フィルタ画面はfutureとして扱う。
 
 ## Inputs
 
@@ -57,16 +58,19 @@ Model Index View 上のモデル種別フィルタ、診断状態フィルタ、
 
 ## Notes
 
+- 本処理はfutureのModel Index View向け設計であり、Model Weave 0.1.17時点の本体実装済み画面とは扱わない。
 - 本処理は表示対象の絞り込みであり、Markdownモデル本文やfrontmatterは変更しない。
 - [[DATA-MW-VAULT-MODEL-INDEX]] は派生インデックスであり、フィルタ結果も表示用の派生データである。
 - diagnosticFilter は [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] によるseverity分類に従う。
 - パス短縮は表示上のみ適用し、ファイルジャンプには完全なfilePathを使用する。
 - `filterModelIndex` は [[SCR-MW-MODEL-INDEX-VIEW]] から呼び出される論理プロセスであり、本定義はその実体となるアルゴリズムを示す。
+- 現行実装済みのImpact Summary / Relationship View / Weave MapはViewer内の派生表示であり、このModel Index Viewとは別機能である。
+- 現行実装済みのSource Links section supportは各モデル内の `## Source Links` の解析・表示・Copy/Openであり、この横断的なModel Indexフィルタとは別機能である。
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | VaultIndex | class | Vault内モデル資産の索引 |
-| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の生成 |
-| src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer表示更新 |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | VaultIndex class。future Model Index Viewが参照し得る内部索引 |
+| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics function。現行の診断生成参考 |
+| src/views/modeling-preview-view.ts | renderCurrentState method。現行Viewer表示であり、独立Model Index View実装ではない |

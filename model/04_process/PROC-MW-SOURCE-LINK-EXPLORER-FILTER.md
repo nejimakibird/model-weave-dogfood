@@ -15,6 +15,7 @@ tags:
 ## Summary
 Source Links Explorer上のソースパス、シンボル、Source Link種別、モデル種別、検索文字列をもとに、[[DATA-MW-SOURCE-LINK-EXPLORER-STATE]] の `visibleSourceLinks` を更新する処理。
 モデル資産と実装ソースの対応関係を絞り込み、Source Links Explorer Viewへ表示する。
+Model Weave 0.1.17時点では、各モデル内の `## Source Links` section解析・Preview表示・Copy/Openは実装済みだが、横断的なSource Links Explorer画面とフィルタはfutureとして扱う。
 
 ## Inputs
 
@@ -65,6 +66,7 @@ Source Links Explorer上のソースパス、シンボル、Source Link種別、
 | sourceLinkFilterFailed | Failed to filter Source Links. | error | フィルタ処理に失敗した場合 |
 
 ## Notes
+- 本処理はfutureのSource Links Explorer向け設計であり、Model Weave 0.1.17時点の本体実装済み画面とは扱わない。
 - 本処理はSource Links Explorer上の表示対象を絞り込むUI処理であり、Markdownモデル本文やfrontmatterは変更しない。
 - [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]] は派生状態であり、フィルタ結果も表示用の一時状態である。
 - `sourcePathFilter` / `symbolFilter` / `sourceKindFilter` / `modelTypeFilter` / `searchText` はSource Links Explorerの一時的なUI状態として扱う。
@@ -72,11 +74,14 @@ Source Links Explorer上のソースパス、シンボル、Source Link種別、
 - パス検索やcopy/open処理では短縮表示ではなく完全な `path` を使用する。
 - 表示上のパス短縮は [[RULE-MW-PATH-SHORTENER]] に委ねる。
 - `filterSourceLinks` は [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] から呼び出される論理プロセスであり、本定義はその詳細に相当する。
+- 現行実装済みのSource Links section supportは各モデル内の `## Source Links` を解析し、Preview内で表示し、Copy Path / Openを提供する機能である。
+- Relationship View / Impact SummaryのRelated Source Links集約は現行実装済みだが、Explorer専用の一覧・検索・選択状態とは別機能である。
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | VaultIndex | class | Source Links情報の索引元 |
-| src/core/schema-detector.ts | detectModelType | function | モデル資産種別の検出 |
-| src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer表示更新の参考 |
+| path | notes |
+|---|---|
+| src/parsers/source-links-parser.ts | parseSourceLinks function。現行Source Links section supportの解析 |
+| src/renderers/source-links-renderer.ts | renderSourceLinks function。現行Preview内Source Links表示とCopy/Open |
+| src/core/impact-analyzer.ts | collectRelatedSourceLinks function。現行Relationship / Impact Summaryへの関連Source Links集約 |
+| src/views/modeling-preview-view.ts | renderCurrentState method。現行Viewer表示であり、独立Source Links Explorer実装ではない |

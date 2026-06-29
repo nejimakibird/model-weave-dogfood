@@ -14,6 +14,7 @@ tags:
 
 ## Summary
 Source Links Explorer上で選択されたSource Linkをもとに、選択中Source Link ID、対応ModelAsset、関連診断を [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]] へ反映する処理。
+Model Weave 0.1.17時点では、Preview内Source LinksのCopy/OpenとRelationship View内Related Source Linksは実装済みだが、Source Links Explorerの選択状態管理はfutureとして扱う。
 
 ## Inputs
 
@@ -54,14 +55,18 @@ Source Links Explorer上で選択されたSource Linkをもとに、選択中Sou
 | noSourceLinkSelected | No Source Link selected. | warning | 無効な選択操作が行われた場合 |
 
 ## Notes
+- 本処理はfutureのSource Links Explorer向け選択処理であり、Model Weave 0.1.17時点の本体実装済み操作とは扱わない。
 - 本処理はUI上の選択状態を管理するものであり、Markdownファイル（正本）の内容やフロントマターを変更することはない。
 - `selectedSourceLinkId` 等の ID 群は、エクスプローラー画面内でのみ保持される一時的な状態である。
 - 1つの Source Link が複数のアセットに紐づく場合、`relatedModelAssets` にはそれら全てが集約される。
 - このプロセスは [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] の `ACT-SELECT-SOURCE-LINK` アクションの実装詳細に相当する。
+- 現行実装済みのSource Links Copy / Open actionsはPreview内Source Links tableの行操作であり、このExplorer選択状態とは別機能である。
+- Relationship View / Impact SummaryのRelated Source Linksは現行実装済みの集約表示であり、Explorer専用の選択状態ではない。
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | VaultIndex | class | Source Linksおよび診断情報の検索元 |
-| src/views/modeling-preview-view.ts | renderCurrentState | method | 状態変更をUIへ通知する仕組みの参考 |
+| path | notes |
+|---|---|
+| src/renderers/source-links-renderer.ts | renderSourceLinks function。現行Preview内Source Links表示とCopy/Open |
+| src/core/impact-analyzer.ts | collectRelatedSourceLinks function。現行Relationship / Impact Summaryへの関連Source Links集約 |
+| src/views/modeling-preview-view.ts | renderCurrentState method。現行Viewer表示であり、独立Source Links Explorer実装ではない |

@@ -13,7 +13,8 @@ tags:
 
 ## Summary
 
-Model Weave 内部で発生したバリデーション警告（ValidationWarning）の診断コードを、ビューアー上での表示種別（severity）に変換するためのマッピング基準を定義します。
+Model Weave 内部で発生した `ValidationWarning` の `severity` を、Viewer上の Notes / Warnings / Errors 表示へ分類するためのルール。
+現行実装では `info` / `warning` / `error` が有効値であり、`note` は保存値ではなくUI表示ラベルとして扱う。
 
 ## Inputs
 
@@ -27,32 +28,33 @@ Model Weave 内部で発生したバリデーション警告（ValidationWarning
 |---|---|---|---|---|
 | C1 | warning.severity が `info` | info | そのまま扱う | normalizeDiagnosticSeverity |
 | C2 | warning.severity が `error` | error | そのまま扱う | normalizeDiagnosticSeverity |
-| C3 | error対象コード | error | errorへ正規化する | frontmatter / schema / table / 必須名 |
-| C4 | その他のwarning | warning | 元のseverityを維持する | fallback |
+| C3 | error対象コードまたは必須フィールド | error | errorへ正規化する | frontmatter / schema / table / 必須名 |
+| C4 | その他のwarning | warning | warningとして表示する | fallback |
 
 ## Severity Mapping
 
 以下のマッピングに基づき、深刻度を正規化します。
 
-| code | severity | condition / description |
+| code / condition | severity | condition / description |
 |---|---|---|
-| `frontmatter-parse-error` | error | フロントマターの構文が不正で以降の解析が不能 |
-| `unknown-schema` | error | `type` または `schema` が未定義または非対応 |
-| `invalid-table-column` | error | セクション内のテーブルヘッダーが期待値と不一致 |
-| `invalid-table-row` | error | 列数の不一致によりデータが読み取れない |
-| `missing-name` | error | 必須の `name` フィールドが存在しない |
-| `unresolved-reference` | warning | Wikilink または ID による参照先が見つからない |
-| `unresolved-mapping-source-ref` | warning | マッピングのソースパスが Fields に存在しない |
-| `unresolved-mapping-target-ref` | warning | マッピングのターゲットパスが Fields に存在しない |
-| `unsupported-render-mode-fallback` | warning | 指定された描画モードが非対応で自動切替された |
-| `dfd-custom-render-mode-fallback` | warning | DFD で `custom` が指定され `mermaid` へ強制された |
-| `source-link-unverified` | warning | `Source Links` の対応関係が未確認 |
-| `optional-section-ignored` | info | 定義外の任意セクションがスキップされた |
-| `dogfood-review-note` | note | Dogfood 運用上のレビューコメントや設計メモ |
+| `frontmatter-parse-error` | error | frontmatterの構文が不正 |
+| `unknown-schema` | error | `schema` または `type` が非対応 |
+| `invalid-table-column` | error | テーブルヘッダーが期待値と不一致 |
+| `invalid-table-row` | error | テーブル行の列数が不一致 |
+| `missing-name` | error | 必須の `name` が存在しない |
+| `missing-kind` | error | 必須の `kind` が存在しない |
+| `invalid-structure` with required identity field | error | `type` / `id` / `name` / `logical_name` / `physical_name` / `kind` の不正 |
+| `unresolved-reference` | warning | 参照先が見つからない |
+| `class-relation-target-not-diagram-compatible` | warning | Class Diagram描画対象外の参照 |
+| `duplicate-mapping-target-member` | warning | mapping target memberが重複 |
+| other `ValidationWarningCode` | emitted severity | 生成元が指定したseverityを維持 |
 
 ## Notes
 
-- 上記のテーブルは Model Weave の正式な `Logic` セクションではなく、実装における `normalizeDiagnosticSeverity` 関数の振る舞いを定義する補足表です。
+- 上記のテーブルは Model Weave の正式な `Logic` セクションではなく、実装における `normalizeDiagnosticSeverity` 関数の振る舞いを定義する補足表である。
+- `ValidationWarning.severity` の有効値は `info` / `warning` / `error` である。Viewerでは `info` を Notes として表示する。
+- Source Linksのavailable / missingなどの表示状態はSource Links UIのstatusであり、`ValidationWarningCode` ではない。
+- Quick FixやMarkdown自動修正は現行srcで確認できないため、このルールではfuture扱いとする。
 
 ## Source Links
 
@@ -60,3 +62,5 @@ Model Weave 内部で発生したバリデーション警告（ValidationWarning
 |---|---|---|---|
 | src/core/current-file-diagnostics.ts | normalizeDiagnosticSeverity | function | 深刻度の正規化ロジック |
 | src/types/models.ts | ValidationWarning | type | 診断情報の基本構造 |
+| src/types/warnings.ts | VALIDATION_WARNING_SEVERITIES | constant | severityの有効値 |
+| src/types/warnings.ts | VALIDATION_WARNING_CODES | constant | codeの有効値 |

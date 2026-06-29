@@ -18,6 +18,12 @@ tags:
 現在のモデルファイルに対して、parser / index / validator / resolver / render mode / current-file checks から発生した `ValidationWarning` を集約し、Preview state の warnings として渡して表示する処理。
 現行実装では `main.ts` が warnings を組み立て、`buildCurrentObjectDiagnostics` または `buildCurrentDiagramDiagnostics` で正規化・重複排除し、`ModelingPreviewView` が Notes / Warnings / Errors に分けて描画する。
 
+## Domain Sources
+
+| ref | notes |
+|---|---|
+| [[DOMAINS-MW-ARCHITECTURE]] | Preview診断収集に関わる実装領域 |
+
 ## Inputs
 
 | id | data | source | required | notes |
@@ -36,24 +42,26 @@ tags:
 | previewWarnings | [[DATA-MW-CORE-DIAGNOSTIC]] | [[DFD-MW-OBJ-PREVIEW-VIEW]] | `view.updateContent` のwarnings |
 | diagnosticSections | object | Preview DOM | Notes / Warnings / Errors の表示グループ |
 | diagnosticOpenRequest | object | Editor navigation | click可能な診断からのopen要求 |
+| diagnosticGuidanceCopy | object | Clipboard | 診断メッセージや修正ヒントのコピー出力 |
 
 ## Steps
 
-| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| start | Preview Controller | 診断収集を開始する | start | parsedModel, vaultIndex |  |  |  |  | active fileのpreview更新から開始する |
-| collectIndexWarnings | Vault Index | index warningを取得する | process | vaultIndex | indexWarnings |  |  |  | `warningsByFilePath[file.path]` を参照する |
-| validateVault | Vault Index | Vault検証warningを保持する | process | vaultIndex | indexWarnings |  |  |  | `ensureVaultValidation` が `validateVaultIndex` 結果を格納する |
-| mergeRuntimeWarnings | Preview Controller | runtime warningを追加する | process | indexWarnings, renderModeWarnings, resolverWarnings | warning candidates |  |  |  | render mode / resolver / context warningを含める |
-| chooseDiagnosticPath | Preview Controller | current-file診断経路を判定する | decision | parsedModel |  |  |  |  | diagram系とobject系で関数が異なる |
-| objectDiagnostics | Diagnostics | object系診断を生成する | process | parsedModel, warning candidates | diagnostics |  |  |  | `buildCurrentObjectDiagnostics` を使う |
-| diagramDiagnostics | Diagnostics | diagram系診断を生成する | process | resolved diagram, warning candidates | diagnostics |  |  |  | `buildCurrentDiagramDiagnostics` を使う |
-| passPreviewState | Preview Controller | diagnosticsをpreview stateへ渡す | screen | diagnostics | previewWarnings |  |  |  | `view.updateContent` のwarningsに設定する |
-| groupBySeverity | Preview View | severity別に分類する | process | previewWarnings | diagnosticSections |  |  |  | info / warning / error に分ける |
-| renderGroups | Preview View | 診断グループを描画する | screen | diagnosticSections | preview DOM |  |  |  | Notes / Warnings / Errors detailsを作る |
-| clickableCheck | Preview View | 診断を開けるか判定する | decision | previewWarnings |  |  |  |  | `onOpenDiagnostic` がある場合だけclick可能にする |
-| openDiagnostic | Preview Controller | 診断位置を開く | screen | diagnosticOpenRequest | editor location |  |  |  | `openDiagnosticLocation` が対象ファイルと行を解決する |
-| end | Preview View | 診断表示を終了する | end | preview DOM |  |  |  |  | 診断が空の場合は何も描画しない |
+| start | preview_pipeline | 診断収集を開始する | start | parsedModel, vaultIndex |  |  |  |  | active fileのpreview更新から開始する |
+| collectIndexWarnings | model_storage | index warningを取得する | process | vaultIndex | indexWarnings |  |  |  | `warningsByFilePath[file.path]` を参照する |
+| validateVault | model_storage | Vault検証warningを保持する | process | vaultIndex | indexWarnings |  |  |  | `ensureVaultValidation` が `validateVaultIndex` 結果を格納する |
+| mergeRuntimeWarnings | preview_pipeline | runtime warningを追加する | process | indexWarnings, renderModeWarnings, resolverWarnings | warning candidates |  |  |  | render mode / resolver / context warningを含める |
+| chooseDiagnosticPath | preview_pipeline | current-file診断経路を判定する | decision | parsedModel |  |  |  |  | diagram系とobject系で関数が異なる |
+| objectDiagnostics | diagnostics | object系診断を生成する | process | parsedModel, warning candidates | diagnostics |  |  |  | `buildCurrentObjectDiagnostics` を使う |
+| diagramDiagnostics | diagnostics | diagram系診断を生成する | process | resolved diagram, warning candidates | diagnostics |  |  |  | `buildCurrentDiagramDiagnostics` を使う |
+| passPreviewState | preview_pipeline | diagnosticsをpreview stateへ渡す | screen | diagnostics | previewWarnings |  |  |  | `view.updateContent` のwarningsに設定する |
+| groupBySeverity | viewer_ui | severity別に分類する | process | previewWarnings | diagnosticSections |  |  |  | info / warning / error に分ける |
+| renderGroups | viewer_ui | 診断グループを描画する | screen | diagnosticSections | preview DOM |  |  |  | Notes / Warnings / Errors detailsを作る |
+| renderCopyGuidance | viewer_ui | コピー支援を描画する | screen | diagnostics | diagnosticGuidanceCopy |  |  | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]] | Copy Message / Copy Markdown / Copy Referenceなど |
+| clickableCheck | viewer_ui | 診断を開けるか判定する | decision | previewWarnings |  |  |  |  | `onOpenDiagnostic` がある場合だけclick可能にする |
+| openDiagnostic | preview_pipeline | 診断位置を開く | screen | diagnosticOpenRequest | editor location |  |  |  | `openDiagnosticLocation` が対象ファイルと行を解決する |
+| end | viewer_ui | 診断表示を終了する | end | preview DOM |  |  |  |  | 診断が空の場合は何も描画しない |
 
 ## Flows
 
@@ -69,7 +77,8 @@ tags:
 | diagramDiagnostics | passPreviewState |  | previewへ渡す | dedupe済みdiagnosticsを渡す |
 | passPreviewState | groupBySeverity |  | severity分類 | Preview View側で分類する |
 | groupBySeverity | renderGroups |  | 描画 | Notes / Warnings / Errorsを描画する |
-| renderGroups | clickableCheck |  | click判定 | open handlerの有無を確認する |
+| renderGroups | renderCopyGuidance |  | copy支援 | 診断カードごとのコピー操作を表示する |
+| renderCopyGuidance | clickableCheck |  | click判定 | open handlerの有無を確認する |
 | clickableCheck | openDiagnostic | `onOpenDiagnostic` | open | 診断クリックで対象位置を開く |
 | clickableCheck | end |  | 表示のみ | click handlerなし |
 | openDiagnostic | end |  | 完了 | editor navigation後に終了する |
@@ -82,7 +91,10 @@ tags:
 - `buildCurrentDiagramDiagnostics` はdiagram系warningを正規化して重複を除く。
 - `renderDiagnostics` はdiagnosticsを info / warning / error に分け、Notes / Warnings / Errors として表示する。
 - `openDiagnosticLocation` は診断にfile pathやline情報がある場合に、対応するMarkdown位置を開くためのpreview側操作である。
+- `renderDiagnosticCard` はOpen Locationに加え、Copy Message / Copy Markdown / Copy Reference / Copy Expected Header / Copy Frontmatter Exampleを表示する。
+- コピー支援はclipboardへ文字列を渡すだけで、Markdown本文のQuick Fixや自動修正ではない。
 - Explorer stateやplannedの診断パネル表示設定はこの処理の対象外である。
+- `Steps.domain` は [[DOMAINS-MW-ARCHITECTURE]] のDomain idを参照する。Flow Connect Modeやref-aware Step操作とは別の診断表示フローである。
 
 ## Source Links
 
@@ -93,7 +105,11 @@ tags:
 | src/core/current-file-diagnostics.ts | buildCurrentDiagramDiagnostics | function | diagram診断を正規化する |
 | src/core/vault-index.ts | warningsByFilePath | field | file path別warning map |
 | src/core/vault-index.ts | ensureVaultValidation | function | vault validation warningをindexへ格納する |
+| src/main.ts | buildAppProcessBusinessFlowWarnings | method | app_process Flowsの未解決step参照warning |
 | src/main.ts | view.updateContent | usage | warningsをPreview stateへ渡す |
 | src/main.ts | openDiagnosticLocation | method | 診断クリック時のファイル位置open |
+| src/main.ts | resolveDiagnosticLine | function | line / fromLine / toLine / section / contextから位置を解決 |
 | src/views/modeling-preview-view.ts | renderDiagnostics | function | Notes / Warnings / Errors を描画する |
+| src/views/modeling-preview-view.ts | renderDiagnosticCard | function | 診断カードのopen / copy actionsを描画する |
+| src/views/modeling-preview-view.ts | formatDiagnosticAsMarkdown | function | Markdownコピー用文字列を生成する |
 | src/types/models.ts | ValidationWarning | type | 診断データ構造 |

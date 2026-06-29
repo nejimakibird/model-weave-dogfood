@@ -15,6 +15,12 @@ tags:
 preview の `Source Links` セクションに表示された Source Link の resolved path を、外部エディタや検索で利用できるようにクリップボードへコピーする処理。
 現行実装では Source Links Explorer ではなく、preview 内の Copy Path button から実行される。
 
+## Domain Sources
+
+| ref | notes |
+|---|---|
+| [[DOMAINS-MW-ARCHITECTURE]] | Preview内Source Links copy操作に関わる実装領域 |
+
 ## Inputs
 
 | id | data | source | required | notes |
@@ -31,13 +37,13 @@ preview の `Source Links` セクションに表示された Source Link の res
 
 ## Steps
 
-| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| start | Preview | Copy Path操作を開始する | start | sourceLink |  |  |  |  | Source Links table の行操作から開始する |
-| receive | Preview | Source Link行を受け取る | input | sourceLink | sourceLink.path |  |  |  | `renderSourceLinks` はpathが空でない行だけを描画する |
-| resolve | Renderer | pathをresolved pathへ解決する | process | sourceLink.path, localSourceRoot | resolvedPath |  |  |  | relative pathでは `localSourceRoot` が使用される場合がある |
-| copy | Preview | resolved pathをコピーする | screen | resolvedPath | copiedPath |  |  |  | `navigator.clipboard?.writeText` に渡す |
-| end | Preview | コピー処理を終了する | end | copiedPath |  |  |  |  | 現行実装では完了通知は出さない |
+| start | viewer_ui | Copy Path操作を開始する | start | sourceLink |  |  |  |  | Source Links table の行操作から開始する |
+| receive | viewer_ui | Source Link行を受け取る | input | sourceLink | sourceLink.path |  |  |  | `renderSourceLinks` はpathが空でない行だけを描画する |
+| resolve | renderer_area | pathをresolved pathへ解決する | process | sourceLink.path, localSourceRoot | resolvedPath |  |  |  | relative pathでは `localSourceRoot` が使用される場合がある |
+| copy | viewer_ui | resolved pathをコピーする | screen | resolvedPath | copiedPath |  |  |  | `navigator.clipboard?.writeText` に渡す |
+| end | viewer_ui | コピー処理を終了する | end | copiedPath |  |  |  |  | 現行実装では完了通知は出さない |
 
 ## Flows
 
@@ -60,6 +66,7 @@ preview の `Source Links` セクションに表示された Source Link の res
 - コピー対象は `sourceLink.path` そのものではなく、Source Links renderer が解決した `resolvedPath` である。
 - `navigator.clipboard?.writeText` は失敗通知を明示的には出さない。
 - Source Links Explorer からのcopy workflowは future / planned であり、この処理では実装済みとして扱わない。
+- `Steps.domain` は [[DOMAINS-MW-ARCHITECTURE]] のDomain idを参照する。Source Links Explorerのfuture workflowとは分けて扱う。
 
 ## Source Links
 

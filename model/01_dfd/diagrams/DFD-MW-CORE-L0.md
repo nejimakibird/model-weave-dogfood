@@ -13,7 +13,7 @@ tags:
 ## Summary
 
 Model Weave プラグイン内部の主要なデータフローを示します。
-Markdown ソースの読み込みからパース、Vault Index構築、参照解決、Source Links、Impact Summary、Rendererを介した Preview View 表示までの実装境界を示します。
+Markdown ソースの読み込みからパース、Vault Index構築、参照解決、Source Links、Impact Summary、Color Scheme解決、Rendererを介した Preview View 表示までの実装境界を示します。
 
 ## Domain Sources
 
@@ -46,6 +46,7 @@ Markdown ソースの読み込みからパース、Vault Index構築、参照解
 | F05 | VAULT_INDEX | RESOLVER | [[DATA-MW-VAULT-MODEL-INDEX]] | indexed model lookup; relation/member lookupを含む |
 | F06 | SETTINGS | VIEWER | [[DATA-MW-VIEWER-STATE]] | viewer preferences; applyViewerSettings |
 | F07 | SETTINGS | RENDERER | [[DATA-MW-PLUGIN-SETTINGS]] | render/debug settings; render mode default / Mermaid debug |
+| F07A | SETTINGS | RENDERER | [[DATA-MW-PLUGIN-SETTINGS]].defaultColorSchemeRef | Color Scheme解決入力; ViewerPreferencesへの単純転記ではない |
 | F08 | RESOLVER | RENDERER | [[DATA-MW-RENDERER-GRAPH-MODEL]] | 解決済み図面; ResolvedDiagram |
 | F09 | RENDERER | VIEWER | [[DATA-MW-RENDERER-MERMAID-SOURCE]] | Mermaid source / Preview DOM; Mermaidまたはcustom preview |
 | F10 | SOURCE_LINKS | VIEWER | [[DATA-MW-SOURCE-LINK]] | Source Links表示/action; Copy Path / Open resolved path |
@@ -57,8 +58,10 @@ Markdown ソースの読み込みからパース、Vault Index構築、参照解
 
 - 本図はシステム全体の概要を示す Level 0 図です。
 - Resolver は参照/関係解決境界であり、Rendererとは分けて扱う。
+- Color SchemeはSettingsのdefaultColorSchemeRefから描画時に解決され、DFD / Business Flow / Domain group / Weave Map の見た目へ反映される。
+- DFDはMermaid固定方針であり、Color Schemeが適用されてもFlow Connect Modeや汎用グラフ編集の対象にはしない。
 - Source Links Explorer は将来機能であり、本図では実装済みの Source Links section support のみを扱う。
-- PNG Exportなどの派生UI actionは、本batchではLevel 0の中核境界から外している。
+- PNG Exportは描画結果の派生出力であり、Markdownモデルの正本内容を変更しない。
 
 ## Source Links
 
@@ -69,5 +72,6 @@ Markdown ソースの読み込みからパース、Vault Index構築、参照解
 | src/core/relation-resolver.ts | resolveDiagramRelations |
 | src/core/impact-analyzer.ts | buildImpactSummary |
 | src/renderers/diagram-renderer.ts | renderer dispatch |
+| src/core/color-scheme.ts | resolveDefaultColorScheme / resolveColorStyle |
 | src/views/modeling-preview-view.ts | Viewer内表示 |
 | src/settings/model-weave-settings.ts | settings normalization |

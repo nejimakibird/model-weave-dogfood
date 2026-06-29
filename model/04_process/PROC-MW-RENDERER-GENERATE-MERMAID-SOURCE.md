@@ -12,7 +12,8 @@ tags:
 
 ## Summary
 
-`DATA-MW-RENDERER-GRAPH-MODEL` を、Mermaid.js エンジンで描画可能なテキストソース（DSL）に変換します。
+`DATA-MW-RENDERER-GRAPH-MODEL` や app_process Business Flow を、Mermaid.js エンジンで描画可能なテキストソースに変換します。
+Color Schemeが渡された場合は、DFD object、Domain group、Business Flow step、Weave Map layerのstyle行やclassDefへ反映します。
 
 ## Domain Sources
 
@@ -31,6 +32,7 @@ tags:
 | id | data | source | required | notes |
 |---|---|---|---|---|
 | graph | [[DATA-MW-RENDERER-GRAPH-MODEL]] | Graph Builder | Y | 抽象グラフモデル |
+| colorScheme | [[DATA-MW-VIEWER-STATE]].resolvedColorScheme | Preview pipeline | N | defaultColorSchemeRefから解決された配色 |
 
 ## Outputs
 
@@ -80,9 +82,17 @@ tags:
 ## Notes
 
 - DFD は buildDfdMermaidSource で flowchart LR を生成する。
+- DFDでは object kindを `target=dfd`、Domain subgraphを `target=domain` として配色する。
+- app_process Business Flowでは Steps.kindを `target=app_process`、Domain groupを `target=domain` として配色する。
+- app_process Business Flowでは Steps.kindからStep node shapeを選ぶ。start / end / event / error はterminal、decisionはdiamond、input / screenはparallelogram、subflow / flowはsubroutine、data / storeはdatabase、connectorはcircle、api / batch / message / wait / externalはrounded rectangle、blank / unknownはprocess rectangleへfallbackする。
+- Step kindはBusiness Flow上の表示意味とshape / colorの入力であり、Flows.from / Flows.toやTransitions.toの参照先ではない。
+- Weave Mapでは layer kindを `target=weave_map` として配色する。
 - Class / ER の overview は flowchart LR を生成する。
 - Class detail は classDiagram、ER detail は erDiagram を生成する。
 - detail系では classDef を出さない生成経路がある。
+- Color Scheme適用はMermaid sourceや描画結果の派生出力に反映され、Markdownモデル本文は変更しない。
+- Applied Color Scheme sectionはViewer側で resolvedColorScheme とview targetから表示される補助sectionであり、このRenderer processの出力には含めない。
+- PNG exportで色が保持される場合も、描画済み出力の保持として扱う。
 - node ID と label は Mermaid 構文を壊さないように整形される。
 - edge の endpoint が nodeMap にない場合、そのedge行は出力されない。
 
@@ -93,3 +103,8 @@ tags:
 | src/renderers/dfd-mermaid.ts | Steps: chooseGenerator, initLines, addStyles, mapNodes, emitNodes, emitEdges. buildDfdMermaidSource がDFD用Mermaid sourceを組み立てる |
 | src/renderers/class-er-mermaid.ts | Steps: chooseGenerator, initLines, emitNodes, emitEdges. Class / ER overview and detail Mermaid sourceを生成する |
 | src/renderers/mermaid-helpers.ts | Steps: mapNodes, emitNodes. sanitizeMermaidId / escapeMermaidLabel がMermaid IDとlabelを整形する |
+| src/renderers/app-process-business-flow.ts | Steps: addStyles, emitNodes. Business FlowのDomain groupとStepにColor Schemeを適用する |
+| src/renderers/app-process-business-flow.ts | Steps: emitNodes. getStepShapeKind / formatAppProcessStepNode がSteps.kindからBusiness Flow Step shapeを生成する |
+| src/renderers/weave-map-mermaid.ts | Steps: addStyles. Weave Map layerにColor Schemeを適用する |
+| src/core/color-scheme.ts | Steps: addStyles. resolveColorStyle がtarget / kindから色を解決する |
+| src/views/applied-color-scheme-renderer.ts | Notes. Applied Color Scheme sectionはViewer側の表示として扱う |

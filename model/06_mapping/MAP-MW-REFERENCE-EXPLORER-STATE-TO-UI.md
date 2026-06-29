@@ -16,7 +16,8 @@ tags:
 # Reference Explorer State to UI Mapping
 
 ## Summary
-[[DATA-MW-REFERENCE-EXPLORER-STATE]] が保持する参照一覧、件数、選択状態、関連診断を [[SCR-MW-REFERENCE-EXPLORER-VIEW]] の各表示項目へ反映するマッピングを定義する。
+future / plannedの [[DATA-MW-REFERENCE-EXPLORER-STATE]] が保持する参照一覧、件数、選択状態、関連診断を [[SCR-MW-REFERENCE-EXPLORER-VIEW]] の各表示項目へ反映するマッピングを定義する。
+Model Weave 0.1.17時点では、Impact Summary / Relationship View / Weave Mapは実装済みだが、このExplorer画面へのUI反映は本体srcで確認できない。
 
 ## Scope
 
@@ -64,6 +65,7 @@ tags:
 
 ## Notes
 - [[DATA-MW-REFERENCE-EXPLORER-STATE]] は [[DATA-MW-VAULT-MODEL-INDEX]] から導出される派生状態である。
+- 本mappingはfuture / plannedのReference Explorer向けであり、現行Viewer内Relationship ViewやWeave Mapの表示mappingとは分けて扱う。
 - 参照元/参照先ファイルパスは [[ENT-MW-MODEL-REFERENCE]] ではなく、`sourceAssetId` / `targetAssetId` から [[ENT-MW-MODEL-ASSET]] を解決して取得する。
 - `filterReferenceExplorer` / `selectReference` / `openReferenceSource` / `openReferenceTarget` / `openDiagnosticLocation` は論理プロセス名であり、後続で `app_process` 化できる。
 - 表示上のパス短縮はUI表示にのみ適用する。

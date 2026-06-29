@@ -15,7 +15,8 @@ tags:
 # Vault Index to Reference Explorer State Mapping
 
 ## Summary
-DATA-MW-VAULT-MODEL-INDEX が保持するモデル間参照と診断情報を、Reference Explorerで表示・検索しやすい DATA-MW-REFERENCE-EXPLORER-STATE へ変換するマッピングを定義する。
+DATA-MW-VAULT-MODEL-INDEX が保持するモデル間参照と診断情報を、future / plannedのReference Explorerで表示・検索しやすい DATA-MW-REFERENCE-EXPLORER-STATE へ変換するマッピングを定義する。
+Model Weave 0.1.17時点では、Relationship View / Impact Summary / Weave Mapは実装済みだが、独立Reference Explorer状態への変換は本体srcで確認できない。
 
 ## Scope
 
@@ -59,6 +60,7 @@ DATA-MW-VAULT-MODEL-INDEX が保持するモデル間参照と診断情報を、
 ## Notes
 - DATA-MW-REFERENCE-EXPLORER-STATE は DATA-MW-VAULT-MODEL-INDEX から導出される表示用状態である。
 - Reference Explorer はfuture/plannedであり、このmappingは現行Index構造から導出可能な表示状態を示す。
+- 現行実装済みのImpact Summary / Relationship View / Weave Map向け集約とは別の、将来の横断Explorer用mappingとして扱う。
 - 選択参照やフィルタ条件はReference Explorerの一時状態であり、Markdownモデルには保存しない。
 - ファイルパスの表示短縮はUIマッピング側で [[RULE-MW-PATH-SHORTENER]] に委ねる。
 - 参照元/参照先ファイルパスは [[ENT-MW-MODEL-REFERENCE]] ではなく、sourceAssetId / targetAssetId から [[ENT-MW-MODEL-ASSET]] を解決して取得する。

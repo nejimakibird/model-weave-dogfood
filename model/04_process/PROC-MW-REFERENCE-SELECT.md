@@ -14,6 +14,7 @@ tags:
 
 ## Summary
 Reference Explorer上で選択されたModelReferenceをもとに、選択中参照ID、参照元Asset、参照先Asset、関連診断を [[DATA-MW-REFERENCE-EXPLORER-STATE]] へ反映する処理。
+Model Weave 0.1.17時点では、Relationship View / Impact Summary内の参照表示やopen targetは実装済みだが、独立したReference Explorerの選択状態管理はfutureとして扱う。
 
 ## Inputs
 
@@ -55,15 +56,18 @@ Reference Explorer上で選択されたModelReferenceをもとに、選択中参
 | noReferenceSelected | No reference selected. | warning | 無効な選択操作が行われた場合 |
 
 ## Notes
+- 本処理はfutureのReference Explorer向け選択処理であり、Model Weave 0.1.17時点の本体実装済み操作とは扱わない。
 - 本処理はUI上の選択状態を管理するものであり、Markdownファイル（正本）の内容やフロントマターを変更することはない。
 - `selectedReferenceId` 等の ID 群は、エクスプローラー画面が閉じられるまで保持される一時的な状態である。
 - 参照先の詳細情報（ファイルパス等）は [[ENT-MW-MODEL-REFERENCE]] 自体には持たせず、`targetAssetId` から [[ENT-MW-MODEL-ASSET]] を介して動的に解決する。
 - このプロセスは [[SCR-MW-REFERENCE-EXPLORER-VIEW]] の `ACT-SELECT` アクションの実装詳細に相当する。
+- 現行Relationship Viewのopen targetやWeave Map表示はViewer内機能であり、このExplorer選択状態とは別機能である。
+- ref-aware Business Flow step hover / click targetはBusiness Flow Stepの参照確認支援であり、Reference Explorerの行選択ではない。
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | VaultIndex | class | 参照および診断情報の検索元 |
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | 参照解決状態の判定ロジック |
-| src/views/modeling-preview-view.ts | renderCurrentState | method | 状態変更をUIへ通知する仕組みの参考 |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | VaultIndex class。future Reference Explorerが参照し得る内部索引 |
+| src/core/impact-analyzer.ts | buildImpactSummary function。現行Relationship View向けの参照集約 |
+| src/views/modeling-preview-view.ts | renderImpactSummarySection method。現行Viewer内Relationship View表示であり、独立Reference Explorer実装ではない |

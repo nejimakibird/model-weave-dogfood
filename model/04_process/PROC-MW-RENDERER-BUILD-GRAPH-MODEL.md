@@ -14,6 +14,13 @@ tags:
 
 解析済みdiagramモデルとVault Indexから、描画に使う解決済みの node / edge 情報を構築します。
 現行実装では resolveDiagramRelations が diagram.kind に応じて Class / ER / DFD の参照解決を行い、ResolvedDiagram を返します。
+Class / ER object previewでは、object contextから関連objectのsubgraphを派生ResolvedDiagramとして構築します。
+
+## Domain Sources
+
+| ref | notes |
+|---|---|
+| [[DOMAINS-MW-ARCHITECTURE]] | Renderer graph model構築に関わる実装領域 |
 
 ## Triggers
 
@@ -39,23 +46,23 @@ tags:
 
 | id | event | to | condition | notes |
 |---|---|---|---|---|
-| TR1 | 構築完了 | PROC-MW-RENDERER-GENERATE-MERMAID-SOURCE | render_mode が mermaid の場合 | |
+| TR1 | 構築完了 | [[PROC-MW-RENDERER-GENERATE-MERMAID-SOURCE]] | render_mode が mermaid の場合 | |
 | TR2 | 構築完了 | - | render_mode が custom の場合 | カスタム描画へ移行 |
 
 ## Steps
 
-| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| start | Renderer | Graph構築開始 | start | model |  |  |  |  | diagramモデルを受け取る |
-| chooseKind | Resolver | diagram kindを判定する | decision | model |  |  |  |  | er / dfd / class相当で分岐する |
-| resolveClassNodes | Resolver | Class nodeを解決する | process | model | graph |  |  |  | objectRefs を object model に解決する |
-| resolveErNodes | Resolver | ER nodeを解決する | process | model | graph |  |  |  | objectRefs を er_entity に解決する |
-| resolveDfdNodes | Resolver | DFD nodeを解決する | process | model | graph |  |  |  | Objects行またはlegacy refを解決する |
-| resolveClassEdges | Resolver | Class edgeを解決する | process | graph | graph |  |  |  | explicit relationまたは関係lookupを使う |
-| resolveErEdges | Resolver | ER edgeを解決する | process | graph | graph |  |  |  | outboundRelations をedge化する |
-| resolveDfdEdges | Resolver | DFD flowを解決する | process | graph | graph |  |  |  | Flows のfrom / toをnodeに解決する |
-| collectWarnings | Resolver | warningを集約する | process | graph | diagnostics |  |  |  | missing / duplicate / shape warning |
-| end | Renderer | Graph構築完了 | end | graph |  |  |  |  | Rendererへ渡す |
+| start | renderer_area | Graph構築開始 | start | model |  |  |  |  | diagramモデルを受け取る |
+| chooseKind | relation_resolution | diagram kindを判定する | decision | model |  |  |  |  | er / dfd / class相当で分岐する |
+| resolveClassNodes | relation_resolution | Class nodeを解決する | process | model | graph |  |  |  | objectRefs を object model に解決する |
+| resolveErNodes | relation_resolution | ER nodeを解決する | process | model | graph |  |  |  | objectRefs を er_entity に解決する |
+| resolveDfdNodes | relation_resolution | DFD nodeを解決する | process | model | graph |  |  |  | Objects行またはlegacy refを解決する |
+| resolveClassEdges | relation_resolution | Class edgeを解決する | process | graph | graph |  |  |  | explicit relationまたは関係lookupを使う |
+| resolveErEdges | relation_resolution | ER edgeを解決する | process | graph | graph |  |  |  | outboundRelations をedge化する |
+| resolveDfdEdges | relation_resolution | DFD flowを解決する | process | graph | graph |  |  |  | Flows のfrom / toをnodeに解決する |
+| collectWarnings | diagnostics | warningを集約する | process | graph | diagnostics |  |  |  | missing / duplicate / shape warning |
+| end | renderer_area | Graph構築完了 | end | graph |  |  |  |  | Rendererへ渡す |
 
 ## Flows
 
@@ -83,6 +90,9 @@ tags:
 - Class path で explicit edges がない場合、関係lookupやobject内relationsからedgeを集約する。
 - ER path は presentEntities の outboundRelations からedgeを作る。
 - DFD path は Objects / Flows を解決し、endpoint欠落や不自然なflow shapeをwarningにする。
+- Object preview path は resolveObjectContext で outgoing / incoming 関係を集約し、buildObjectSubgraphScene でPreview用subgraphへ変換する。
+- internal edge adapters は relations file、class relation、ER relation block、diagram edgeを表示用edgeへ寄せる補助であり、Markdown正本の編集対象ではない。
+- `Steps.domain` は [[DOMAINS-MW-ARCHITECTURE]] のDomain idを参照する。DFDのFlows endpointとapp_process Business FlowのFlows endpointは別フォーマットとして扱う。
 
 ## Source Links
 
@@ -94,3 +104,6 @@ tags:
 | src/core/reference-resolver.ts | resolveObjectModelReference | function | Class参照解決 |
 | src/core/reference-resolver.ts | resolveErEntityReference | function | ER参照解決 |
 | src/core/reference-resolver.ts | resolveDfdObjectReference | function | DFD参照解決 |
+| src/core/object-context-resolver.ts | resolveObjectContext | function | object preview用の関連object contextを構築 |
+| src/core/object-subgraph-builder.ts | buildObjectSubgraphScene | function | object contextから派生ResolvedDiagramを構築 |
+| src/core/internal-edge-adapters.ts | toClassRelationEdge | function | relations由来の関係をClass edgeへ変換 |

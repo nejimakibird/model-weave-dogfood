@@ -15,6 +15,12 @@ tags:
 preview の `Source Links` セクションに表示された Source Link の resolved path を、OS/default app へ渡して開く処理。
 現行実装では Source Links Explorer ではなく、preview 内の Open button から実行される。
 
+## Domain Sources
+
+| ref | notes |
+|---|---|
+| [[DOMAINS-MW-ARCHITECTURE]] | Preview内Source Links open操作に関わる実装領域 |
+
 ## Inputs
 
 | id | data | source | required | notes |
@@ -32,19 +38,19 @@ preview の `Source Links` セクションに表示された Source Link の res
 
 ## Steps
 
-| id | lane | label | kind | input | output | rule | invoke | screen | notes |
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| start | Preview | Open操作を開始する | start | sourceLink |  |  |  |  | Source Links table の行操作から開始する |
-| receive | Preview | Source Link行を受け取る | input | sourceLink | sourceLink.path |  |  |  | `renderSourceLinks` はpathが空でない行だけを描画する |
-| resolve | Renderer | pathをresolved pathへ解決する | process | sourceLink.path, localSourceRoot | resolvedPath |  |  |  | relative pathでは `localSourceRoot` が使用される場合がある |
-| status | Renderer | path statusを判定する | decision | resolvedPath | source link status |  |  |  | file URI はopen不可として扱う |
-| disabled | Preview | Open buttonを無効化する | end | source link status |  |  |  |  | `status.openable === false` の場合 |
-| requestOpen | Preview | OS openを要求する | screen | resolvedPath | openRequest |  |  |  | `electron.shell.openPath` を呼び出す |
-| available | Runtime | OS open APIが利用可能か判定する | decision | openRequest |  |  |  |  | `electron.shell.openPath` が関数か確認する |
-| unavailable | Runtime | open不可を通知する | end | openRequest | openNotice |  |  |  | OS open APIがない場合 |
-| handleResult | Runtime | open結果を確認する | decision | openRequest | openNotice |  |  |  | `openPath` の戻り値が空なら成功扱い |
-| failed | Runtime | open失敗を通知する | end | openNotice |  |  |  |  | 戻り値または例外messageをNotice表示する |
-| end | Runtime | open処理を終了する | end | openRequest |  |  |  |  | 正常終了時はNoticeを出さない |
+| start | viewer_ui | Open操作を開始する | start | sourceLink |  |  |  |  | Source Links table の行操作から開始する |
+| receive | viewer_ui | Source Link行を受け取る | input | sourceLink | sourceLink.path |  |  |  | `renderSourceLinks` はpathが空でない行だけを描画する |
+| resolve | renderer_area | pathをresolved pathへ解決する | process | sourceLink.path, localSourceRoot | resolvedPath |  |  |  | relative pathでは `localSourceRoot` が使用される場合がある |
+| status | renderer_area | path statusを判定する | decision | resolvedPath | source link status |  |  |  | file URI はopen不可として扱う |
+| disabled | viewer_ui | Open buttonを無効化する | end | source link status |  |  |  |  | `status.openable === false` の場合 |
+| requestOpen | viewer_ui | OS openを要求する | screen | resolvedPath | openRequest |  |  |  | `electron.shell.openPath` を呼び出す |
+| available | editor_integration | OS open APIが利用可能か判定する | decision | openRequest |  |  |  |  | `electron.shell.openPath` が関数か確認する |
+| unavailable | editor_integration | open不可を通知する | end | openRequest | openNotice |  |  |  | OS open APIがない場合 |
+| handleResult | editor_integration | open結果を確認する | decision | openRequest | openNotice |  |  |  | `openPath` の戻り値が空なら成功扱い |
+| failed | editor_integration | open失敗を通知する | end | openNotice |  |  |  |  | 戻り値または例外messageをNotice表示する |
+| end | editor_integration | open処理を終了する | end | openRequest |  |  |  |  | 正常終了時はNoticeを出さない |
 
 ## Flows
 
@@ -75,6 +81,7 @@ preview の `Source Links` セクションに表示された Source Link の res
 - file URI は表示されるがopen不可として扱われる。
 - missing pathやsource root外pathでも、statusに応じてopen可能な場合がある。
 - Source Links Explorer からのopen workflowは future / planned であり、この処理では実装済みとして扱わない。
+- `Steps.domain` は [[DOMAINS-MW-ARCHITECTURE]] のDomain idを参照する。Source Links Explorerのfuture workflowとは分けて扱う。
 
 ## Source Links
 

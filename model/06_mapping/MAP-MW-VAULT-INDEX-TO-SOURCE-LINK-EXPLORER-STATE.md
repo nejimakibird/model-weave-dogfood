@@ -16,7 +16,8 @@ tags:
 
 ## Summary
 
-[[DATA-MW-VAULT-MODEL-INDEX]] が保持するモデル資産とSource Links情報を、Source Links Explorerで表示・検索しやすい [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]] へ変換するマッピングを定義する。
+[[DATA-MW-VAULT-MODEL-INDEX]] が保持するモデル資産とSource Links情報を、future / plannedのSource Links Explorerで表示・検索しやすい [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]] へ変換するマッピングを定義する。
+Model Weave 0.1.17時点では、各モデル内のSource Links section表示とCopy/Openは実装済みだが、横断Explorer状態への変換は本体srcで確認できない。
 
 ## Scope
 
@@ -68,6 +69,7 @@ tags:
 
 - [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]] は [[DATA-MW-VAULT-MODEL-INDEX]] から導出される表示用状態である。
 - Source Links Explorer はfuture/plannedであり、現行実装のSource Linksは各ParsedFileModel.sourceLinksとして保持される。
+- 現行Preview内Source Links sectionの表示状態やRelationship ViewのRelated Source Links集約とは別の、将来の横断Explorer用mappingとして扱う。
 - Source Linksはモデル資産から実装ソースへ辿るためのナビゲーション情報であり、実装ソースそのものを保存するものではない。
 - 選択Source Linkやフィルタ条件はSource Links Explorerの一時状態であり、Markdownモデルには保存しない。
 - ファイルパスの表示短縮はUIマッピング側で [[RULE-MW-PATH-SHORTENER]] に委ねる。
