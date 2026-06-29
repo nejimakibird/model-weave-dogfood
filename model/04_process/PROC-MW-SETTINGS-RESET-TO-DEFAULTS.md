@@ -35,24 +35,30 @@ Model Weave設定タブのリセット操作により、[[DATA-MW-PLUGIN-SETTING
 
 ## Steps
 
-1. resetSettingsButton のclickイベントを受け取る。
-   - このリセット操作は logical / planned process として扱い、現行実装済みUI挙動とは断定しない。
-2. DEFAULT_MODEL_WEAVE_SETTINGS を取得する。
-   - 現行実装済み設定として defaultRenderMode / defaultZoom / fontSize / nodeDensity を既定値へ戻す対象に含める。
-   - fontSize / nodeDensity は現行ModelWeaveSettingsに実装済みだが、Settings Tab UIモデル側の表示項目整理は後続課題を含む。
-3. [[DATA-MW-PLUGIN-SETTINGS]] 全体を既定値へ置き換える。
-   - autoFitOnOpen / preserveViewportState / mermaidThemeMode / viewerFontScale / diagnosticsVisible / statusBarVisible / settingsVersion はplannedリセット項目として扱う。
-   - enableSourceLinks は Source Links Explorer / Source Links索引化がfutureのため、futureリセット項目として扱う。
-4. [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] に従い、実効設定を再解決する。
-   - 現行実装では src/settings/model-weave-settings.ts の normalizeModelWeaveSettings が defaultRenderMode / defaultZoom / fontSize / nodeDensity を正規化する。
-   - dogfood側のみの設定項目については、現行ModelWeaveSettingsに実装済みとは断定しない。
-5. Obsidianプラグイン設定として保存する。
-   - 現行実装の保存経路は ModelWeavePlugin.updateSettings / saveData を参照する。
-   - resetToDefaultSettings という専用処理の実装済みまでは断定しない。
-6. [[MAP-MW-SETTINGS-TO-VIEWER-STATE]] に従い、Viewer実行時状態へ反映する。
-   - 現行実装済み設定とdogfood先行設計項目の反映範囲は区別して扱う。
-7. 必要に応じて設定タブUIとViewerを再描画する。
-   - planned項目の表示制御やfuture機能の反映まで現行実装済みとは断定しない。
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| start | Settings | 開始 | start | resetAction | | | | [[SCR-MW-SETTINGS-TAB]] | logical / planned processとして扱う |
+| receiveClick | Settings | リセット操作を受け取る | screen | resetAction | | | | [[SCR-MW-SETTINGS-TAB]] | 現行実装済みUI挙動とは断定しない |
+| loadDefaults | Settings | 既定値取得 | data | defaultSettings | resetSettings | | | | DEFAULT_MODEL_WEAVE_SETTINGSを参照する |
+| replaceSettings | Settings | 設定全体を置き換える | process | resetSettings | resetSettings | | | | dogfood先行設計項目はimplemented扱いにしない |
+| resolveEffective | Viewer | 実効設定を再解決 | process | resetSettings | viewerState | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | | | normalizeModelWeaveSettings相当の正規化を含む |
+| saveSettings | Settings | プラグイン設定として保存 | process | resetSettings | resetSettings | | | | updateSettings / saveData が保存経路の参考 |
+| mapViewerState | Viewer | Viewer状態へ反映 | process | resetSettings | viewerState | | | | [[MAP-MW-SETTINGS-TO-VIEWER-STATE]] に従う |
+| refreshUi | Viewer | 設定タブとViewerを更新 | screen | viewerState | viewportState | | | [[SCR-MW-SETTINGS-TAB]] | 必要に応じてViewerを再描画する |
+| end | Settings | 終了 | end | | | | | | 処理終了 |
+
+## Flows
+
+| from | to | condition | label | notes |
+|---|---|---|---|---|
+| start | receiveClick | | 操作受付 | |
+| receiveClick | loadDefaults | | 既定値取得 | |
+| loadDefaults | replaceSettings | | 置き換え | |
+| replaceSettings | resolveEffective | | 解決 | |
+| resolveEffective | saveSettings | | 保存 | |
+| saveSettings | mapViewerState | | Viewer反映 | |
+| mapViewerState | refreshUi | | 画面更新 | |
+| refreshUi | end | | 完了 | |
 
 ## Messages
 

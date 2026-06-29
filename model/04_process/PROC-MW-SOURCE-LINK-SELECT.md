@@ -38,13 +38,30 @@ Model Weave 0.1.17時点では、Preview内Source LinksのCopy/OpenとRelationsh
 
 ## Steps
 
-1. [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkList から選択操作された [[ENT-MW-SOURCE-LINK]] を取得する。
-2. 選択されたリンクの `sourceLinkId` を [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].selectedSourceLinkId に反映する。
-3. リンク情報の `assetId` を [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].selectedAssetId に反映する。
-4. `assetId` をもとに [[DATA-MW-VAULT-MODEL-INDEX]] から対応する [[ENT-MW-MODEL-ASSET]] を解決し、[[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].relatedModelAssets に反映する。
-5. Vaultインデックス内の全診断から、対象の `assetId` または `sourceLinkId` に関連する [[DATA-MW-CORE-DIAGNOSTIC]]（リンク切れやパス不正など）を抽出し、[[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].relatedDiagnostics に反映する。
-6. 抽出された診断の中に `severity=error` が含まれる場合は `explorerStatus=error`、それ以外は `ready` と判定する。
-7. 更新された状態を [[MAP-MW-SOURCE-LINK-EXPLORER-STATE-TO-UI]] を介して詳細ペイン（selectedSourceLinkDetail / relatedModelAssetsList / relatedDiagnosticsList）へ反映する。
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| start | Source Links Explorer | 開始 | start | selectedSourceLink | | | | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] | futureのSource Links Explorer向け |
+| waitSelection | Source Links Explorer | Source Link選択を受け取る | wait | selectedSourceLink | | | | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] | sourceLinkListの選択操作 |
+| storeLinkId | Source Links Explorer | selectedSourceLinkId更新 | store | selectedSourceLink | selectedSourceLinkId | | | | sourceLinkIdを状態へ反映する |
+| storeAssetId | Source Links Explorer | selectedAssetId更新 | store | selectedSourceLink | selectedAssetId | | | | assetIdを状態へ反映する |
+| resolveAssets | Source Links Explorer | 関連ModelAsset解決 | data | selectedAssetId | relatedModelAssets | | | | Vault Indexから対応Assetを解決する |
+| collectDiagnostics | Source Links Explorer | 関連診断抽出 | process | selectedSourceLinkId, selectedAssetId | relatedDiagnostics | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | | | リンク切れやpath不正などを抽出する |
+| decideStatus | Source Links Explorer | 状態判定 | decision | relatedDiagnostics | explorerStatus | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | | | errorがあればexplorerStatusをerrorにする |
+| updateUi | Source Links Explorer | 詳細ペインへ反映 | screen | explorerState | explorerStatus | | | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] | [[MAP-MW-SOURCE-LINK-EXPLORER-STATE-TO-UI]] で反映する |
+| end | Source Links Explorer | 終了 | end | | | | | | 処理終了 |
+
+## Flows
+
+| from | to | condition | label | notes |
+|---|---|---|---|---|
+| start | waitSelection | | 選択待ち | |
+| waitSelection | storeLinkId | | Source Link ID反映 | |
+| storeLinkId | storeAssetId | | Asset ID反映 | |
+| storeAssetId | resolveAssets | | Asset解決 | |
+| resolveAssets | collectDiagnostics | | 診断抽出 | |
+| collectDiagnostics | decideStatus | | 状態判定 | |
+| decideStatus | updateUi | | UI反映 | |
+| updateUi | end | | 完了 | |
 
 ## Messages
 

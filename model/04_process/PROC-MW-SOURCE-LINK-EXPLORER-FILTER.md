@@ -43,18 +43,55 @@ Model Weave 0.1.17時点では、各モデル内の `## Source Links` section解
 
 ## Steps
 
-1. [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]] からフィルタ対象のSource Link集合を取得する。
-2. `sourcePathFilter` が空でない場合、[[ENT-MW-SOURCE-LINK]].path を対象に部分一致検索する。
-3. `symbolFilter` が空でない場合、[[ENT-MW-SOURCE-LINK]].symbol を対象に部分一致検索する。
-4. `sourceKindFilter` が `all` 以外の場合、[[ENT-MW-SOURCE-LINK]].kind が一致するSource Linkだけを残す。
-5. `modelTypeFilter` が `all` 以外の場合、`assetId` から [[ENT-MW-MODEL-ASSET]] を解決し、ModelAssetの `modelType` が一致するSource Linkだけを残す。
-6. `sourceLinkSearchText` が空でない場合、`path` / `symbol` / `notes` / `assetId` を対象に部分一致検索する。
-7. 絞り込み後のSource Link集合を `visibleSourceLinks` に反映する。
-8. `visibleSourceLinks` の件数を `filteredSourceLinkCount` に反映する。
-9. 表示対象Source Linkに対応するModelAssetを `relatedModelAssets` に反映する。
-10. 表示対象Source LinkやSource Links不足に関連する診断を `relatedDiagnostics` に反映する。
-11. `filteredSourceLinkCount` が 0 件なら `explorerStatus=empty`、条件適用中なら `filtered`、通常表示なら `ready` とする。
-12. 結果を [[MAP-MW-SOURCE-LINK-EXPLORER-STATE-TO-UI]] により UI へ反映できる状態にする。
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| start | Source Links Explorer | 開始 | start | explorerState | | | | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] | futureのSource Links Explorer向け |
+| readLinks | Source Links Explorer | Source Link集合取得 | data | explorerState | visibleSourceLinks | | | | フィルタ対象を取得する |
+| readFilters | Source Links Explorer | フィルタ条件取得 | input | sourcePathFilter, symbolFilter, sourceKindFilter, modelTypeFilter, sourceLinkSearchText | | | | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] | UI上の一時条件 |
+| hasPathFilter | Source Links Explorer | pathフィルタ判定 | decision | sourcePathFilter | | | | | 空でない場合だけ適用 |
+| applyPathFilter | Source Links Explorer | pathで絞り込み | process | visibleSourceLinks | visibleSourceLinks | | | | Source Link pathを対象にする |
+| hasSymbolFilter | Source Links Explorer | symbolフィルタ判定 | decision | symbolFilter | | | | | 空でない場合だけ適用 |
+| applySymbolFilter | Source Links Explorer | symbolで絞り込み | process | visibleSourceLinks | visibleSourceLinks | | | | Source Link symbolを対象にする |
+| hasKindFilter | Source Links Explorer | kindフィルタ判定 | decision | sourceKindFilter | | | | | all以外の場合だけ適用 |
+| applyKindFilter | Source Links Explorer | kindで絞り込み | process | visibleSourceLinks | visibleSourceLinks | | | | Source Link kindを対象にする |
+| hasModelTypeFilter | Source Links Explorer | model typeフィルタ判定 | decision | modelTypeFilter | | | | | all以外の場合だけ適用 |
+| applyModelTypeFilter | Source Links Explorer | model typeで絞り込み | process | visibleSourceLinks | visibleSourceLinks | | | | assetIdからModelAssetを解決する |
+| hasSearchText | Source Links Explorer | 検索文字列判定 | decision | sourceLinkSearchText | | | | | 空でない場合だけ適用 |
+| applySearchText | Source Links Explorer | Source Link検索 | process | visibleSourceLinks | visibleSourceLinks | | | | path / symbol / notes / assetIdを対象にする |
+| updateCount | Source Links Explorer | 件数更新 | process | visibleSourceLinks | filteredSourceLinkCount | | | | 絞り込み後の件数を反映する |
+| collectAssets | Source Links Explorer | 関連ModelAsset集約 | data | visibleSourceLinks | relatedModelAssets | | | | 表示対象Source Linkに対応するAssetを集約する |
+| collectDiagnostics | Source Links Explorer | 関連診断抽出 | process | visibleSourceLinks | relatedDiagnostics | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | | | Source Links不足などの診断を反映する |
+| decideStatus | Source Links Explorer | 状態判定 | decision | filteredSourceLinkCount | explorerStatus | | | | empty / filtered / readyを判定する |
+| updateUi | Source Links Explorer | UI反映用状態にする | screen | explorerState | explorerStatus | | | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]] | [[MAP-MW-SOURCE-LINK-EXPLORER-STATE-TO-UI]] で反映できる状態 |
+| end | Source Links Explorer | 終了 | end | | | | | | 処理終了 |
+
+## Flows
+
+| from | to | condition | label | notes |
+|---|---|---|---|---|
+| start | readLinks | | リンク取得 | |
+| readLinks | readFilters | | 条件取得 | |
+| readFilters | hasPathFilter | | path確認 | |
+| hasPathFilter | applyPathFilter | sourcePathFilter exists | pathあり | |
+| hasPathFilter | hasSymbolFilter | sourcePathFilter empty | pathなし | |
+| applyPathFilter | hasSymbolFilter | | symbol確認 | |
+| hasSymbolFilter | applySymbolFilter | symbolFilter exists | symbolあり | |
+| hasSymbolFilter | hasKindFilter | symbolFilter empty | symbolなし | |
+| applySymbolFilter | hasKindFilter | | kind確認 | |
+| hasKindFilter | applyKindFilter | sourceKindFilter is not all | kindあり | |
+| hasKindFilter | hasModelTypeFilter | sourceKindFilter is all | kindなし | |
+| applyKindFilter | hasModelTypeFilter | | model type確認 | |
+| hasModelTypeFilter | applyModelTypeFilter | modelTypeFilter is not all | model typeあり | |
+| hasModelTypeFilter | hasSearchText | modelTypeFilter is all | model typeなし | |
+| applyModelTypeFilter | hasSearchText | | 検索確認 | |
+| hasSearchText | applySearchText | sourceLinkSearchText exists | 検索あり | |
+| hasSearchText | updateCount | sourceLinkSearchText empty | 検索なし | |
+| applySearchText | updateCount | | 件数更新 | |
+| updateCount | collectAssets | | Asset集約 | |
+| collectAssets | collectDiagnostics | | 診断抽出 | |
+| collectDiagnostics | decideStatus | | 状態判定 | |
+| decideStatus | updateUi | | UI反映 | |
+| updateUi | end | | 完了 | |
 
 ## Messages
 

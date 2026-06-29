@@ -36,13 +36,32 @@ Model Weave 0.1.17時点では、診断やRelationship Viewからのファイル
 
 ## Steps
 
-1. [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetList から選択中のModelAssetを取得する。
-2. 選択中のModelAssetから完全な filePath を取得する。
-3. 表示上の短縮パスではなく、内部保持された filePath を使用する。
-4. filePath が空またはVault内に存在しない場合は、openModelFileFailed メッセージを出して処理を中断する。
-5. Obsidian Workspace または Editor APIを使って該当Markdownファイルを開く。
-6. 必要に応じて開いたファイルをアクティブファイルとして扱い、Viewer状態を更新する。
-7. 開いたファイルがModel Weave対象であれば、Viewerプレビューや診断表示の再描画を行う。
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| start | Model Index | 開始 | start | selectedModelAsset | | | | [[SCR-MW-MODEL-INDEX-VIEW]] | future / planned のModel Index View起点 |
+| readAsset | Model Index | 選択ModelAsset取得 | screen | selectedModelAsset | activeModelAsset | | | [[SCR-MW-MODEL-INDEX-VIEW]] | modelAssetListの選択行を読む |
+| readPath | Vault | filePath取得 | data | activeModelAsset | selectedFilePath | [[RULE-MW-PATH-SHORTENER]] | | | 表示用短縮パスではなく内部保持pathを使う |
+| validatePath | Vault | filePath確認 | decision | selectedFilePath | | | | | 空またはVault内に存在しない場合は失敗 |
+| showFailure | Model Index | 失敗通知 | error | selectedFilePath | | | | [[SCR-MW-MODEL-INDEX-VIEW]] | openModelFileFailedを表示する |
+| openFile | Obsidian | Markdownファイルを開く | external | selectedFilePath | openedFile | | | | Obsidian WorkspaceまたはEditor APIで開く |
+| updateActive | Viewer | アクティブ状態更新 | process | openedFile | activeModelAsset | | | | 必要に応じてアクティブファイルとして扱う |
+| refreshPreview | Viewer | Preview更新 | screen | activeModelAsset | | | | | Model Weave対象ならViewerや診断表示を更新する |
+| end | Model Index | 終了 | end | | | | | | 処理終了 |
+
+## Flows
+
+| from | to | condition | label | notes |
+|---|---|---|---|---|
+| start | readAsset | | 選択取得 | |
+| readAsset | readPath | | path取得 | |
+| readPath | validatePath | | 検証 | |
+| validatePath | showFailure | invalid path | 開けない | |
+| showFailure | end | | 中断 | |
+| validatePath | openFile | valid path | 開く | |
+| openFile | updateActive | | 状態更新 | |
+| updateActive | refreshPreview | target is Model Weave file | Preview更新 | |
+| updateActive | end | target is not Model Weave file | Preview更新なし | |
+| refreshPreview | end | | 完了 | |
 
 ## Messages
 

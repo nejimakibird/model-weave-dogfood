@@ -37,16 +37,43 @@ Model Weave 0.1.17時点では、Relationship View内の参照ファイルオー
 
 ## Steps
 
-1. [[DATA-MW-REFERENCE-EXPLORER-STATE]].selectedReferenceId から選択中の [[ENT-MW-MODEL-REFERENCE]] を取得する。
-2. `openTargetRole` が `source` の場合、`selectedReference.sourceAssetId` を使用する。
-3. `openTargetRole` が `target` の場合、`selectedReference.targetAssetId` を使用する。
-4. `target` を開く場合に `targetAssetId` が空または未解決であれば、`unresolvedReferenceTarget` メッセージを出して処理を中断する。
-5. 対象Asset IDから [[ENT-MW-MODEL-ASSET]] を解決する。
-6. 解決したModelAssetから完全な `filePath` を取得する。
-7. 表示上の短縮パスではなく、完全な `filePath` を使用する。
-8. `filePath` が空またはVault内に存在しない場合は、`openReferenceFileFailed` メッセージを出して処理を中断する。
-9. Obsidian Workspace または Editor APIを使って該当Markdownファイルを開く。
-10. 必要に応じて開いたファイルをアクティブファイルとして扱い、Viewer表示や診断表示を更新する。
+| id | domain | label | kind | input | output | rule | invoke | screen | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| start | Reference Explorer | 開始 | start | selectedReference | | | | [[SCR-MW-REFERENCE-EXPLORER-VIEW]] | future / plannedのReference Explorer起点 |
+| readReference | Reference Explorer | 選択参照取得 | screen | selectedReference | activeReference | | | [[SCR-MW-REFERENCE-EXPLORER-VIEW]] | selectedReferenceIdから取得する |
+| decideRole | Reference Explorer | 開く側を判定 | decision | openTargetRole | | | | | source / targetを判定する |
+| useSourceAsset | Reference Explorer | 参照元Assetを選ぶ | data | activeReference | sourceAsset | | | | sourceAssetIdを使う |
+| useTargetAsset | Reference Explorer | 参照先Assetを選ぶ | data | activeReference | targetAsset | | | | targetAssetIdを使う |
+| validateTarget | Reference Explorer | 参照先解決確認 | decision | targetAsset | | | | | targetが空または未解決なら失敗 |
+| showUnresolved | Reference Explorer | 未解決通知 | error | targetAsset | | | | [[SCR-MW-REFERENCE-EXPLORER-VIEW]] | unresolvedReferenceTargetを表示する |
+| resolveAsset | Vault | Asset解決 | data | sourceAsset, targetAsset | openedFile | | | | 対象Asset IDからModelAssetを解決する |
+| readPath | Vault | filePath取得 | data | openedFile | openedFilePath | [[RULE-MW-PATH-SHORTENER]] | | | 完全なVault相対pathを使う |
+| validatePath | Vault | filePath確認 | decision | openedFilePath | | | | | 空またはVault内に存在しない場合は失敗 |
+| showOpenFailed | Reference Explorer | open失敗通知 | error | openedFilePath | | | | [[SCR-MW-REFERENCE-EXPLORER-VIEW]] | openReferenceFileFailedを表示する |
+| openFile | Obsidian | Markdownファイルを開く | external | openedFilePath | openedFile | | | | Obsidian WorkspaceまたはEditor APIで開く |
+| updateViewer | Viewer | Viewer表示更新 | screen | openedFile | | | | | 必要に応じてViewerや診断表示を更新する |
+| end | Reference Explorer | 終了 | end | | | | | | 処理終了 |
+
+## Flows
+
+| from | to | condition | label | notes |
+|---|---|---|---|---|
+| start | readReference | | 選択取得 | |
+| readReference | decideRole | | 開く側判定 | |
+| decideRole | useSourceAsset | openTargetRole is source | source | |
+| decideRole | useTargetAsset | openTargetRole is target | target | |
+| useTargetAsset | validateTarget | | target確認 | |
+| validateTarget | showUnresolved | target unresolved | 未解決 | |
+| showUnresolved | end | | 中断 | |
+| validateTarget | resolveAsset | target resolved | 解決済み | |
+| useSourceAsset | resolveAsset | | source解決 | |
+| resolveAsset | readPath | | path取得 | |
+| readPath | validatePath | | path確認 | |
+| validatePath | showOpenFailed | invalid path | 開けない | |
+| showOpenFailed | end | | 中断 | |
+| validatePath | openFile | valid path | 開く | |
+| openFile | updateViewer | | Viewer更新 | |
+| updateViewer | end | | 完了 | |
 
 ## Messages
 
