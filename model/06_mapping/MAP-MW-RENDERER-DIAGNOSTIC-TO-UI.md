@@ -58,6 +58,9 @@ tags:
 - 診断カードのcopy actionsはclipboardへ文字列を渡すだけで、Markdown本文を自動修正しない。
 - Quick Fixや自動修正は現行srcで確認できないため、このmappingではimplementedとして扱わない。
 - code別の固定UIではなく、message / context から [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] に従ってmetadata、details、copy対象を導出する。
+- Copy Expected Headerは、diagnostic-section-guidanceが対応するtable header診断にだけ表示される。
+- Flow Diagramの `Flows.from` / `Flows.to` 診断はローカル `Objects.id` の確認として表示し、外部モデル参照の未解決とは区別する。
+- DFD / Flow Diagramの `Flows.data` は、Wikilinkが解決できない場合だけ参照診断として表示する。plain text labelは診断対象にしない。
 - Domain Sources / Domain Diagram診断では、fieldやrowIndexをdiagnosticMetaListに出し、refやsource種別の不整合はdiagnosticDetailBoxやCopy Referenceの候補として扱う。
 - app_process `Steps.domain` 診断では、contextのstepId / domainIdをdiagnosticDetailBoxやCopy Referenceの候補として扱う。
 
@@ -67,18 +70,20 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断情報の表示 |
-| src/views/modeling-preview-view.ts | renderDiagnosticSection | function | 診断セクションの描画 |
-| src/views/modeling-preview-view.ts | renderDiagnosticCard | function | 診断カードとcopy/open actionsの描画 |
-| src/views/modeling-preview-view.ts | getDiagnosticMetadata | function | 診断メタ情報を抽出 |
-| src/views/modeling-preview-view.ts | getDiagnosticDetailEntries | function | 診断詳細情報を抽出 |
-| src/views/modeling-preview-view.ts | getDiagnosticReferenceValue | function | referenceコピー値を抽出 |
-| src/views/modeling-preview-view.ts | getExpectedHeaderForDiagnostic | function | expectedHeaderコピー値を抽出 |
-| src/views/modeling-preview-view.ts | getFrontmatterExampleForDiagnostic | function | frontmatter例を生成 |
-| src/views/modeling-preview-view.ts | formatDiagnosticAsMarkdown | function | Markdownコピー用文字列を生成 |
-| src/main.ts | openDiagnosticLocation | function | 診断対象へのジャンプ |
-| src/core/domain-diagnostics.ts | formatDomainDiagramUnresolvedSourceMessage | function | Domain Sources診断メッセージ |
-| src/core/domain-diagram-resolver.ts | resolveDomainSources | function | Domain Sources解決とwarning生成 |
-| src/core/app-process-domain-resolver.ts | resolveAppProcessDomainPlacement | function | Steps.domain解決とwarning生成 |
+| path | notes |
+|---|---|
+| src/views/modeling-preview-view.ts | symbol: renderDiagnostics; kind: function; 診断情報の表示 |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnosticSection; kind: function; 診断セクションの描画 |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnosticCard; kind: function; 診断カードとcopy/open actionsの描画 |
+| src/views/modeling-preview-view.ts | symbol: getDiagnosticMetadata; kind: function; 診断メタ情報を抽出 |
+| src/views/modeling-preview-view.ts | symbol: getDiagnosticDetailEntries; kind: function; 診断詳細情報を抽出 |
+| src/views/modeling-preview-view.ts | symbol: getDiagnosticReferenceValue; kind: function; referenceコピー値を抽出 |
+| src/views/modeling-preview-view.ts | symbol: getExpectedHeaderForDiagnostic; kind: function; expectedHeaderコピー値を抽出 |
+| src/views/modeling-preview-view.ts | symbol: getFrontmatterExampleForDiagnostic; kind: function; frontmatter例を生成 |
+| src/views/modeling-preview-view.ts | symbol: formatDiagnosticAsMarkdown; kind: function; Markdownコピー用文字列を生成 |
+| src/core/diagnostic-section-guidance.ts | symbol: getExpectedHeaderForDiagnostic; kind: function; schema-driven expected headerを導出 |
+| src/core/relation-resolver.ts | symbol: resolveDfdFlowDataReferenceWarnings; kind: function; DFD / Flow Diagram Flows.data Wikilink診断 |
+| src/main.ts | symbol: openDiagnosticLocation; kind: function; 診断対象へのジャンプ |
+| src/core/domain-diagnostics.ts | symbol: formatDomainDiagramUnresolvedSourceMessage; kind: function; Domain Sources診断メッセージ |
+| src/core/domain-diagram-resolver.ts | symbol: resolveDomainSources; kind: function; Domain Sources解決とwarning生成 |
+| src/core/app-process-domain-resolver.ts | symbol: resolveAppProcessDomainPlacement; kind: function; Steps.domain解決とwarning生成 |

@@ -16,7 +16,7 @@ tags:
 ## Summary
 
 parsed diagram と Vaultモデルインデックスから、rendererが利用する `ResolvedDiagram` を生成する処理。
-現行実装では `resolveDiagramRelations` が diagram kind に応じて class / ER / DFD の解決経路を切り替え、nodes、edges、missingObjects、warnings を返す。
+現行実装では `resolveDiagramRelations` が diagram kind または schema に応じて class / ER / DFD / Flow Diagram の解決経路を切り替え、nodes、edges、missingObjects、warnings を返す。
 
 ## Domain Sources
 
@@ -28,7 +28,7 @@ parsed diagram と Vaultモデルインデックスから、rendererが利用す
 
 | id | data | source | required | notes |
 |---|---|---|---|---|
-| parsedDiagram | [[DATA-MW-CORE-PARSED-MODEL]] | Parser | Y | class / ER / DFD diagram model |
+| parsedDiagram | [[DATA-MW-CORE-PARSED-MODEL]] | Parser | Y | class / ER / DFD / Flow Diagram model |
 | vaultIndex | [[DATA-MW-VAULT-MODEL-INDEX]] | [[DFD-MW-OBJ-VAULT-INDEX]] | Y | object / entity / DFD object / relation lookupに使う |
 
 ## Outputs
@@ -52,6 +52,8 @@ parsed diagram と Vaultモデルインデックスから、rendererが利用す
 | resolveErEdges | relation_resolution | ER diagram edgesを解決する | process | graphNodes, vaultIndex | graphEdges |  |  |  | ER outbound relationsを使う |
 | resolveDfdObjects | relation_resolution | DFD objectsを解決する | process | parsedDiagram, vaultIndex | graphNodes |  |  |  | Objects rowsをDFD objectへ解決する |
 | resolveDfdFlows | relation_resolution | DFD flowsを解決する | process | graphNodes, vaultIndex | graphEdges |  |  |  | flow endpointとdataを解決する |
+| resolveFlowDiagramObjects | relation_resolution | Flow Diagram objectsを解決する | process | parsedDiagram, vaultIndex | graphNodes |  |  |  | Objects.idをローカルendpointとして登録する |
+| resolveFlowDiagramFlows | relation_resolution | Flow Diagram flowsを解決する | process | graphNodes, vaultIndex | graphEdges, warnings |  |  |  | from / to はローカルObjects.id、dataのWikilinkは参照診断対象 |
 | collectWarnings | relation_resolution | missingObjectsとwarningsを集約する | process | graphNodes, graphEdges | warnings |  |  |  | unresolved referenceやshape warningを含む |
 | buildResolved | relation_resolution | ResolvedDiagramを組み立てる | process | graphNodes, graphEdges, warnings | resolvedDiagram |  |  |  | diagram / nodes / edges / missingObjects / warningsを返す |
 | end | renderer_area | Diagram解決を終了する | end | resolvedDiagram |  |  |  |  | renderer入力として使われる |
@@ -63,6 +65,7 @@ parsed diagram と Vaultモデルインデックスから、rendererが利用す
 | start | detectKind |  | kind判定 | diagram kindで分岐する |
 | detectKind | resolveErNodes | `diagram.kind === "er"` | ER | ER専用経路 |
 | detectKind | resolveDfdObjects | `diagram.kind === "dfd"` | DFD | DFD専用経路 |
+| detectKind | resolveFlowDiagramObjects | `diagram.schema === "flow_diagram"` | Flow Diagram | Flow Diagram MVP経路 |
 | detectKind | resolveClassNodes |  | class | それ以外はclass/component/flow系diagramとして扱う |
 | resolveClassNodes | resolveClassEdges |  | edges | class relationsを解決する |
 | resolveClassEdges | collectWarnings |  | warnings | warningを集約する |
@@ -70,6 +73,8 @@ parsed diagram と Vaultモデルインデックスから、rendererが利用す
 | resolveErEdges | collectWarnings |  | warnings | warningを集約する |
 | resolveDfdObjects | resolveDfdFlows |  | flows | DFD flowをedge化する |
 | resolveDfdFlows | collectWarnings |  | warnings | warningを集約する |
+| resolveFlowDiagramObjects | resolveFlowDiagramFlows |  | flows | Flow Diagram flowをedge化する |
+| resolveFlowDiagramFlows | collectWarnings |  | warnings | endpointとdata reference warningを集約する |
 | collectWarnings | buildResolved |  | build | ResolvedDiagramを作る |
 | buildResolved | end |  | 完了 | rendererへ渡す |
 
@@ -78,6 +83,7 @@ parsed diagram と Vaultモデルインデックスから、rendererが利用す
 - `ResolvedDiagram` は renderer用の実行時データであり、Mermaid sourceそのものではない。
 - class diagramでは明示edgesが空の場合、Objects由来のclass relationsを自動収集する経路がある。
 - DFDでは flow endpointがObjectsに存在しない場合や不適切なshape同士のflowでwarningを生成する。
+- Flow Diagramでは flow endpointをローカル `Objects.id` として解決し、`Flows.data` のWikilinkが解決できない場合にwarningを生成する。plain textのdata labelは参照解決を要求しない。
 - この処理はExplorer機能やファイルオープン操作を扱わない。
 
 ## Source Links
@@ -86,5 +92,6 @@ parsed diagram と Vaultモデルインデックスから、rendererが利用す
 |---|---|
 | src/core/relation-resolver.ts | Steps: start, detectKind, resolveClassNodes, resolveClassEdges, resolveErNodes, resolveErEdges. resolveDiagramRelations がdiagram kindごとに解決する |
 | src/core/relation-resolver.ts | Steps: resolveDfdObjects, resolveDfdFlows, collectWarnings, buildResolved. resolveDfdDiagramRelations がDFD object / flowを解決する |
+| src/core/relation-resolver.ts | Steps: resolveFlowDiagramObjects, resolveFlowDiagramFlows. Flow Diagram endpoint / Flows.data Wikilinkを解決する |
 | src/core/reference-resolver.ts | Steps: resolveClassNodes, resolveErNodes, resolveDfdObjects, resolveDfdFlows. resolveReferenceIdentity がendpointや参照の同一性を解決する |
 | src/types/models.ts | Steps: buildResolved, end. ResolvedDiagram / DiagramNode / DiagramEdge がresolver出力構造を定義する |

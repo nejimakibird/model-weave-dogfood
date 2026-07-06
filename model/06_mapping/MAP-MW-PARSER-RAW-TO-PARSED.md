@@ -38,6 +38,6 @@ Obsidian Vault上の物理ファイル（DATA-MW-CORE-VAULT-FILE）から、Mode
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | parseVaultFile | function | ファイル種別に応じたパース処理のディスパッチ |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | symbol: parseVaultFile; kind: function; ファイル種別に応じたパース処理のディスパッチ |

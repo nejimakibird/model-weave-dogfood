@@ -30,7 +30,7 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | 共通リレーション解決口 |
-| src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | DFDフロー解決の実装 |
+| path | notes |
+|---|---|
+| src/core/relation-resolver.ts | symbol: resolveDiagramRelations; kind: function; 共通リレーション解決口 |
+| src/core/relation-resolver.ts | symbol: resolveDfdDiagramRelations; kind: function; DFDフロー解決の実装 |

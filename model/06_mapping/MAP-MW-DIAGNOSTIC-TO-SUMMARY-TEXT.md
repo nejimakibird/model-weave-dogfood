@@ -63,7 +63,7 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断情報表示の起点 |
-| src/core/current-file-diagnostics.ts | normalizeDiagnosticSeverity | function | severity正規化 |
+| path | notes |
+|---|---|
+| src/views/modeling-preview-view.ts | symbol: renderDiagnostics; kind: function; 診断情報表示の起点 |
+| src/core/current-file-diagnostics.ts | symbol: normalizeDiagnosticSeverity; kind: function; severity正規化 |

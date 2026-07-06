@@ -39,12 +39,12 @@ Class / ER object previewでは、object contextから作られる関連subgraph
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/types/models.ts | ResolvedDiagram | interface | 解決済み図面データ |
-| src/types/models.ts | DiagramNode | interface | nodes要素 |
-| src/types/models.ts | DiagramEdge | interface | edges要素 |
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | ResolvedDiagramを生成 |
-| src/core/object-context-resolver.ts | resolveObjectContext | function | Class / ER objectの関連object contextを生成 |
-| src/core/object-subgraph-builder.ts | buildObjectSubgraphScene | function | object contextからPreview用ResolvedDiagramを生成 |
-| src/core/internal-edge-adapters.ts | toClassRelationEdge | function | relations由来の内部関係をClass edgeへ変換 |
+| path | notes |
+|---|---|
+| src/types/models.ts | symbol: ResolvedDiagram; kind: interface; 解決済み図面データ |
+| src/types/models.ts | symbol: DiagramNode; kind: interface; nodes要素 |
+| src/types/models.ts | symbol: DiagramEdge; kind: interface; edges要素 |
+| src/core/relation-resolver.ts | symbol: resolveDiagramRelations; kind: function; ResolvedDiagramを生成 |
+| src/core/object-context-resolver.ts | symbol: resolveObjectContext; kind: function; Class / ER objectの関連object contextを生成 |
+| src/core/object-subgraph-builder.ts | symbol: buildObjectSubgraphScene; kind: function; object contextからPreview用ResolvedDiagramを生成 |
+| src/core/internal-edge-adapters.ts | symbol: toClassRelationEdge; kind: function; relations由来の内部関係をClass edgeへ変換 |

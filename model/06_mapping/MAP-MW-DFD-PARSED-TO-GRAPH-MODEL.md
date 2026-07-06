@@ -39,6 +39,6 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | DFDモデルの接続関係解決ロジック |
+| path | notes |
+|---|---|
+| src/core/relation-resolver.ts | symbol: resolveDfdDiagramRelations; kind: function; DFDモデルの接続関係解決ロジック |

@@ -38,6 +38,6 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | グラフ構築プロセスの起点 |
+| path | notes |
+|---|---|
+| src/core/relation-resolver.ts | symbol: resolveDiagramRelations; kind: function; グラフ構築プロセスの起点 |

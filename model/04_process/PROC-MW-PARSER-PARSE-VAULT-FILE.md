@@ -65,7 +65,7 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 | detectFileType | parser_resolver | schema / type からfileTypeを検出する | process | frontmatter | fileType |  |  |  | schema があれば schema mapping を優先する |
 | fileTypeDispatch | parser_resolver | 検出fileTypeで分岐する | decision | fileType |  |  |  |  | object / relations / diagram / markdown 等へ分岐する |
 | runRelationsParser | parser_resolver | Relationsパーサへ委譲する | subflow | content | result |  |  |  | `schema: model_relations_v1` は parseRelationsFile へ渡す |
-| runDetectedParser | parser_resolver | fileType対応パーサへ委譲する | subflow | content | result |  |  |  | object / dfd / er_entity 等のパーサへ渡す |
+| runDetectedParser | parser_resolver | fileType対応パーサへ委譲する | subflow | content | result |  |  |  | object / dfd / flow_diagram / er_entity 等のパーサへ渡す |
 | createMarkdown | parser_resolver | markdownモデルを作成する | process | content | result |  |  |  | unsupported schema / type は markdown として扱う |
 | collectResult | parser_resolver | parseResultをまとめる | process | result | result, diag |  |  |  | parser warnings を diagnostics相当として保持する |
 | hasParsedModel | model_storage | parsed model があるか判定する | decision | result |  |  |  |  | null の場合は index 登録しない |
@@ -104,6 +104,7 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 - shallow parse は frontmatter から最小モデルを作成し、本文セクションの詳細解析を行わない。
 - full parse は一部 `frontmatter.type` の直接分岐を先に確認し、その後 `detectFileType` による schema / type detection を行う。
 - `schema: model_relations_v1` は `relations` fileType として扱われ、parseRelationsFile に委譲される。
+- `type: flow_diagram` は `flow-diagram` fileType として扱われ、parseFlowDiagramFile に委譲される。
 - unsupported schema / type は `markdown` fileType として createMarkdownModel へfallbackする。
 - indexSingleFile は parseResult.file が存在する場合のみ fileType ごとの索引へ登録する。
 - Markdown安全記法のため、複雑な型表現は山括弧表記ではなく自然文で説明します。
@@ -116,3 +117,4 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 | src/parsers/frontmatter-parser.ts | Steps: parseShallowFrontmatter, parseFrontmatter. YAML frontmatter抽出 |
 | src/core/schema-detector.ts | Steps: detectShallowType, detectFileType. schema / type による fileType 判定 |
 | src/parsers/relations-parser.ts | Steps: runRelationsParser. schema-driven Relations ファイル解析 |
+| src/parsers/dfd-diagram-parser.ts | Steps: runDetectedParser. parseFlowDiagramFile / parseDfdDiagramFile |

@@ -29,7 +29,7 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/render-mode.ts | resolveRenderMode | function | 描画モードの解決 |
-| src/core/render-mode.ts | getSupportedRenderModes | function | modelType別の対応render mode導出 |
+| path | notes |
+|---|---|
+| src/core/render-mode.ts | symbol: resolveRenderMode; kind: function; 描画モードの解決 |
+| src/core/render-mode.ts | symbol: getSupportedRenderModes; kind: function; modelType別の対応render mode導出 |

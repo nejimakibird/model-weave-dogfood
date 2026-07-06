@@ -114,8 +114,8 @@ Model Weave の各Markdownモデルファイルにおいて、`frontmatter.type`
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | parseVaultFile | function | パーサーの振り分けと初期検証 |
-| src/parsers/markdown-table.ts | parseMarkdownTable | function | テーブルヘッダーの検証ロジック |
-| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の集約 |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | symbol: parseVaultFile; kind: function; パーサーの振り分けと初期検証 |
+| src/parsers/markdown-table.ts | symbol: parseMarkdownTable; kind: function; テーブルヘッダーの検証ロジック |
+| src/core/current-file-diagnostics.ts | symbol: buildCurrentObjectDiagnostics; kind: function; 診断情報の集約 |

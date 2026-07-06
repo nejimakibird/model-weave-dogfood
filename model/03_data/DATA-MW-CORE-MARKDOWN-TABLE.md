@@ -32,6 +32,6 @@ Markdownソースから抽出・解析された単一のテーブル構造を保
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/parsers/markdown-table.ts | getMarkdownTableCellRanges | function | パース結果の行・セル情報に対応 |
+| path | notes |
+|---|---|
+| src/parsers/markdown-table.ts | symbol: getMarkdownTableCellRanges; kind: function; パース結果の行・セル情報に対応 |

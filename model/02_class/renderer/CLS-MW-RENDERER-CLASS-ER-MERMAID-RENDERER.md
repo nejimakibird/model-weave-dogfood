@@ -30,6 +30,6 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/renderers/class-er-mermaid.ts | buildClassOverviewMermaidSource | function | クラス図Mermaidソース生成 |
+| path | notes |
+|---|---|
+| src/renderers/class-er-mermaid.ts | symbol: buildClassOverviewMermaidSource; kind: function; クラス図Mermaidソース生成 |

@@ -53,9 +53,9 @@ DFDオブジェクトの種別（kind）を、抽象グラフモデル（GraphNo
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/renderers/dfd-mermaid.ts | toMermaidNodeDeclaration | function | ノード形状とクラスの割当 |
-| src/renderers/dfd-mermaid.ts | registerDfdColorClass | function | DFD object kindからColor Scheme classを割り当てる |
-| src/core/color-scheme.ts | resolveColorStyle | function | target=dfd / target=domain の配色解決 |
-| src/parsers/dfd-diagram-parser.ts | normalizeDfdDiagramObjectKind | function | 入力種別の正規化 |
+| path | notes |
+|---|---|
+| src/renderers/dfd-mermaid.ts | symbol: toMermaidNodeDeclaration; kind: function; ノード形状とクラスの割当 |
+| src/renderers/dfd-mermaid.ts | symbol: registerDfdColorClass; kind: function; DFD object kindからColor Scheme classを割り当てる |
+| src/core/color-scheme.ts | symbol: resolveColorStyle; kind: function; target=dfd / target=domain の配色解決 |
+| src/parsers/dfd-diagram-parser.ts | symbol: normalizeDfdDiagramObjectKind; kind: function; 入力種別の正規化 |

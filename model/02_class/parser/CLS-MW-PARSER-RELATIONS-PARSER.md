@@ -47,6 +47,6 @@ Relations は schema-driven なファイル種別であり、通常の `frontmat
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/parsers/relations-parser.ts | parseRelationsFile | function | schema-driven Relations parser implementation |
+| path | notes |
+|---|---|
+| src/parsers/relations-parser.ts | symbol: parseRelationsFile; kind: function; schema-driven Relations parser implementation |

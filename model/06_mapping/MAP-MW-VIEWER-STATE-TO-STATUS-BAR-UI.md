@@ -71,8 +71,8 @@ tags:
  
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer状態に応じたUI更新 |
-| src/views/modeling-preview-view.ts | prepareFileViewportState | method | viewport状態復元/初期化 |
-| src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断情報の表示・集計元 |
+| path | notes |
+|---|---|
+| src/views/modeling-preview-view.ts | symbol: renderCurrentState; kind: method; Viewer状態に応じたUI更新 |
+| src/views/modeling-preview-view.ts | symbol: prepareFileViewportState; kind: method; viewport状態復元/初期化 |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnostics; kind: function; 診断情報の表示・集計元 |

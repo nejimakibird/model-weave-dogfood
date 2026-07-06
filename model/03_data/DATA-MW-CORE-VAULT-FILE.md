@@ -33,6 +33,6 @@ Obsidian Vault内に存在する物理ファイルの実体と、OS/プラグイ
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | indexSingleFile | function | 解析関数への入力オブジェクト構造に対応 |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | symbol: indexSingleFile; kind: function; 解析関数への入力オブジェクト構造に対応 |

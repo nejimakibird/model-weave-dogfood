@@ -81,9 +81,9 @@ Model Weave設定タブのリセット操作により、[[DATA-MW-PLUGIN-SETTING
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/main.ts | ModelWeavePlugin.updateSettings | method | 現行設定保存経路 |
-| src/settings/model-weave-settings.ts | ModelWeaveSettings | type | プラグイン設定構造 |
-| src/settings/model-weave-settings.ts | DEFAULT_MODEL_WEAVE_SETTINGS | constant | 既定設定値 |
-| src/settings/model-weave-settings.ts | normalizeModelWeaveSettings | function | 現行設定正規化 |
+| path | notes |
+|---|---|
+| src/main.ts | symbol: ModelWeavePlugin.updateSettings; kind: method; 現行設定保存経路 |
+| src/settings/model-weave-settings.ts | symbol: ModelWeaveSettings; kind: type; プラグイン設定構造 |
+| src/settings/model-weave-settings.ts | symbol: DEFAULT_MODEL_WEAVE_SETTINGS; kind: constant; 既定設定値 |
+| src/settings/model-weave-settings.ts | symbol: normalizeModelWeaveSettings; kind: function; 現行設定正規化 |

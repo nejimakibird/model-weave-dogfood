@@ -128,14 +128,14 @@ Renderer、Business Flow、Domains表示、Viewer、Relationship View、Mermaid 
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/main.ts | ModelWeaveSettingTab.display | method | Obsidian設定タブで公開される設定項目 |
-| src/settings/model-weave-settings.ts | ModelWeaveSettings | type | プラグイン設定構造 |
-| src/settings/model-weave-settings.ts | DEFAULT_MODEL_WEAVE_SETTINGS | constant | 既定設定値 |
-| src/settings/model-weave-settings.ts | normalizeModelWeaveSettings | function | 設定値の正規化と旧defaultRenderModeの移行補助 |
-| src/main.ts | ModelWeavePlugin.updateSettings | method | 設定変更の正規化、saveData、Preview更新 |
-| src/main.ts | ModelWeavePlugin.refreshOpenModelWeaveViews | method | 開いているPreviewへ設定を再反映 |
-| src/main.ts | ModelWeavePlugin.getViewerPreferences | method | Viewerへ渡す表示設定の構成 |
-| src/core/color-scheme.ts | resolveDefaultColorScheme | function | defaultColorSchemeRef の解決 |
-| src/views/applied-color-scheme-renderer.ts | renderAppliedColorSchemeSectionContent | function | Applied Color Scheme sectionの表示 |
+| path | notes |
+|---|---|
+| src/main.ts | symbol: ModelWeaveSettingTab.display; kind: method; Obsidian設定タブで公開される設定項目 |
+| src/settings/model-weave-settings.ts | symbol: ModelWeaveSettings; kind: type; プラグイン設定構造 |
+| src/settings/model-weave-settings.ts | symbol: DEFAULT_MODEL_WEAVE_SETTINGS; kind: constant; 既定設定値 |
+| src/settings/model-weave-settings.ts | symbol: normalizeModelWeaveSettings; kind: function; 設定値の正規化と旧defaultRenderModeの移行補助 |
+| src/main.ts | symbol: ModelWeavePlugin.updateSettings; kind: method; 設定変更の正規化、saveData、Preview更新 |
+| src/main.ts | symbol: ModelWeavePlugin.refreshOpenModelWeaveViews; kind: method; 開いているPreviewへ設定を再反映 |
+| src/main.ts | symbol: ModelWeavePlugin.getViewerPreferences; kind: method; Viewerへ渡す表示設定の構成 |
+| src/core/color-scheme.ts | symbol: resolveDefaultColorScheme; kind: function; defaultColorSchemeRef の解決 |
+| src/views/applied-color-scheme-renderer.ts | symbol: renderAppliedColorSchemeSectionContent; kind: function; Applied Color Scheme sectionの表示 |

@@ -31,6 +31,6 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/types/models.ts | DfdFlowModel | interface | 解析済みのフロー行を保持する型 |
+| path | notes |
+|---|---|
+| src/types/models.ts | symbol: DfdFlowModel; kind: interface; 解析済みのフロー行を保持する型 |

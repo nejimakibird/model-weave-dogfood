@@ -98,18 +98,18 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/validator.ts | validateVaultIndex | function | Vault全体の検証warningを生成する |
-| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | current-file診断を生成する |
-| src/core/current-file-diagnostics.ts | buildCurrentDiagramDiagnostics | function | diagram診断を正規化する |
-| src/core/vault-index.ts | warningsByFilePath | field | file path別warning map |
-| src/core/vault-index.ts | ensureVaultValidation | function | vault validation warningをindexへ格納する |
-| src/main.ts | buildAppProcessBusinessFlowWarnings | method | app_process Flowsの未解決step参照warning |
-| src/main.ts | view.updateContent | usage | warningsをPreview stateへ渡す |
-| src/main.ts | openDiagnosticLocation | method | 診断クリック時のファイル位置open |
-| src/main.ts | resolveDiagnosticLine | function | line / fromLine / toLine / section / contextから位置を解決 |
-| src/views/modeling-preview-view.ts | renderDiagnostics | function | Notes / Warnings / Errors を描画する |
-| src/views/modeling-preview-view.ts | renderDiagnosticCard | function | 診断カードのopen / copy actionsを描画する |
-| src/views/modeling-preview-view.ts | formatDiagnosticAsMarkdown | function | Markdownコピー用文字列を生成する |
-| src/types/models.ts | ValidationWarning | type | 診断データ構造 |
+| path | notes |
+|---|---|
+| src/core/validator.ts | symbol: validateVaultIndex; kind: function; Vault全体の検証warningを生成する |
+| src/core/current-file-diagnostics.ts | symbol: buildCurrentObjectDiagnostics; kind: function; current-file診断を生成する |
+| src/core/current-file-diagnostics.ts | symbol: buildCurrentDiagramDiagnostics; kind: function; diagram診断を正規化する |
+| src/core/vault-index.ts | symbol: warningsByFilePath; kind: field; file path別warning map |
+| src/core/vault-index.ts | symbol: ensureVaultValidation; kind: function; vault validation warningをindexへ格納する |
+| src/main.ts | symbol: buildAppProcessBusinessFlowWarnings; kind: method; app_process Flowsの未解決step参照warning |
+| src/main.ts | symbol: view.updateContent; kind: usage; warningsをPreview stateへ渡す |
+| src/main.ts | symbol: openDiagnosticLocation; kind: method; 診断クリック時のファイル位置open |
+| src/main.ts | symbol: resolveDiagnosticLine; kind: function; line / fromLine / toLine / section / contextから位置を解決 |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnostics; kind: function; Notes / Warnings / Errors を描画する |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnosticCard; kind: function; 診断カードのopen / copy actionsを描画する |
+| src/views/modeling-preview-view.ts | symbol: formatDiagnosticAsMarkdown; kind: function; Markdownコピー用文字列を生成する |
+| src/types/models.ts | symbol: ValidationWarning; kind: type; 診断データ構造 |

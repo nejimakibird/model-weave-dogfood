@@ -39,8 +39,8 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/renderers/dfd-mermaid.ts | buildDfdMermaidSource | function | DFD用ソース生成の起点 |
-| src/core/render-mode.ts | resolveRenderMode | function | DFDのsupportedModesとfallback |
-| src/core/color-scheme.ts | resolveColorStyle | function | DFD object / Domain subgraphの配色解決 |
+| path | notes |
+|---|---|
+| src/renderers/dfd-mermaid.ts | symbol: buildDfdMermaidSource; kind: function; DFD用ソース生成の起点 |
+| src/core/render-mode.ts | symbol: resolveRenderMode; kind: function; DFDのsupportedModesとfallback |
+| src/core/color-scheme.ts | symbol: resolveColorStyle; kind: function; DFD object / Domain subgraphの配色解決 |

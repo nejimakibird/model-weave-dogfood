@@ -69,8 +69,8 @@ Model Weave 0.1.17時点では内部Vault Indexは実装済みだが、独立し
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | VaultIndex | class | Vault内モデル資産の索引 |
-| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 診断情報の生成 |
-| src/main.ts | openDiagnosticLocation | function | ファイルジャンプ処理の参考 |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | symbol: VaultIndex; kind: class; Vault内モデル資産の索引 |
+| src/core/current-file-diagnostics.ts | symbol: buildCurrentObjectDiagnostics; kind: function; 診断情報の生成 |
+| src/main.ts | symbol: openDiagnosticLocation; kind: function; ファイルジャンプ処理の参考 |

@@ -31,6 +31,6 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/types/models.ts | DfdDiagramObjectEntry | interface | 解析済みのオブジェクト行を保持する型 |
+| path | notes |
+|---|---|
+| src/types/models.ts | symbol: DfdDiagramObjectEntry; kind: interface; 解析済みのオブジェクト行を保持する型 |

@@ -58,6 +58,9 @@ tags:
 | COV-011 | overclaim確認 | 部分反映済み | high | 既存dogfoodモデルが実装済みと過大表現している箇所はないか | model-weave/src, dogfood model | all model folders | 横断検索でExplorer系、Quick Fix、自動修正、weave_map、severity note、Markdown正本と派生表示、保存設定とViewer一時状態、Flow Connect Mode対象範囲を点検。大きなoverclaimは見つからず、STATUS / READMEの分類表現だけ補正 | implemented定義をsource-backedへ締め、Explorer / Model Indexはfuture維持、NotebookLMはnote_only候補維持 | COV-009 / COV-010でdocsのみ仕様とsrcのみ仕様を機能別に洗う | generated modelを正と見なさない。COV-011は定期点検として必要に応じて再実施 |
 | COV-012 | 日本語 / FORMAT逸脱 | 部分反映済み | medium | 既存dogfoodに不自然な日本語やFORMAT逸脱は残っていないか | FORMAT docs, dogfood model scan | 04_process, 99_notes | 横断検索で不自然な和英混在動詞、TypeScript風型表記、Wikilink alias、frontmatter未クォートWikilink、app_process Steps / Flows headerを確認。実モデルで明確な修正対象はSource Links processのopen表現のみ。型表記やaliasの検出は安全ガイド内の悪い例が中心 | 明らかな表現問題だけ最小修正し、ガイド内のRisky例はfalse positiveとして維持 | COV-012Aでtable列数の機械検証を必要に応じて別途行う | raw pipe、TypeScript風型、Wikilink aliasは例示と実モデルを分けて判断する |
 | COV-012A | Markdown table mechanical validation | 反映済み | low | 全Markdown tableの列数を機械的に検証する必要があるか | dogfood model scan | all model folders | コードブロック外のMarkdown tableを検証し、ヘッダー列数と各行列数の不一致は0件。app_process Inputs / Outputs / Steps / Flowsヘッダー逸脱も0件 | 明らかな列崩れ修正は不要。false positiveの悪い例は維持 | 今後table warningが出た場合だけFORMAT別に再検証する | ガイド内の悪い例を誤修正しない |
+| COV-013 | v0.1.19 release alignment | 反映済み | high | v0.1.19のFlow Diagram MVP、diagnostics guidance、Color Scheme編集をdogfoodへ反映できているか | v0.1.19 release notes, FORMAT-flow_diagram, dfd-diagram-parser.ts, relation-resolver.ts, dfd-mermaid.ts, diagnostic-section-guidance.ts, color-scheme-table-editor.ts, applied-color-scheme-renderer.ts | 03_data, 04_process, 05_rule, 06_mapping, 09_screen, 99_notes | Flow Diagram MVPはtype: flow_diagram、kind: screen_communication、Objects / Flows表、ローカルendpoint、Flows.data Wikilink診断、Internal Detail Viewとして実装済み。Color Scheme preview editingとApplied Color Scheme compact tableも実装済み | Flow Diagram DATA / parse / render processを追加し、既存Parser / Resolver / Renderer / Diagnostics / Viewerへ最小反映 | COV-013Aで代表Flow Diagramサンプルやdogfood実例が必要か判断する | Surface View、Communication View、folding、projection、transition coverage生成はfuture維持 |
+| COV-013A | Flow Diagram sample and model coverage | 要追加調査 | medium | dogfood内にFlow Diagramの代表モデルやサンプルを追加する必要があるか | FORMAT-flow_diagram, parser / renderer implementation | optional model files | COV-013では形式データと処理境界のみ反映 | deferred | 代表的なscreen communication例を追加するか別batchで判断する | MVP外のprojectionや自動生成は追加しない |
+| COV-013B | Source Links header diagnostics | 反映済み | high | schema-driven expected header diagnosticsで表面化した旧Source Linksヘッダーを正規化できているか | current-file-diagnostics.ts, diagnostic-section-guidance.ts, dogfood model scan | model-weave-dogfood/model | 旧 `path / symbol / kind / notes` 形式が多数残っていた。現行FORMATは `path / notes` のみ | Dogfood側を正規化し、symbol / kindはnotesへ畳み込む。本体parser / diagnosticsは緩めない | 今後Source Links invalid-table-columnが出たファイルだけ再検索する | Source Links Explorerとは無関係。section supportの現行FORMATに合わせる |
 
 ## 分類メモ
 
@@ -97,6 +100,12 @@ tags:
 - app_processはproseとtable-based Business Flowを併用できる。source-backedな順序、分岐、入出力、外部process連携が明確なものだけ表形式へ変換し、future / planned / logical寄りのprocessはproseで残す。
 - COV-012では、ガイドやレポートに含まれる `Array<T>`、`Foo[]`、Wikilink alias は「避けるべき例」として残し、実モデルの表セルに残る危険表記とは分けて扱う方針を確認した。
 - COV-012Aでは、コードブロック外のMarkdown table列数とapp_process主要ヘッダーを機械的に確認し、列数崩れは検出されなかった。今後は実際のViewer warningが出たFORMATだけ小さく再検証する。
+- COV-013では、v0.1.19のFlow Diagram MVPを `dfd_diagram` とは別形式として整理した。`type: flow_diagram` は `schema: flow_diagram` として処理され、MVPはInternal Detail Viewのみを描画する。
+- Flow Diagramの `Flows.from` / `Flows.to` はローカル `Objects.id` を参照する。外部モデル参照やWikilinkではない。
+- Flow DiagramとDFDの `Flows.data` は、plain textならedge labelとして扱い、Wikilinkなど参照形式だけ未解決診断の対象になる。
+- v0.1.19のColor Scheme preview editingは `## Colors` の fill / stroke / text セル更新に限定された実装済み操作であり、Diagnostics Quick Fixや汎用Markdown自動修正ではない。
+- Applied Color Scheme sectionはcompact tableとして `Target / Kind / Preview / Notes / Source` を表示する。表示section自体はPNG export対象ではない。
+- COV-013Bでは、dogfood内の旧Source Links表 `path / symbol / kind / notes` を現行FORMATの `path / notes` へ正規化した。symbol / kindは必要な場合だけnotesへ畳み込み、本体parserやdiagnosticsを旧形式許容へ戻さない。
 
 ## Redmine dogfood方式から持ち込む考え方
 

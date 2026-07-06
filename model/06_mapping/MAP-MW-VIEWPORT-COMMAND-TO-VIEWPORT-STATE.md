@@ -60,7 +60,7 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | Viewport状態更新の起点 |
-| src/renderers/zoom-toolbar.ts | createZoomToolbar | function | toolbar操作の発生元 |
+| path | notes |
+|---|---|
+| src/renderers/graph-view-shared.ts | symbol: attachGraphViewportInteractions; kind: function; Viewport状態更新の起点 |
+| src/renderers/zoom-toolbar.ts | symbol: createZoomToolbar; kind: function; toolbar操作の発生元 |
