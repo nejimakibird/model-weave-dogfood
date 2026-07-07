@@ -42,7 +42,9 @@ tags:
 | previewWarnings | [[DATA-MW-CORE-DIAGNOSTIC]] | [[DFD-MW-OBJ-PREVIEW-VIEW]] | `view.updateContent` のwarnings |
 | diagnosticSections | object | Preview DOM | Notes / Warnings / Errors の表示グループ |
 | diagnosticOpenRequest | object | Editor navigation | click可能な診断からのopen要求 |
+| diagnosticManualGuidance | [[DATA-MW-DIAGNOSTIC-MANUAL-GUIDANCE]] | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]] | 診断detailsに表示する手動修復ガイダンス |
 | diagnosticGuidanceCopy | object | Clipboard | 診断メッセージや修正ヒントのコピー出力 |
+| diagnosticBulkCopyActions | [[DATA-MW-DIAGNOSTIC-COPY-ACTION]] | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]] | all diagnostics / errors / warnings / notes のbulk copy actions |
 | diagnosticQuickFixCandidate | [[DATA-MW-DIAGNOSTIC-QUICK-FIX]] | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]] | missing frontmatter id / name の場合だけ表示するQuick Fix候補 |
 
 ## Steps
@@ -58,7 +60,9 @@ tags:
 | diagramDiagnostics | diagnostics | diagram系診断を生成する | process | resolved diagram, warning candidates | diagnostics |  |  |  | `buildCurrentDiagramDiagnostics` を使う |
 | passPreviewState | preview_pipeline | diagnosticsをpreview stateへ渡す | screen | diagnostics | previewWarnings |  |  |  | `view.updateContent` のwarningsに設定する |
 | groupBySeverity | viewer_ui | severity別に分類する | process | previewWarnings | diagnosticSections |  |  |  | info / warning / error に分ける |
+| renderBulkCopyActions | viewer_ui | 一括コピー操作を描画する | screen | diagnosticSections | diagnosticBulkCopyActions | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] |  | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]] | all diagnostics / errors / warnings / notes |
 | renderGroups | viewer_ui | 診断グループを描画する | screen | diagnosticSections | preview DOM |  |  |  | Notes / Warnings / Errors detailsを作る |
+| renderManualGuidance | viewer_ui | 手動修復ガイダンスを描画する | screen | diagnostics | diagnosticManualGuidance | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] |  | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]] | table / frontmatter / referenceなどの手動修復案 |
 | renderCopyGuidance | viewer_ui | コピー支援を描画する | screen | diagnostics | diagnosticGuidanceCopy |  |  | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]] | Copy Message / Copy Markdown / Copy Referenceなど |
 | renderQuickFixCandidate | viewer_ui | Quick Fix候補を描画する | screen | diagnostics | diagnosticQuickFixCandidate | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | [[PROC-MW-DIAGNOSTIC-QUICK-FIX-APPLY]] | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]] | missing frontmatter id / name のみ |
 | clickableCheck | viewer_ui | 診断を開けるか判定する | decision | previewWarnings |  |  |  |  | `onOpenDiagnostic` がある場合だけclick可能にする |
@@ -78,8 +82,10 @@ tags:
 | objectDiagnostics | passPreviewState |  | previewへ渡す | dedupe済みdiagnosticsを渡す |
 | diagramDiagnostics | passPreviewState |  | previewへ渡す | dedupe済みdiagnosticsを渡す |
 | passPreviewState | groupBySeverity |  | severity分類 | Preview View側で分類する |
-| groupBySeverity | renderGroups |  | 描画 | Notes / Warnings / Errorsを描画する |
-| renderGroups | renderCopyGuidance |  | copy支援 | 診断カードごとのコピー操作を表示する |
+| groupBySeverity | renderBulkCopyActions |  | bulk copy | Diagnostics tab上部の一括コピー操作を作る |
+| renderBulkCopyActions | renderGroups |  | 描画 | Notes / Warnings / Errorsを描画する |
+| renderGroups | renderManualGuidance |  | 手動修復案 | 診断カードごとのmanual guidanceを表示する |
+| renderManualGuidance | renderCopyGuidance |  | copy支援 | 診断カードごとのコピー操作を表示する |
 | renderCopyGuidance | renderQuickFixCandidate |  | quick fix候補 | missing frontmatter id / nameだけ候補化する |
 | renderQuickFixCandidate | clickableCheck |  | click判定 | open handlerの有無を確認する |
 | clickableCheck | openDiagnostic | `onOpenDiagnostic` | open | 診断クリックで対象位置を開く |
@@ -94,9 +100,13 @@ tags:
 - `buildCurrentDiagramDiagnostics` はdiagram系warningを正規化して重複を除く。
 - `renderDiagnostics` はdiagnosticsを info / warning / error に分け、Notes / Warnings / Errors として表示する。
 - `openDiagnosticLocation` は診断にfile pathやline情報がある場合に、対応するMarkdown位置を開くためのpreview側操作である。
-- `renderDiagnosticCard` はOpen Locationに加え、Copy Message / Copy Markdown / Copy Reference / Copy Expected Header / Copy Frontmatter Exampleを表示する。
+- `renderDiagnosticsBulkActions` はall diagnostics / errors / warnings / notesのMarkdown copy actionsを作る。notesはinfo severityのUI分類であり、保存値ではない。
+- `renderDiagnosticCard` はOpen Locationに加え、manual-edit guidance、Copy Message / Copy Markdown / Copy Reference / Copy Expected Header / Copy Frontmatter Exampleを表示する。
+- manual-edit guidanceはfrontmatter、table header、table row、render_mode、referenceなどの診断detailsとして表示され、Markdown本文を自動修正しない。
+- invalid table header / rowやunresolved referenceは手動修復ガイダンスとcopy支援の対象であり、Quick Fix MVPの対象ではない。
 - `renderDiagnosticCard` はmissing frontmatter id / name の場合に限りQuick Fix MVPも表示する。
 - コピー支援はclipboardへ文字列を渡すだけで、Quick Fix MVPとは別操作である。
+- bulk copy actionsもclipboardへMarkdown文字列を渡すだけで、Markdown本文を変更しない。
 - Quick Fix MVPは [[PROC-MW-DIAGNOSTIC-QUICK-FIX-APPLY]] が扱う。missing type、table診断、unresolved reference、任意Markdown本文の自動修正は対象外である。
 - Explorer stateやplannedの診断パネル表示設定はこの処理の対象外である。
 - `Steps.domain` は [[DOMAINS-MW-ARCHITECTURE]] のDomain idを参照する。Flow Connect Modeやref-aware Step操作とは別の診断表示フローである。
@@ -115,7 +125,10 @@ tags:
 | src/main.ts | symbol: openDiagnosticLocation; kind: method; 診断クリック時のファイル位置open |
 | src/main.ts | symbol: resolveDiagnosticLine; kind: function; line / fromLine / toLine / section / contextから位置を解決 |
 | src/views/modeling-preview-view.ts | symbol: renderDiagnostics; kind: function; Notes / Warnings / Errors を描画する |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnosticsBulkActions; kind: function; bulk Markdown copy actionsを描画する |
+| src/views/modeling-preview-view.ts | symbol: formatDiagnosticsBulkMarkdown; kind: function; 診断一覧をMarkdownへ整形する |
 | src/views/modeling-preview-view.ts | symbol: renderDiagnosticCard; kind: function; 診断カードのopen / copy actionsを描画する |
+| src/views/modeling-preview-view.ts | symbol: getDiagnosticGuidanceEntries; kind: function; manual-edit guidanceを診断detailsへ追加する |
 | src/views/modeling-preview-view.ts | symbol: formatDiagnosticAsMarkdown; kind: function; Markdownコピー用文字列を生成する |
 | src/views/modeling-preview-view.ts | symbol: getDiagnosticQuickFixActions; kind: function; missing frontmatter id / name のQuick Fix候補を生成する |
 | src/views/modeling-preview-view.ts | symbol: createFrontmatterQuickFixAction; kind: function; Quick Fix候補の対象fieldを判定する |
