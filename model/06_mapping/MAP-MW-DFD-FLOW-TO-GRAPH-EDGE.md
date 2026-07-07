@@ -43,9 +43,9 @@ DFDの `## Flows` テーブルから解析された1行分のデータ（[[DATA-
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | フロー端点の解決とエッジ生成の主導 |
-| src/renderers/dfd-mermaid.ts | sanitizeMermaidEdgeLabel | function | ラベルのサニタイズ処理 |
-| src/types/models.ts | DfdFlowModel | type | 入力データ構造 |
-| src/types/models.ts | DiagramEdge | type | 出力データ構造 |
+| path | notes |
+|---|---|
+| src/core/relation-resolver.ts | symbol: resolveDfdDiagramRelations; kind: function; フロー端点の解決とエッジ生成の主導 |
+| src/renderers/dfd-mermaid.ts | symbol: sanitizeMermaidEdgeLabel; kind: function; ラベルのサニタイズ処理 |
+| src/types/models.ts | symbol: DfdFlowModel; kind: type; 入力データ構造 |
+| src/types/models.ts | symbol: DiagramEdge; kind: type; 出力データ構造 |

@@ -76,6 +76,6 @@ Model Weaveが認識した論理的なモデル資産。data_object, rule, mappi
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/models/core/model-asset.ts | ModelAsset | type | モデル資産の内部表現 (未確認) |
+| path | notes |
+|---|---|
+| src/models/core/model-asset.ts | symbol: ModelAsset; kind: type; モデル資産の内部表現 (未確認) |

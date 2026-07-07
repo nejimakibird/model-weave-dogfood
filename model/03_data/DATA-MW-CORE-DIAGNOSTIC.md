@@ -45,13 +45,13 @@ Markdown正本として保存されるデータではなく、`warningsByFilePat
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/types/models.ts | ValidationWarning | type | 診断情報のデータ構造定義 |
-| src/types/warnings.ts | VALIDATION_WARNING_SEVERITIES | constant | severityの有効値 |
-| src/types/warnings.ts | VALIDATION_WARNING_CODES | constant | codeの有効値 |
-| src/core/vault-index.ts | warningsByFilePath | field | file path別warning map |
-| src/core/validator.ts | validateVaultIndex | function | Vault検証warning生成 |
-| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 表示対象の診断生成 |
-| src/core/current-file-diagnostics.ts | normalizeDiagnosticSeverity | function | severityの正規化 |
-| src/views/modeling-preview-view.ts | renderDiagnosticCard | function | 診断カードとコピー支援の表示 |
+| path | notes |
+|---|---|
+| src/types/models.ts | symbol: ValidationWarning; kind: type; 診断情報のデータ構造定義 |
+| src/types/warnings.ts | symbol: VALIDATION_WARNING_SEVERITIES; kind: constant; severityの有効値 |
+| src/types/warnings.ts | symbol: VALIDATION_WARNING_CODES; kind: constant; codeの有効値 |
+| src/core/vault-index.ts | symbol: warningsByFilePath; kind: field; file path別warning map |
+| src/core/validator.ts | symbol: validateVaultIndex; kind: function; Vault検証warning生成 |
+| src/core/current-file-diagnostics.ts | symbol: buildCurrentObjectDiagnostics; kind: function; 表示対象の診断生成 |
+| src/core/current-file-diagnostics.ts | symbol: normalizeDiagnosticSeverity; kind: function; severityの正規化 |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnosticCard; kind: function; 診断カードとコピー支援の表示 |

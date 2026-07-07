@@ -46,11 +46,11 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/render-mode.ts | ResolveRenderModeInput | interface | 実装側の入力フィールド定義 |
-| src/core/render-mode.ts | resolveRenderMode | function | 優先順位に基づいた解決実装 |
-| src/core/render-mode.ts | getSupportedRenderModes | function | formatType / modelKind から supportedModes を導出する実装 |
+| path | notes |
+|---|---|
+| src/core/render-mode.ts | symbol: ResolveRenderModeInput; kind: interface; 実装側の入力フィールド定義 |
+| src/core/render-mode.ts | symbol: resolveRenderMode; kind: function; 優先順位に基づいた解決実装 |
+| src/core/render-mode.ts | symbol: getSupportedRenderModes; kind: function; formatType / modelKind から supportedModes を導出する実装 |
 
 ## Notes
 - 現行実装側の正は src/core/render-mode.ts の resolveRenderMode / getSupportedRenderModes である。

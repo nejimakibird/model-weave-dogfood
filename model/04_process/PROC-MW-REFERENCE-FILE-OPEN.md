@@ -95,8 +95,8 @@ Model Weave 0.1.17時点では、Relationship View内の参照ファイルオー
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/main.ts | openDiagnosticLocation | function | ファイルジャンプ処理の参考 |
-| src/core/vault-index.ts | VaultIndex | class | ModelAssetとfilePathの参照元 |
-| src/views/modeling-preview-view.ts | renderCurrentState | method | 開いたファイルのViewer表示更新 |
+| path | notes |
+|---|---|
+| src/main.ts | symbol: openDiagnosticLocation; kind: function; ファイルジャンプ処理の参考 |
+| src/core/vault-index.ts | symbol: VaultIndex; kind: class; ModelAssetとfilePathの参照元 |
+| src/views/modeling-preview-view.ts | symbol: renderCurrentState; kind: method; 開いたファイルのViewer表示更新 |

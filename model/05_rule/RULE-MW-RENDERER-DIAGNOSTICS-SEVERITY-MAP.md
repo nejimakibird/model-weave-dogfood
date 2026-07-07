@@ -54,13 +54,13 @@ Model Weave 内部で発生した `ValidationWarning` の `severity` を、Viewe
 - 上記のテーブルは Model Weave の正式な `Logic` セクションではなく、実装における `normalizeDiagnosticSeverity` 関数の振る舞いを定義する補足表である。
 - `ValidationWarning.severity` の有効値は `info` / `warning` / `error` である。Viewerでは `info` を Notes として表示する。
 - Source Linksのavailable / missingなどの表示状態はSource Links UIのstatusであり、`ValidationWarningCode` ではない。
-- Quick FixやMarkdown自動修正は現行srcで確認できないため、このルールではfuture扱いとする。
+- Quick Fix MVPは missing frontmatter id / name に限定して実装済みだが、severity分類そのものは変更しない。任意Markdown本文の自動修正はfutureとして扱う。
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/current-file-diagnostics.ts | normalizeDiagnosticSeverity | function | 深刻度の正規化ロジック |
-| src/types/models.ts | ValidationWarning | type | 診断情報の基本構造 |
-| src/types/warnings.ts | VALIDATION_WARNING_SEVERITIES | constant | severityの有効値 |
-| src/types/warnings.ts | VALIDATION_WARNING_CODES | constant | codeの有効値 |
+| path | notes |
+|---|---|
+| src/core/current-file-diagnostics.ts | symbol: normalizeDiagnosticSeverity; kind: function; 深刻度の正規化ロジック |
+| src/types/models.ts | symbol: ValidationWarning; kind: type; 診断情報の基本構造 |
+| src/types/warnings.ts | symbol: VALIDATION_WARNING_SEVERITIES; kind: constant; severityの有効値 |
+| src/types/warnings.ts | symbol: VALIDATION_WARNING_CODES; kind: constant; codeの有効値 |

@@ -49,6 +49,6 @@ N/A (inbound only)
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/models/core/diagnostics.ts | Diagnostic | type | 診断情報の内部表現 (未確認) |
+| path | notes |
+|---|---|
+| src/models/core/diagnostics.ts | symbol: Diagnostic; kind: type; 診断情報の内部表現 (未確認) |

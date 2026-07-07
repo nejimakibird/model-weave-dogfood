@@ -92,11 +92,11 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/impact-analyzer.ts | buildImpactSummary | function | ImpactSummaryを生成する |
-| src/core/impact-analyzer.ts | collectRelatedSourceLinks | function | 関連Source Linksを集約する |
-| src/core/impact-analyzer.ts | formatImpactSummaryAsMarkdown | function | copy用Markdownを生成する |
-| src/core/weave-map.ts | buildWeaveMapModel | function | ImpactSummaryからWeave Map派生モデルを生成する |
-| src/core/reference-resolver.ts | resolveReferenceIdentity | function | 参照先モデルを解決する |
-| src/main.ts | buildImpactPreviewProps | method | previewへsummaryとcopy/open handlerを渡す |
+| path | notes |
+|---|---|
+| src/core/impact-analyzer.ts | symbol: buildImpactSummary; kind: function; ImpactSummaryを生成する |
+| src/core/impact-analyzer.ts | symbol: collectRelatedSourceLinks; kind: function; 関連Source Linksを集約する |
+| src/core/impact-analyzer.ts | symbol: formatImpactSummaryAsMarkdown; kind: function; copy用Markdownを生成する |
+| src/core/weave-map.ts | symbol: buildWeaveMapModel; kind: function; ImpactSummaryからWeave Map派生モデルを生成する |
+| src/core/reference-resolver.ts | symbol: resolveReferenceIdentity; kind: function; 参照先モデルを解決する |
+| src/main.ts | symbol: buildImpactPreviewProps; kind: method; previewへsummaryとcopy/open handlerを渡す |

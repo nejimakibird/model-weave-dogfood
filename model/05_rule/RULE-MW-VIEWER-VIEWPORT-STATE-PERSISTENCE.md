@@ -67,12 +67,12 @@ Viewport状態はViewer上の一時状態であり、Markdown本文やfrontmatte
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/views/modeling-preview-view.ts | prepareFileViewportState | method | ファイル単位のviewport状態準備 |
-| src/views/modeling-preview-view.ts | resetGraphViewportState | method | viewport状態の初期化 |
-| src/views/modeling-preview-view.ts | renderCurrentState | method | active file / render state に応じた再描画 |
-| src/views/modeling-preview-view.ts | rememberViewportState | method | ユーザー操作やfit後のviewport状態をキャッシュへ保存 |
-| src/views/modeling-preview-view.ts | pruneViewportStateCache | method | 古いviewport状態キャッシュを破棄 |
-| src/views/modeling-preview-view.ts | VIEWPORT_STATE_CACHE_LIMIT | constant | Viewport状態キャッシュの最大保持件数 |
-| src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | ユーザー操作によるviewport状態更新 |
+| path | notes |
+|---|---|
+| src/views/modeling-preview-view.ts | symbol: prepareFileViewportState; kind: method; ファイル単位のviewport状態準備 |
+| src/views/modeling-preview-view.ts | symbol: resetGraphViewportState; kind: method; viewport状態の初期化 |
+| src/views/modeling-preview-view.ts | symbol: renderCurrentState; kind: method; active file / render state に応じた再描画 |
+| src/views/modeling-preview-view.ts | symbol: rememberViewportState; kind: method; ユーザー操作やfit後のviewport状態をキャッシュへ保存 |
+| src/views/modeling-preview-view.ts | symbol: pruneViewportStateCache; kind: method; 古いviewport状態キャッシュを破棄 |
+| src/views/modeling-preview-view.ts | symbol: VIEWPORT_STATE_CACHE_LIMIT; kind: constant; Viewport状態キャッシュの最大保持件数 |
+| src/renderers/graph-view-shared.ts | symbol: attachGraphViewportInteractions; kind: function; ユーザー操作によるviewport状態更新 |

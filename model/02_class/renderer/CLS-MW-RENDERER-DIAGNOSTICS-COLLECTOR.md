@@ -29,6 +29,6 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/current-file-diagnostics.ts | buildCurrentDiagramDiagnostics | function | 診断情報の統合実装 |
+| path | notes |
+|---|---|
+| src/core/current-file-diagnostics.ts | symbol: buildCurrentDiagramDiagnostics; kind: function; 診断情報の統合実装 |

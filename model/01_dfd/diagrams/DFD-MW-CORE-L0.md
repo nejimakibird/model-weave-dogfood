@@ -53,6 +53,7 @@ Markdown ソースの読み込みからパース、Vault Index構築、参照解
 | F11 | VAULT_INDEX | IMPACT_ANALYZER | [[DATA-MW-VAULT-MODEL-INDEX]] | 関係探索入力; inbound / outbound探索 |
 | F12 | IMPACT_ANALYZER | VIEWER | [[DATA-MW-IMPACT-SUMMARY]] | Impact Summary; relationship summary表示 |
 | F13 | VAULT_INDEX | VIEWER | [[DATA-MW-CORE-DIAGNOSTIC]] | Diagnostics; warning / error / info |
+| F14 | PARSER | RESOLVER | [[DATA-MW-FLOW-DIAGRAM-PARSED-DIAGRAM]] | Flow Diagram MVP; type: flow_diagram |
 
 ## Notes
 
@@ -60,6 +61,7 @@ Markdown ソースの読み込みからパース、Vault Index構築、参照解
 - Resolver は参照/関係解決境界であり、Rendererとは分けて扱う。
 - Color SchemeはSettingsのdefaultColorSchemeRefから描画時に解決され、DFD / Business Flow / Domain group / Weave Map の見た目へ反映される。
 - DFDはMermaid固定方針であり、Color Schemeが適用されてもFlow Connect Modeや汎用グラフ編集の対象にはしない。
+- Flow Diagram MVPは `dfd_diagram` とは別形式であり、Parser / Resolver / RendererのDFD-like実装経路を一部共有する。
 - Source Links Explorer は将来機能であり、本図では実装済みの Source Links section support のみを扱う。
 - PNG Exportは描画結果の派生出力であり、Markdownモデルの正本内容を変更しない。
 
@@ -72,6 +74,7 @@ Markdown ソースの読み込みからパース、Vault Index構築、参照解
 | src/core/relation-resolver.ts | resolveDiagramRelations |
 | src/core/impact-analyzer.ts | buildImpactSummary |
 | src/renderers/diagram-renderer.ts | renderer dispatch |
+| src/renderers/dfd-mermaid.ts | Flow Diagram MVP rendering |
 | src/core/color-scheme.ts | resolveDefaultColorScheme / resolveColorStyle |
 | src/views/modeling-preview-view.ts | Viewer内表示 |
 | src/settings/model-weave-settings.ts | settings normalization |

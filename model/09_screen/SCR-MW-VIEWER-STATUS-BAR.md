@@ -62,8 +62,8 @@ Viewerの現在状態を短く表示するステータスバーUIを定義する
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer状態に応じたUI更新 |
-| src/views/modeling-preview-view.ts | prepareFileViewportState | method | viewport状態復元/初期化 |
-| src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断サマリーの元データ |
+| path | notes |
+|---|---|
+| src/views/modeling-preview-view.ts | symbol: renderCurrentState; kind: method; Viewer状態に応じたUI更新 |
+| src/views/modeling-preview-view.ts | symbol: prepareFileViewportState; kind: method; viewport状態復元/初期化 |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnostics; kind: function; 診断サマリーの元データ |

@@ -49,7 +49,7 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | UI操作とViewport処理のバインド |
-| src/renderers/zoom-toolbar.ts | createZoomToolbar | function | ツールバーボタンの生成 |
+| path | notes |
+|---|---|
+| src/renderers/graph-view-shared.ts | symbol: attachGraphViewportInteractions; kind: function; UI操作とViewport処理のバインド |
+| src/renderers/zoom-toolbar.ts | symbol: createZoomToolbar; kind: function; ツールバーボタンの生成 |

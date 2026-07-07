@@ -25,6 +25,7 @@ resolveDiagramRelations は DiagramModel / DfdDiagramModel と ModelingVaultInde
 | output | [[DATA-MW-RENDERER-GRAPH-MODEL]] | ResolvedDiagram |
 | references | resolveReferenceIdentity | model/member参照解決 |
 | relations | resolveDiagramRelations | nodes / edges / missingObjects / warnings |
+| flow_diagram | resolveDfdDiagramRelations | schema: flow_diagram。Flows endpointはローカルObjects.idで解決 |
 | warnings | [[DATA-MW-CORE-DIAGNOSTIC]] | 解決時warning |
 
 ## Source Links
@@ -32,4 +33,5 @@ resolveDiagramRelations は DiagramModel / DfdDiagramModel と ModelingVaultInde
 | path | notes |
 |---|---|
 | src/core/relation-resolver.ts | resolveDiagramRelations |
+| src/core/relation-resolver.ts | Flow Diagram endpoint / Flows.data Wikilink diagnostics |
 | src/core/reference-resolver.ts | reference resolution helpers |

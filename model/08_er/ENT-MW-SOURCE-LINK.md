@@ -46,6 +46,6 @@ N/A (inbound only)
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/models/core/model-asset.ts | SourceLink | type | ソースリンク情報の内部表現 (未確認) |
+| path | notes |
+|---|---|
+| src/models/core/model-asset.ts | symbol: SourceLink; kind: type; ソースリンク情報の内部表現 (未確認) |

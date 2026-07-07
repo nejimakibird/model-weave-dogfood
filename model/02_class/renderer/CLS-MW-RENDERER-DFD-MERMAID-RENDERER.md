@@ -28,6 +28,6 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/renderers/dfd-mermaid.ts | buildDfdMermaidSource | function | DFD Mermaidソース生成 |
+| path | notes |
+|---|---|
+| src/renderers/dfd-mermaid.ts | symbol: buildDfdMermaidSource; kind: function; DFD Mermaidソース生成 |

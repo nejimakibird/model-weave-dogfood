@@ -64,8 +64,8 @@ Viewport状態からCSS transform値またはCSS variablesを生成する計算�
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | transform計算と反映の起点 |
-| src/renderers/graph-view-shared.ts | applyTransform | function | CSS transformまたはCSS変数への反映処理 |
-| src/renderers/zoom-toolbar.ts | createZoomToolbar | function | zoom操作の発生元 |
+| path | notes |
+|---|---|
+| src/renderers/graph-view-shared.ts | symbol: attachGraphViewportInteractions; kind: function; transform計算と反映の起点 |
+| src/renderers/graph-view-shared.ts | symbol: applyTransform; kind: function; CSS transformまたはCSS変数への反映処理 |
+| src/renderers/zoom-toolbar.ts | symbol: createZoomToolbar; kind: function; zoom操作の発生元 |

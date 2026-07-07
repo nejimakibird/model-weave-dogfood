@@ -25,6 +25,9 @@ tags:
 | rule   | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | 重大度のUI変換ルール                |
 | rule   | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]    | details / copy actions の導出ルール |
 | rule   | [[RULE-MW-PATH-SHORTENER]]                    | diagnosticSourceFile の短縮表示 |
+| output | [[DATA-MW-DIAGNOSTIC-COPY-ACTION]]            | bulk / single copy action候補 |
+| output | [[DATA-MW-DIAGNOSTIC-MANUAL-GUIDANCE]]        | 診断detailsに表示する手動修復ガイダンス |
+| output | [[DATA-MW-DIAGNOSTIC-QUICK-FIX]]              | missing id / name 限定のQuick Fix候補 |
 |        |                                               |                            |
 
 ## Mappings
@@ -40,11 +43,17 @@ tags:
 | [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticTargetRef  | context内の関連情報を表示                     | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | 未解決参照等の補足情報                  |
 | [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticMetaList   | path / section / field / lineなどを抽出して表示 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | getDiagnosticMetadata相当           |
 | [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticDetailBox  | referenceやexpectedHeaderなどを抽出して表示       | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | getDiagnosticDetailEntries相当      |
+| [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticManualGuidance | what happened / cause / manual fixを抽出して表示 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Quick Fixとは別の手動修復案 |
+| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyAllDiagnosticsButton | all diagnosticsのMarkdownを生成            | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | bulk Markdown copy |
+| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyErrorsButton | errorsだけのMarkdownを生成                  | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | errorsがある場合だけ表示 |
+| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyWarningsButton | warningsだけのMarkdownを生成                | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | warningsがある場合だけ表示 |
+| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyNotesButton | info severityのnotesだけのMarkdownを生成     | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | notesがある場合だけ表示 |
 | [[DATA-MW-CORE-DIAGNOSTIC]].message   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyDiagnosticMessageButton | clipboardへコピーする文字列を作る             | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Copy Message                       |
 | [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyDiagnosticMarkdownButton | formatDiagnosticAsMarkdownでMarkdown化      | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Copy Markdown                      |
 | [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyDiagnosticReferenceButton | reference値がある場合だけ表示                 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Copy Reference                     |
 | [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyExpectedHeaderButton | expectedHeaderがある場合だけ表示              | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Copy Expected Header               |
 | [[DATA-MW-CORE-DIAGNOSTIC]].field     | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyFrontmatterExampleButton | missing frontmatter keyから例を生成          | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Copy Frontmatter Example           |
+| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].quickFixButton | [[DATA-MW-DIAGNOSTIC-QUICK-FIX]] を生成       | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | missing frontmatter id / name のみ |
 
 ## Rules
 
@@ -55,9 +64,22 @@ tags:
 - diagnosticSourceFile は [[RULE-MW-PATH-SHORTENER]] に従い、長い場合はファイル名を優先して短縮表示する。
 - openDiagnosticLocation / jumpToSource では短縮表示ではなく、[[DATA-MW-CORE-DIAGNOSTIC]].filePath の完全パスを使用する。
 - 短縮表示はUI上の見た目だけに適用し、診断箇所ジャンプや参照解決には影響させない。
-- 診断カードのcopy actionsはclipboardへ文字列を渡すだけで、Markdown本文を自動修正しない。
-- Quick Fixや自動修正は現行srcで確認できないため、このmappingではimplementedとして扱わない。
+- bulk copy actionsはDiagnostics tab上部で、all diagnostics / errors / warnings / notesをMarkdown文字列へ整形してclipboardへ渡す。
+- notesは `info` severityのUI分類であり、`note` severity保存値ではない。
+- 診断カードのcopy actionsは個別診断に対する操作であり、bulk copy actionsとは別に扱う。
+- すべてのcopy actionsはclipboardへ文字列を渡すだけで、Markdown本文を自動修正しない。
+- Quick Fix MVPは missing frontmatter id / name に限定してimplementedとして扱う。ユーザー操作時だけ [[PROC-MW-DIAGNOSTIC-QUICK-FIX-APPLY]] へ進む。
+- missing typeはQuick Fix対象外であり、Copy Frontmatter Exampleなどの手動支援に留める。
+- invalid table columnはCopy Expected Header、invalid table rowはmanual-edit guidance、unresolved referenceはCopy Referenceの対象であり、Quick Fix対象外である。
+- manual-edit guidanceは、診断detailsに何が起きているか、よくある原因、手動での直し方を表示する。Quick FixやMarkdown本文自動修正ではない。
+- invalid table headerは期待ヘッダーと現在ヘッダーの比較を促し、Copy Expected Headerを併用できる。
+- invalid table rowは空行、余分なセル、途中入力行の確認を促す。
+- unresolved referenceはtarget ID、Wikilink、参照先fileの存在確認を促し、Copy Referenceを併用できる。
+- missing frontmatterは不足keyの復元を促す。missing id / nameだけQuick Fix MVP候補で、missing typeは手動支援に留める。
 - code別の固定UIではなく、message / context から [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] に従ってmetadata、details、copy対象を導出する。
+- Copy Expected Headerは、diagnostic-section-guidanceが対応するtable header診断にだけ表示される。
+- Flow Diagramの `Flows.from` / `Flows.to` 診断はローカル `Objects.id` の確認として表示し、外部モデル参照の未解決とは区別する。
+- DFD / Flow Diagramの `Flows.data` は、Wikilinkが解決できない場合だけ参照診断として表示する。plain text labelは診断対象にしない。
 - Domain Sources / Domain Diagram診断では、fieldやrowIndexをdiagnosticMetaListに出し、refやsource種別の不整合はdiagnosticDetailBoxやCopy Referenceの候補として扱う。
 - app_process `Steps.domain` 診断では、contextのstepId / domainIdをdiagnosticDetailBoxやCopy Referenceの候補として扱う。
 
@@ -67,18 +89,26 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/views/modeling-preview-view.ts | renderDiagnostics | function | 診断情報の表示 |
-| src/views/modeling-preview-view.ts | renderDiagnosticSection | function | 診断セクションの描画 |
-| src/views/modeling-preview-view.ts | renderDiagnosticCard | function | 診断カードとcopy/open actionsの描画 |
-| src/views/modeling-preview-view.ts | getDiagnosticMetadata | function | 診断メタ情報を抽出 |
-| src/views/modeling-preview-view.ts | getDiagnosticDetailEntries | function | 診断詳細情報を抽出 |
-| src/views/modeling-preview-view.ts | getDiagnosticReferenceValue | function | referenceコピー値を抽出 |
-| src/views/modeling-preview-view.ts | getExpectedHeaderForDiagnostic | function | expectedHeaderコピー値を抽出 |
-| src/views/modeling-preview-view.ts | getFrontmatterExampleForDiagnostic | function | frontmatter例を生成 |
-| src/views/modeling-preview-view.ts | formatDiagnosticAsMarkdown | function | Markdownコピー用文字列を生成 |
-| src/main.ts | openDiagnosticLocation | function | 診断対象へのジャンプ |
-| src/core/domain-diagnostics.ts | formatDomainDiagramUnresolvedSourceMessage | function | Domain Sources診断メッセージ |
-| src/core/domain-diagram-resolver.ts | resolveDomainSources | function | Domain Sources解決とwarning生成 |
-| src/core/app-process-domain-resolver.ts | resolveAppProcessDomainPlacement | function | Steps.domain解決とwarning生成 |
+| path | notes |
+|---|---|
+| src/views/modeling-preview-view.ts | symbol: renderDiagnostics; kind: function; 診断情報の表示 |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnosticsBulkActions; kind: function; bulk copy actionsを生成 |
+| src/views/modeling-preview-view.ts | symbol: formatDiagnosticsBulkMarkdown; kind: function; diagnosticsをMarkdown文字列へ整形 |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnosticSection; kind: function; 診断セクションの描画 |
+| src/views/modeling-preview-view.ts | symbol: renderDiagnosticCard; kind: function; 診断カードとcopy/open actionsの描画 |
+| src/views/modeling-preview-view.ts | symbol: getDiagnosticMetadata; kind: function; 診断メタ情報を抽出 |
+| src/views/modeling-preview-view.ts | symbol: getDiagnosticDetailEntries; kind: function; 診断詳細情報を抽出 |
+| src/views/modeling-preview-view.ts | symbol: getDiagnosticGuidanceEntries; kind: function; 手動修復ガイダンスを抽出 |
+| src/views/modeling-preview-view.ts | symbol: getDiagnosticReferenceValue; kind: function; referenceコピー値を抽出 |
+| src/views/modeling-preview-view.ts | symbol: getExpectedHeaderForDiagnostic; kind: function; expectedHeaderコピー値を抽出 |
+| src/views/modeling-preview-view.ts | symbol: getFrontmatterExampleForDiagnostic; kind: function; frontmatter例を生成 |
+| src/views/modeling-preview-view.ts | symbol: formatDiagnosticAsMarkdown; kind: function; Markdownコピー用文字列を生成 |
+| src/views/modeling-preview-view.ts | symbol: getDiagnosticQuickFixActions; kind: function; Quick Fix候補を抽出 |
+| src/views/modeling-preview-view.ts | symbol: createFrontmatterQuickFixAction; kind: function; missing frontmatter id / name のQuick Fix候補を生成 |
+| src/views/modeling-preview-view.ts | symbol: getSafeFrontmatterQuickFixValues; kind: function; basenameから安全な値を導出 |
+| src/core/diagnostic-section-guidance.ts | symbol: getExpectedHeaderForDiagnostic; kind: function; schema-driven expected headerを導出 |
+| src/core/relation-resolver.ts | symbol: resolveDfdFlowDataReferenceWarnings; kind: function; DFD / Flow Diagram Flows.data Wikilink診断 |
+| src/main.ts | symbol: openDiagnosticLocation; kind: function; 診断対象へのジャンプ |
+| src/core/domain-diagnostics.ts | symbol: formatDomainDiagramUnresolvedSourceMessage; kind: function; Domain Sources診断メッセージ |
+| src/core/domain-diagram-resolver.ts | symbol: resolveDomainSources; kind: function; Domain Sources解決とwarning生成 |
+| src/core/app-process-domain-resolver.ts | symbol: resolveAppProcessDomainPlacement; kind: function; Steps.domain解決とwarning生成 |
