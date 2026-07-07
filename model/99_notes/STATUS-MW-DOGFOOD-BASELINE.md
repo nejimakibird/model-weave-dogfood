@@ -32,14 +32,14 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 | release | status | notes |
 |---|---|---|
 | v0.1.17 | reflected | Business Flow, Domain Sources, Color Scheme, Source Links section support reflected in prior dogfood work |
-| v0.1.18 | partial / catch-up | Lower panel tabs, diagnostics bulk copy, Quick Fix MVP, and empty table row handling need explicit dogfood alignment |
+| v0.1.18 | reflected | Lower panel tabs, diagnostics bulk copy, manual guidance, Quick Fix MVP, and empty table row handling reflected through COV-014 |
 | v0.1.19 | reflected / reviewing | Flow Diagram MVP, Color Scheme preview editing, Applied Color Scheme compact display, and diagnostics guidance reflected through COV-013 |
 
 ## Known Catch-up Items
 
 | id | release | area | status | notes |
 |---|---|---|---|---|
-| COV-014A | v0.1.18 | Lower panel tabs | pending | Stable tabs across graph / non-graph review views and renderer switching |
+| COV-014A | v0.1.18 | Lower panel tabs | reflected | Stable tabs across graph / non-graph review views and renderer switching |
 | COV-014B | v0.1.18 | Diagnostics copy actions | reflected | Bulk Markdown copy for all diagnostics / errors / warnings / notes |
 | COV-014C | v0.1.18 | Manual-edit guidance | reflected | Diagnostic details include manual repair guidance |
 | COV-014D | v0.1.18 | Quick Fix MVP | reflected | Missing frontmatter id / name only; missing type is not auto-fixed |
@@ -57,6 +57,7 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 - COV-014B reflects diagnostics bulk Markdown copy as [[DATA-MW-DIAGNOSTIC-COPY-ACTION]] and Diagnostics Panel actions.
 - COV-014C reflects manual-edit guidance as [[DATA-MW-DIAGNOSTIC-MANUAL-GUIDANCE]] and Diagnostics Panel details.
 - COV-014E reflects Markdown table row handling in [[DATA-MW-CORE-MARKDOWN-TABLE]] and [[RULE-MW-PARSER-SECTION-STRUCTURE]].
+- COV-014A reflects stable lower panel tabs as [[DATA-MW-LOWER-PANEL-TAB-STATE]] and Viewer Main Frame UI.
 
 ## Source Links
 

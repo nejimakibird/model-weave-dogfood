@@ -95,6 +95,9 @@ Color Schemeが渡された場合は、DFD object、Domain group、Business Flow
 - detail系では classDef を出さない生成経路がある。
 - Color Scheme適用はMermaid sourceや描画結果の派生出力に反映され、Markdownモデル本文は変更しない。
 - Applied Color Scheme sectionはViewer側で resolvedColorScheme とview targetから表示される補助sectionであり、このRenderer processの出力には含めない。
+- Renderer switchingは描画内容とMermaid Source表示を切り替えるが、lower panel tabsの構造はViewer側の実行時状態として安定維持される。
+- Mermaid SourceとMermaid Render Debugは、表示対象に応じてViewer lower panel tabsのMermaid tabへ入る場合がある。
+- Business Flow direction変更でapp_process Business Flowが再描画されても、lower panel tabsはMarkdown本文を変更せずViewer内で維持される。
 - PNG exportで色が保持される場合も、描画済み出力の保持として扱う。
 - node ID と label は Mermaid 構文を壊さないように整形される。
 - edge の endpoint が nodeMap にない場合、そのedge行は出力されない。

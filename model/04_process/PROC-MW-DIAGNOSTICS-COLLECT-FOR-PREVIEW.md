@@ -99,6 +99,8 @@ tags:
 - `buildCurrentObjectDiagnostics` はformat別のチェックを追加し、severityを正規化して重複を除く。
 - `buildCurrentDiagramDiagnostics` はdiagram系warningを正規化して重複を除く。
 - `renderDiagnostics` はdiagnosticsを info / warning / error に分け、Notes / Warnings / Errors として表示する。
+- diagnosticsはViewer lower panel tabs内のDiagnostics tabへ表示される。
+- Quick Fix、bulk copy、manual guidanceはDiagnostics tab内のaction / detailsであり、Source Links ExplorerやReference Explorerではない。
 - `openDiagnosticLocation` は診断にfile pathやline情報がある場合に、対応するMarkdown位置を開くためのpreview側操作である。
 - `renderDiagnosticsBulkActions` はall diagnostics / errors / warnings / notesのMarkdown copy actionsを作る。notesはinfo severityのUI分類であり、保存値ではない。
 - `renderDiagnosticCard` はOpen Locationに加え、manual-edit guidance、Copy Message / Copy Markdown / Copy Reference / Copy Expected Header / Copy Frontmatter Exampleを表示する。
