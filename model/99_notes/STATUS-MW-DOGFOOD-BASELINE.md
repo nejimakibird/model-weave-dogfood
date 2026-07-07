@@ -23,7 +23,7 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 | dogfood_alignment_version | 0.1.19 | v0.1.19 alignment is reflected through COV-013 |
 | source_reference | model-weave v0.1.19 | Source repository is reference-only during dogfood updates |
 | dogfood_branch_base | develop | Dogfood documentation work is based on develop |
-| last_alignment_task | COV-013 | Flow Diagram MVP / Diagnostics / Color Scheme alignment |
+| last_alignment_task | COV-013A | Flow Diagram representative sample |
 | active_catch_up_task | COV-014 | v0.1.18 diagnostics, lower panel, Quick Fix, and table-row handling catch-up |
 | maturity_policy | source-backed only | implemented requires source confirmation |
 
@@ -33,7 +33,7 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 |---|---|---|
 | v0.1.17 | reflected | Business Flow, Domain Sources, Color Scheme, Source Links section support reflected in prior dogfood work |
 | v0.1.18 | reflected | Lower panel tabs, diagnostics bulk copy, manual guidance, Quick Fix MVP, and empty table row handling reflected through COV-014 |
-| v0.1.19 | reflected / reviewing | Flow Diagram MVP, Color Scheme preview editing, Applied Color Scheme compact display, and diagnostics guidance reflected through COV-013 |
+| v0.1.19 | reflected / reviewing | Flow Diagram MVP, representative Flow Diagram sample, Color Scheme preview editing, Applied Color Scheme compact display, and diagnostics guidance reflected through COV-013 / COV-013A |
 
 ## Known Catch-up Items
 
@@ -44,7 +44,7 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 | COV-014C | v0.1.18 | Manual-edit guidance | reflected | Diagnostic details include manual repair guidance |
 | COV-014D | v0.1.18 | Quick Fix MVP | reflected | Missing frontmatter id / name only; missing type is not auto-fixed |
 | COV-014E | v0.1.18 | Markdown table rows | reflected | Fully empty data rows ignored; partially filled rows still diagnosed |
-| COV-013A | v0.1.19 | Flow Diagram samples | pending | Representative dogfood sample is separated from release alignment |
+| COV-013A | v0.1.19 | Flow Diagram samples | reflected | Representative dogfood sample added as [[FLOW-MW-VIEWER-DIAGNOSTIC-QUICK-FIX]] |
 
 ## Rules
 
@@ -58,6 +58,7 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 - COV-014C reflects manual-edit guidance as [[DATA-MW-DIAGNOSTIC-MANUAL-GUIDANCE]] and Diagnostics Panel details.
 - COV-014E reflects Markdown table row handling in [[DATA-MW-CORE-MARKDOWN-TABLE]] and [[RULE-MW-PARSER-SECTION-STRUCTURE]].
 - COV-014A reflects stable lower panel tabs as [[DATA-MW-LOWER-PANEL-TAB-STATE]] and Viewer Main Frame UI.
+- COV-013A adds [[FLOW-MW-VIEWER-DIAGNOSTIC-QUICK-FIX]] as a representative `type: flow_diagram` sample. It is not a DFD, Explorer, or future projection view.
 
 ## Source Links
 
