@@ -54,7 +54,7 @@ Model Weave 内部で発生した `ValidationWarning` の `severity` を、Viewe
 - 上記のテーブルは Model Weave の正式な `Logic` セクションではなく、実装における `normalizeDiagnosticSeverity` 関数の振る舞いを定義する補足表である。
 - `ValidationWarning.severity` の有効値は `info` / `warning` / `error` である。Viewerでは `info` を Notes として表示する。
 - Source Linksのavailable / missingなどの表示状態はSource Links UIのstatusであり、`ValidationWarningCode` ではない。
-- Quick FixやMarkdown自動修正は現行srcで確認できないため、このルールではfuture扱いとする。
+- Quick Fix MVPは missing frontmatter id / name に限定して実装済みだが、severity分類そのものは変更しない。任意Markdown本文の自動修正はfutureとして扱う。
 
 ## Source Links
 

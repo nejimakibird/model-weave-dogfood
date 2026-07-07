@@ -42,7 +42,7 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 | COV-014A | v0.1.18 | Lower panel tabs | pending | Stable tabs across graph / non-graph review views and renderer switching |
 | COV-014B | v0.1.18 | Diagnostics copy actions | pending | Bulk Markdown copy for all diagnostics / errors / warnings / notes |
 | COV-014C | v0.1.18 | Manual-edit guidance | pending | Diagnostic details include manual repair guidance |
-| COV-014D | v0.1.18 | Quick Fix MVP | pending | Missing frontmatter id / name only; missing type is not auto-fixed |
+| COV-014D | v0.1.18 | Quick Fix MVP | reflected | Missing frontmatter id / name only; missing type is not auto-fixed |
 | COV-014E | v0.1.18 | Markdown table rows | pending | Fully empty data rows ignored; partially filled rows still diagnosed |
 | COV-013A | v0.1.19 | Flow Diagram samples | pending | Representative dogfood sample is separated from release alignment |
 
@@ -53,6 +53,7 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 - Do not hide unresolved diagnostics by duplicating definitions unless that matches the actual FORMAT design.
 - Keep future concepts such as Source Links Explorer, Reference Explorer, Model Index View, Flow Diagram Surface View, Communication View, folding, projection, and transition coverage generation separate from implemented behavior.
 - Quick Fix MVP is limited to missing frontmatter id / name. It does not automatically repair missing type, invalid table headers, or arbitrary Markdown body issues.
+- COV-014D reflects Quick Fix MVP as [[DATA-MW-DIAGNOSTIC-QUICK-FIX]] and [[PROC-MW-DIAGNOSTIC-QUICK-FIX-APPLY]].
 
 ## Source Links
 
