@@ -77,8 +77,8 @@ Model Weave 0.1.17時点では、各モデル内のSource Links section表示と
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | VaultIndex | class | Source Links情報の索引元 |
-| src/core/schema-detector.ts | detectModelType | function | モデル資産種別の検出 |
-| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | Source Links関連診断の生成 |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | symbol: VaultIndex; kind: class; Source Links情報の索引元 |
+| src/core/schema-detector.ts | symbol: detectModelType; kind: function; モデル資産種別の検出 |
+| src/core/current-file-diagnostics.ts | symbol: buildCurrentObjectDiagnostics; kind: function; Source Links関連診断の生成 |

@@ -78,9 +78,9 @@ Model Weave 0.1.17時点では、Preview内Source Links sectionの表示・Copy/
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | VaultIndex | class | Source Links情報の索引元 |
-| src/core/schema-detector.ts | detectModelType | function | モデル資産種別の検出 |
-| src/main.ts | openDiagnosticLocation | function | ファイルジャンプ処理の参考 |
-| src/views/modeling-preview-view.ts | renderCurrentState | method | Viewer表示更新の参考 |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | symbol: VaultIndex; kind: class; Source Links情報の索引元 |
+| src/core/schema-detector.ts | symbol: detectModelType; kind: function; モデル資産種別の検出 |
+| src/main.ts | symbol: openDiagnosticLocation; kind: function; ファイルジャンプ処理の参考 |
+| src/views/modeling-preview-view.ts | symbol: renderCurrentState; kind: method; Viewer表示更新の参考 |

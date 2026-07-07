@@ -33,7 +33,7 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/types/models.ts | DiagramEdge | interface | グラフ構造における接続情報 |
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | edge解決 |
+| path | notes |
+|---|---|
+| src/types/models.ts | symbol: DiagramEdge; kind: interface; グラフ構造における接続情報 |
+| src/core/relation-resolver.ts | symbol: resolveDiagramRelations; kind: function; edge解決 |

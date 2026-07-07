@@ -24,6 +24,7 @@ parseVaultFile は detectFileType による schema/type 検出、parser dispatch
 | detection | detectFileType | schema/typeからfileTypeを判定 |
 | dispatch | parser modules | fileTypeごとのparserへ委譲 |
 | relations | parseRelationsFile | schema: model_relations_v1 |
+| flow_diagram | parseFlowDiagramFile | type: flow_diagram。Flow Diagram MVPを解析 |
 | source_links | parseSourceLinks | 各parserがSource Linksを解析 |
 | output | [[DATA-MW-CORE-PARSED-MODEL]] | ParsedFileModel |
 | warnings | [[DATA-MW-CORE-DIAGNOSTIC]] | ParseResult.warnings |
@@ -38,3 +39,4 @@ parseVaultFile は detectFileType による schema/type 検出、parser dispatch
 | src/parsers/relations-parser.ts | schema-driven relations parser |
 | src/parsers/source-links-parser.ts | Source Links parser |
 | src/parsers/dfd-diagram-parser.ts | DFD diagram parser |
+| src/parsers/dfd-diagram-parser.ts | Flow Diagram parser |

@@ -70,8 +70,8 @@ preview の `Source Links` セクションに表示された Source Link の res
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/renderers/source-links-renderer.ts | renderSourceLinks | function | Copy Path buttonを生成し、resolved pathをclipboardへ渡す |
-| src/renderers/source-links-renderer.ts | resolveSourceLinkPath | function | Source Link pathをresolved pathへ解決する |
-| src/views/modeling-preview-view.ts | renderSourceLinks | usage | previewへSource Links sectionを追加する |
+| path | notes |
+|---|---|
+| src/renderers/source-links-renderer.ts | symbol: renderSourceLinks; kind: function; Copy Path buttonを生成し、resolved pathをclipboardへ渡す |
+| src/renderers/source-links-renderer.ts | symbol: resolveSourceLinkPath; kind: function; Source Link pathをresolved pathへ解決する |
+| src/views/modeling-preview-view.ts | symbol: renderSourceLinks; kind: usage; previewへSource Links sectionを追加する |

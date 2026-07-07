@@ -37,8 +37,8 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/types/models.ts | DiagramNode | interface | グラフ構造における頂点情報 |
-| src/types/models.ts | ResolvedDiagram | interface | object付きnodeの出力形 |
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | node解決 |
+| path | notes |
+|---|---|
+| src/types/models.ts | symbol: DiagramNode; kind: interface; グラフ構造における頂点情報 |
+| src/types/models.ts | symbol: ResolvedDiagram; kind: interface; object付きnodeの出力形 |
+| src/core/relation-resolver.ts | symbol: resolveDiagramRelations; kind: function; node解決 |

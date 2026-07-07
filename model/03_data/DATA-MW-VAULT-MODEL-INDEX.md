@@ -54,11 +54,11 @@ modelsByFilePath と各種ID別マップ、relation/member lookup、warningsByFi
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | ModelingVaultIndex | interface | Vault内モデル資産の索引 |
-| src/core/vault-index.ts | buildVaultIndex | function | Indexの新規構築 |
-| src/core/vault-index.ts | indexSingleFile | function | 個別ファイルの解析と登録 |
-| src/core/vault-index.ts | ensureRelationLookups | function | relation lookup構築 |
-| src/core/vault-index.ts | ensureMemberLookups | function | member lookup構築 |
-| src/core/vault-index.ts | ensureVaultValidation | function | Vault検証 |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | symbol: ModelingVaultIndex; kind: interface; Vault内モデル資産の索引 |
+| src/core/vault-index.ts | symbol: buildVaultIndex; kind: function; Indexの新規構築 |
+| src/core/vault-index.ts | symbol: indexSingleFile; kind: function; 個別ファイルの解析と登録 |
+| src/core/vault-index.ts | symbol: ensureRelationLookups; kind: function; relation lookup構築 |
+| src/core/vault-index.ts | symbol: ensureMemberLookups; kind: function; member lookup構築 |
+| src/core/vault-index.ts | symbol: ensureVaultValidation; kind: function; Vault検証 |

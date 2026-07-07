@@ -49,8 +49,8 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/render-mode.ts | ResolveRenderModeInput | interface | 実装上の入力型定義 |
-| src/core/render-mode.ts | resolveRenderMode | function | 描画モードの解決 |
-| src/core/render-mode.ts | getSupportedRenderModes | function | supportedModes 入力の導出元 |
+| path | notes |
+|---|---|
+| src/core/render-mode.ts | symbol: ResolveRenderModeInput; kind: interface; 実装上の入力型定義 |
+| src/core/render-mode.ts | symbol: resolveRenderMode; kind: function; 描画モードの解決 |
+| src/core/render-mode.ts | symbol: getSupportedRenderModes; kind: function; supportedModes 入力の導出元 |

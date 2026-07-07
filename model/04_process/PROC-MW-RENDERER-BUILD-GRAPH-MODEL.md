@@ -96,14 +96,14 @@ Class / ER object previewでは、object contextから関連objectのsubgraphを
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | 図面種別（ER/DFD等）に応じたノード・エッジの解決 |
-| src/core/relation-resolver.ts | resolveErDiagramRelations | function | ER diagramのnode / edge解決 |
-| src/core/relation-resolver.ts | resolveDfdDiagramRelations | function | DFD diagramのnode / flow解決 |
-| src/core/reference-resolver.ts | resolveObjectModelReference | function | Class参照解決 |
-| src/core/reference-resolver.ts | resolveErEntityReference | function | ER参照解決 |
-| src/core/reference-resolver.ts | resolveDfdObjectReference | function | DFD参照解決 |
-| src/core/object-context-resolver.ts | resolveObjectContext | function | object preview用の関連object contextを構築 |
-| src/core/object-subgraph-builder.ts | buildObjectSubgraphScene | function | object contextから派生ResolvedDiagramを構築 |
-| src/core/internal-edge-adapters.ts | toClassRelationEdge | function | relations由来の関係をClass edgeへ変換 |
+| path | notes |
+|---|---|
+| src/core/relation-resolver.ts | symbol: resolveDiagramRelations; kind: function; 図面種別（ER/DFD等）に応じたノード・エッジの解決 |
+| src/core/relation-resolver.ts | symbol: resolveErDiagramRelations; kind: function; ER diagramのnode / edge解決 |
+| src/core/relation-resolver.ts | symbol: resolveDfdDiagramRelations; kind: function; DFD diagramのnode / flow解決 |
+| src/core/reference-resolver.ts | symbol: resolveObjectModelReference; kind: function; Class参照解決 |
+| src/core/reference-resolver.ts | symbol: resolveErEntityReference; kind: function; ER参照解決 |
+| src/core/reference-resolver.ts | symbol: resolveDfdObjectReference; kind: function; DFD参照解決 |
+| src/core/object-context-resolver.ts | symbol: resolveObjectContext; kind: function; object preview用の関連object contextを構築 |
+| src/core/object-subgraph-builder.ts | symbol: buildObjectSubgraphScene; kind: function; object contextから派生ResolvedDiagramを構築 |
+| src/core/internal-edge-adapters.ts | symbol: toClassRelationEdge; kind: function; relations由来の関係をClass edgeへ変換 |

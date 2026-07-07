@@ -54,7 +54,7 @@ tags:
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/renderers/graph-view-shared.ts | attachGraphViewportInteractions | function | zoom / pan 状態をDOMへ反映する処理 |
-| src/renderers/zoom-toolbar.ts | createZoomToolbar | function | toolbar操作の発生元 |
+| path | notes |
+|---|---|
+| src/renderers/graph-view-shared.ts | symbol: attachGraphViewportInteractions; kind: function; zoom / pan 状態をDOMへ反映する処理 |
+| src/renderers/zoom-toolbar.ts | symbol: createZoomToolbar; kind: function; toolbar操作の発生元 |

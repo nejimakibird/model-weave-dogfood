@@ -67,8 +67,8 @@ Model Weave 0.1.17時点では、Relationship View / Impact Summary / Weave Map�
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/core/vault-index.ts | VaultIndex | class | 参照情報の索引元 |
-| src/core/relation-resolver.ts | resolveDiagramRelations | function | 参照解決処理 |
-| src/core/current-file-diagnostics.ts | buildCurrentObjectDiagnostics | function | 参照関連診断の生成 |
+| path | notes |
+|---|---|
+| src/core/vault-index.ts | symbol: VaultIndex; kind: class; 参照情報の索引元 |
+| src/core/relation-resolver.ts | symbol: resolveDiagramRelations; kind: function; 参照解決処理 |
+| src/core/current-file-diagnostics.ts | symbol: buildCurrentObjectDiagnostics; kind: function; 参照関連診断の生成 |

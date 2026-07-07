@@ -52,12 +52,12 @@ dfd_diagram Markdownから解析されたDFD専用の論理データ構造です
 
 ## Source Links
 
-| path | symbol | kind | notes |
-|---|---|---|---|
-| src/types/models.ts | DfdDiagramModel | interface | 実装上のDFDモデル型 |
-| src/types/models.ts | DfdDiagramObjectEntry | interface | Objects行 |
-| src/types/models.ts | DfdFlowModel | interface | Flows行 |
-| src/types/models.ts | DiagramNode | interface | nodes要素 |
-| src/types/models.ts | DiagramEdge | interface | edges要素 |
-| src/parsers/dfd-diagram-parser.ts | parseDfdDiagramFile | function | DFD parser出力 |
-| src/renderers/dfd-mermaid.ts | buildDfdMermaidSource | function | Domain subgraphとColor Schemeを含むDFD Mermaid source生成 |
+| path | notes |
+|---|---|
+| src/types/models.ts | symbol: DfdDiagramModel; kind: interface; 実装上のDFDモデル型 |
+| src/types/models.ts | symbol: DfdDiagramObjectEntry; kind: interface; Objects行 |
+| src/types/models.ts | symbol: DfdFlowModel; kind: interface; Flows行 |
+| src/types/models.ts | symbol: DiagramNode; kind: interface; nodes要素 |
+| src/types/models.ts | symbol: DiagramEdge; kind: interface; edges要素 |
+| src/parsers/dfd-diagram-parser.ts | symbol: parseDfdDiagramFile; kind: function; DFD parser出力 |
+| src/renderers/dfd-mermaid.ts | symbol: buildDfdMermaidSource; kind: function; Domain subgraphとColor Schemeを含むDFD Mermaid source生成 |
