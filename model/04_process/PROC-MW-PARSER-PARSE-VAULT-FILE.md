@@ -67,6 +67,7 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 | runRelationsParser | parser_resolver | Relationsパーサへ委譲する | subflow | content | result |  |  |  | `schema: model_relations_v1` は parseRelationsFile へ渡す |
 | runDetectedParser | parser_resolver | fileType対応パーサへ委譲する | subflow | content | result |  |  |  | object / dfd / flow_diagram / er_entity 等のパーサへ渡す |
 | createMarkdown | parser_resolver | markdownモデルを作成する | process | content | result |  |  |  | unsupported schema / type は markdown として扱う |
+| normalizeTableRows | parser_resolver | Markdown table rowを正規化する | process | parser table rows | result, diag | [[RULE-MW-PARSER-SECTION-STRUCTURE]] |  |  | fully empty rowを除外し、partial rowは診断対象に残す |
 | collectResult | parser_resolver | parseResultをまとめる | process | result | result, diag |  |  |  | parser warnings を diagnostics相当として保持する |
 | hasParsedModel | model_storage | parsed model があるか判定する | decision | result |  |  |  |  | null の場合は index 登録しない |
 | indexResult | model_storage | 解析済みモデルをindexへ登録する | process | result | result |  |  |  | indexSingleFile が fileType ごとの索引へ追加する |
@@ -82,13 +83,14 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 | createShallowModel | collectResult |  | shallow result | shallowモデルを結果へまとめる |
 | fastTypeDispatch | runFastParser | `frontmatter.type === direct type` | direct type | data_object / app_process / screen 等 |
 | fastTypeDispatch | detectFileType |  | schema/type検出 | 通常の detectFileType へ進む |
-| runFastParser | collectResult |  | parser result | 直接分岐パーサの結果をまとめる |
+| runFastParser | normalizeTableRows |  | table rows | 直接分岐パーサ内のtable row handling |
 | fileTypeDispatch | runRelationsParser | `fileType === "relations"` | relations | schema-driven Relations parserへ委譲する |
 | fileTypeDispatch | createMarkdown | `fileType === "markdown"` | markdown fallback | markdownモデルとして扱う |
 | fileTypeDispatch | runDetectedParser |  | detected parser | その他のfileType対応パーサへ委譲する |
 | runRelationsParser | collectResult |  | relations result | Relations parserの結果をまとめる |
-| runDetectedParser | collectResult |  | parser result | fileType対応パーサの結果をまとめる |
+| runDetectedParser | normalizeTableRows |  | table rows | fileType対応パーサ内のtable row handling |
 | createMarkdown | collectResult |  | markdown result | markdown fallback結果をまとめる |
+| normalizeTableRows | collectResult |  | normalized result | empty row noise除外後の結果をまとめる |
 | hasParsedModel | indexResult | `parseResult.file` | parsed | index登録へ進む |
 | hasParsedModel | endNoModel | `!parseResult.file` | no model | warningsのみで終了する |
 | indexResult | endParsed |  | indexed | 解析結果を返す |
@@ -106,6 +108,10 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 - `schema: model_relations_v1` は `relations` fileType として扱われ、parseRelationsFile に委譲される。
 - `type: flow_diagram` は `flow-diagram` fileType として扱われ、parseFlowDiagramFile に委譲される。
 - unsupported schema / type は `markdown` fileType として createMarkdownModel へfallbackする。
+- Markdown table parserは、ヘッダー行と区切り行の後にあるデータ行をセル分割する。
+- fully empty data rowは、全セルが空または空白のみの場合にediting noiseとして除外され、required-field diagnosticsの対象にしない。
+- partially filled rowは除外せず、required-field、invalid-table-row、参照不備などの通常診断対象として扱う。
+- invalid-table-columnはヘッダー不一致の診断であり、empty data row handlingとは別である。
 - indexSingleFile は parseResult.file が存在する場合のみ fileType ごとの索引へ登録する。
 - Markdown安全記法のため、複雑な型表現は山括弧表記ではなく自然文で説明します。
 
@@ -116,5 +122,6 @@ Obsidian Vault内の物理的なMarkdownファイルを読み込み、Model Weav
 | src/core/vault-index.ts | Steps: start, hasParsedModel, indexResult. parseVaultFile / indexSingleFile による解析とindex登録 |
 | src/parsers/frontmatter-parser.ts | Steps: parseShallowFrontmatter, parseFrontmatter. YAML frontmatter抽出 |
 | src/core/schema-detector.ts | Steps: detectShallowType, detectFileType. schema / type による fileType 判定 |
+| src/parsers/markdown-table.ts | Steps: normalizeTableRows. parseMarkdownTable / isEmptyMarkdownTableDataRow によるtable row handling |
 | src/parsers/relations-parser.ts | Steps: runRelationsParser. schema-driven Relations ファイル解析 |
 | src/parsers/dfd-diagram-parser.ts | Steps: runDetectedParser. parseFlowDiagramFile / parseDfdDiagramFile |

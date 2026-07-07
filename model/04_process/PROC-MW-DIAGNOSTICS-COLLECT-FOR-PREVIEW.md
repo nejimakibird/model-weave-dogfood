@@ -104,6 +104,7 @@ tags:
 - `renderDiagnosticCard` はOpen Locationに加え、manual-edit guidance、Copy Message / Copy Markdown / Copy Reference / Copy Expected Header / Copy Frontmatter Exampleを表示する。
 - manual-edit guidanceはfrontmatter、table header、table row、render_mode、referenceなどの診断detailsとして表示され、Markdown本文を自動修正しない。
 - invalid table header / rowやunresolved referenceは手動修復ガイダンスとcopy支援の対象であり、Quick Fix MVPの対象ではない。
+- invalid-table-row guidanceでは、fully empty data rowとpartially filled rowを区別する。fully empty rowはediting noiseとして無視され得るが、partially filled rowは診断対象として残る。
 - `renderDiagnosticCard` はmissing frontmatter id / name の場合に限りQuick Fix MVPも表示する。
 - コピー支援はclipboardへ文字列を渡すだけで、Quick Fix MVPとは別操作である。
 - bulk copy actionsもclipboardへMarkdown文字列を渡すだけで、Markdown本文を変更しない。

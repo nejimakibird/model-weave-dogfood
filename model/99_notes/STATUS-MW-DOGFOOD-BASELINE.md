@@ -43,7 +43,7 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 | COV-014B | v0.1.18 | Diagnostics copy actions | reflected | Bulk Markdown copy for all diagnostics / errors / warnings / notes |
 | COV-014C | v0.1.18 | Manual-edit guidance | reflected | Diagnostic details include manual repair guidance |
 | COV-014D | v0.1.18 | Quick Fix MVP | reflected | Missing frontmatter id / name only; missing type is not auto-fixed |
-| COV-014E | v0.1.18 | Markdown table rows | pending | Fully empty data rows ignored; partially filled rows still diagnosed |
+| COV-014E | v0.1.18 | Markdown table rows | reflected | Fully empty data rows ignored; partially filled rows still diagnosed |
 | COV-013A | v0.1.19 | Flow Diagram samples | pending | Representative dogfood sample is separated from release alignment |
 
 ## Rules
@@ -56,6 +56,7 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 - COV-014D reflects Quick Fix MVP as [[DATA-MW-DIAGNOSTIC-QUICK-FIX]] and [[PROC-MW-DIAGNOSTIC-QUICK-FIX-APPLY]].
 - COV-014B reflects diagnostics bulk Markdown copy as [[DATA-MW-DIAGNOSTIC-COPY-ACTION]] and Diagnostics Panel actions.
 - COV-014C reflects manual-edit guidance as [[DATA-MW-DIAGNOSTIC-MANUAL-GUIDANCE]] and Diagnostics Panel details.
+- COV-014E reflects Markdown table row handling in [[DATA-MW-CORE-MARKDOWN-TABLE]] and [[RULE-MW-PARSER-SECTION-STRUCTURE]].
 
 ## Source Links
 
