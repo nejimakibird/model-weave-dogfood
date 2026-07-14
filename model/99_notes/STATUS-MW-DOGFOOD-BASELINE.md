@@ -20,11 +20,11 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 
 | item | value | notes |
 |---|---|---|
-| dogfood_alignment_version | 0.1.19 | v0.1.19 alignment is reflected through COV-013 |
-| source_reference | model-weave v0.1.19 | Source repository is reference-only during dogfood updates |
+| dogfood_alignment_version | 0.1.20 | v0.1.20 alignment is reflected through COV-015 |
+| source_reference | model-weave v0.1.20 tag 0b2e23dec936c4468ff0a9e1a61122b569d99790 | Source repository is reference-only during dogfood updates |
 | dogfood_branch_base | develop | Dogfood documentation work is based on develop |
-| last_alignment_task | COV-013A | Flow Diagram representative sample |
-| active_catch_up_task | COV-014 | v0.1.18 diagnostics, lower panel, Quick Fix, and table-row handling catch-up |
+| last_alignment_task | COV-015 | v0.1.20 Mapping and Flow Diagram alignment |
+| active_catch_up_task | none | v0.1.18 and v0.1.19 catch-up reflected |
 | maturity_policy | source-backed only | implemented requires source confirmation |
 
 ## Release Coverage
@@ -34,6 +34,7 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 | v0.1.17 | reflected | Business Flow, Domain Sources, Color Scheme, Source Links section support reflected in prior dogfood work |
 | v0.1.18 | reflected | Lower panel tabs, diagnostics bulk copy, manual guidance, Quick Fix MVP, and empty table row handling reflected through COV-014 |
 | v0.1.19 | reflected / reviewing | Flow Diagram MVP, representative Flow Diagram sample, Color Scheme preview editing, Applied Color Scheme compact display, and diagnostics guidance reflected through COV-013 / COV-013A |
+| v0.1.20 | reflected / reviewing | Mapping target-first canonical header, Flow Diagram Domain Sources, Detail / Screen view, Flow view selector, flow_view initial mode, and file-scoped view state reflected through COV-015 |
 
 ## Known Catch-up Items
 
@@ -45,13 +46,15 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 | COV-014D | v0.1.18 | Quick Fix MVP | reflected | Missing frontmatter id / name only; missing type is not auto-fixed |
 | COV-014E | v0.1.18 | Markdown table rows | reflected | Fully empty data rows ignored; partially filled rows still diagnosed |
 | COV-013A | v0.1.19 | Flow Diagram samples | reflected | Representative dogfood sample added as [[FLOW-MW-VIEWER-DIAGNOSTIC-QUICK-FIX]] |
+| COV-015 | v0.1.20 | Mapping / Flow Diagram view mode | reflected / reviewing | target-first Mapping tables, Flow Diagram Domain integration, Screen projection, Flow view selector, and [[FLOW-MW-FLOW-DIAGRAM-VIEW-MODE]] |
 
 ## Rules
 
 - Do not mark a feature implemented only because it appears in docs or release notes.
 - Do not update `model-weave/` during dogfood work.
 - Do not hide unresolved diagnostics by duplicating definitions unless that matches the actual FORMAT design.
-- Keep future concepts such as Source Links Explorer, Reference Explorer, Model Index View, Flow Diagram Surface View, Communication View, folding, projection, and transition coverage generation separate from implemented behavior.
+- Keep future concepts such as Source Links Explorer, Reference Explorer, Model Index View, arbitrary Flow Diagram projection definitions, Communication View, generic folding, and transition coverage generation separate from implemented behavior.
+- Treat Flow Diagram Screen projection and Detail / Screen toolbar switching as implemented in v0.1.20.
 - Quick Fix MVP is limited to missing frontmatter id / name. It does not automatically repair missing type, invalid table headers, or arbitrary Markdown body issues.
 - COV-014D reflects Quick Fix MVP as [[DATA-MW-DIAGNOSTIC-QUICK-FIX]] and [[PROC-MW-DIAGNOSTIC-QUICK-FIX-APPLY]].
 - COV-014B reflects diagnostics bulk Markdown copy as [[DATA-MW-DIAGNOSTIC-COPY-ACTION]] and Diagnostics Panel actions.
@@ -65,5 +68,8 @@ It is a source-backed documentation and reverse-engineering model for Model Weav
 | path | notes |
 |---|---|
 | model-weave/docs/releases/v0.1.18.md | v0.1.18 lower panel tabs, diagnostics copy actions, Quick Fix MVP, and empty table row release notes |
+| model-weave/docs/releases/v0.1.20.md | v0.1.20 Mapping target-first and Flow Diagram Detail / Screen view release notes |
 | model-weave/src/views/modeling-preview-view.ts | Lower panel tabs, diagnostics bulk copy actions, diagnostic details, and missing frontmatter Quick Fix implementation |
+| model-weave/src/core/flow-diagram-view-mode.ts | Flow Diagram file scoped view mode and initializationKey |
+| model-weave/src/parsers/mapping-parser.ts | Mapping target-first canonical header and legacy compatibility |
 | model-weave/src/parsers/markdown-table.ts | Fully empty Markdown table data rows are ignored before row validation |

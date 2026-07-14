@@ -29,12 +29,12 @@ tags:
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| severity | errorCount | severity=error の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | error件数 |
-| severity | warningCount | severity=warning の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | warning件数 |
-| severity | infoCount | severity=info の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | UIではNotesとして表示 |
-| severity | diagnosticsSummaryText | 件数を優先度順に結合して短い文字列を生成 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | Y | 例: 2 Errors / 3 Warnings |
+| errorCount | severity | severity=error の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | error件数 |
+| warningCount | severity | severity=warning の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | warning件数 |
+| infoCount | severity | severity=info の件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | UIではNotesとして表示 |
+| diagnosticsSummaryText | severity | 件数を優先度順に結合して短い文字列を生成 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | Y | 例: 2 Errors / 3 Warnings |
 
 ## Rules
 

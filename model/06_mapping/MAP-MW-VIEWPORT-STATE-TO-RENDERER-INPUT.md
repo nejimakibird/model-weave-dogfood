@@ -27,15 +27,15 @@ tags:
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| scale | cssScale | CSS transform scale または CSS変数へ反映 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | Y | 表示倍率 |
-| panX | cssTranslateX | CSS transform translateX または CSS変数へ反映 | | Y | 横方向の表示位置 |
-| panY | cssTranslateY | CSS transform translateY または CSS変数へ反映 | | Y | 縦方向の表示位置 |
-| viewportWidth | viewportWidth | Renderer側の表示領域幅として渡す | | N | fit計算や再描画で使用 |
-| viewportHeight | viewportHeight | Renderer側の表示領域高さとして渡す | | N | fit計算や再描画で使用 |
-| contentWidth | contentWidth | 描画済みコンテンツ幅として渡す | | N | fit計算で使用 |
-| contentHeight | contentHeight | 描画済みコンテンツ高さとして渡す | | N | fit計算で使用 |
+| cssScale | scale | CSS transform scale または CSS変数へ反映 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | Y | 表示倍率 |
+| cssTranslateX | panX | CSS transform translateX または CSS変数へ反映 |  | Y | 横方向の表示位置 |
+| cssTranslateY | panY | CSS transform translateY または CSS変数へ反映 |  | Y | 縦方向の表示位置 |
+| viewportWidth | viewportWidth | Renderer側の表示領域幅として渡す |  | N | fit計算や再描画で使用 |
+| viewportHeight | viewportHeight | Renderer側の表示領域高さとして渡す |  | N | fit計算や再描画で使用 |
+| contentWidth | contentWidth | 描画済みコンテンツ幅として渡す |  | N | fit計算で使用 |
+| contentHeight | contentHeight | 描画済みコンテンツ高さとして渡す |  | N | fit計算で使用 |
 | lastCommandType | lastCommandType | デバッグ/再描画判定用に保持 | [[CODE-MW-VIEWER-COMMAND-TYPE]] | N | 最後に適用された操作 |
 
 ## Rules
