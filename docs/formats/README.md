@@ -24,6 +24,7 @@ Stable / primary formats are the recommended starting points for most users.
 
 Experimental / evolving formats are usable, but their documentation and modeling conventions may continue to change.
 
+* [flow_diagram](FORMAT-flow_diagram.md)
 * [screen](FORMAT-screen.md)
 * [app_process](FORMAT-app_process.md)
 * [rule](FORMAT-rule.md)
@@ -42,7 +43,8 @@ You do not need to learn every format first. Start from the format that matches 
 2. [er_entity](FORMAT-er_entity.md) / [er_diagram](FORMAT-er_diagram.md)
 3. [data_object](FORMAT-data_object.md)
 4. [dfd_object](FORMAT-dfd_object.md) / [dfd_diagram](FORMAT-dfd_diagram.md)
-5. [app_process](FORMAT-app_process.md)
+5. [flow_diagram](FORMAT-flow_diagram.md)
+6. [app_process](FORMAT-app_process.md)
 6. Experimental formats as needed
 
 ## How FORMAT docs are organized
@@ -74,6 +76,7 @@ Common AI-safe Markdown rules:
 * Quote Wikilinks in frontmatter.
 * Avoid Wikilink aliases such as `[[target|label]]` inside tables.
 * Avoid raw `|` characters inside table cells.
+* Fully empty table data rows are ignored as editing noise; partially filled rows are still validated.
 * Prefer simple scalar type names.
 * Express optionality or multiplicity with supported columns such as `required`, `not_null`, or `notes`.
 * Separate implemented behavior from future design ideas.

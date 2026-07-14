@@ -29,18 +29,15 @@ app_process `Steps.kind` をBusiness Flow Mermaid sourceのnode shapeとColor Sc
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| [[DATA-MW-APP-PROCESS-STEP]].id | [[DATA-MW-RENDERER-MERMAID-SOURCE]].sourceText | Mermaid node IDへ変換 | [[RULE-MW-BUSINESS-FLOW-STEP-KIND-RENDERING]] | Y | sanitizeされたStep node ID |
-| [[DATA-MW-APP-PROCESS-STEP]].label | [[DATA-MW-RENDERER-MERMAID-SOURCE]].sourceText | Mermaid labelへ変換 | [[RULE-MW-BUSINESS-FLOW-STEP-KIND-RENDERING]] | N | labelが空の場合はidなどへfallback |
-| [[DATA-MW-APP-PROCESS-STEP]].kind | [[DATA-MW-RENDERER-MERMAID-SOURCE]].sourceText | node shapeを選択 | [[RULE-MW-BUSINESS-FLOW-STEP-KIND-RENDERING]] | N | recognized kindは固有shape、blank / unknownはprocess shape |
-| [[DATA-MW-APP-PROCESS-STEP]].kind | [[DATA-MW-RENDERER-MERMAID-SOURCE]].colorStyleLines | target=app_process のstyleへ変換 | [[RULE-MW-BUSINESS-FLOW-STEP-KIND-RENDERING]] | N | Color Schemeがある場合だけclassDef / class行を生成 |
-| [[DATA-MW-APP-PROCESS-STEP]].domain | [[DATA-MW-RENDERER-MERMAID-SOURCE]].sourceText | Domain groupへ配置 | | N | Domain Sources / local Domains解決後のgroupに配置 |
-| [[DATA-MW-APP-PROCESS-STEP]].input | Business Flow interaction target | ref-aware target解決 | | N | hover / click target用。shape選択とは別 |
-| [[DATA-MW-APP-PROCESS-STEP]].output | Business Flow interaction target | ref-aware target解決 | | N | hover / click target用。shape選択とは別 |
-| [[DATA-MW-APP-PROCESS-STEP]].rule | Business Flow interaction target | ref-aware target解決 | | N | hover / click target用。shape選択とは別 |
-| [[DATA-MW-APP-PROCESS-STEP]].invoke | Business Flow interaction target | ref-aware target解決 | | N | hover / click target用。shape選択とは別 |
-| [[DATA-MW-APP-PROCESS-STEP]].screen | Business Flow interaction target | ref-aware target解決 | | N | hover / click target用。shape選択とは別 |
+| [[DATA-MW-RENDERER-MERMAID-SOURCE]].sourceText | [[DATA-MW-APP-PROCESS-STEP]] | Mermaid node source | [[RULE-MW-BUSINESS-FLOW-STEP-KIND-RENDERING]] | Y | id / label / kind / domainからnode文とdomain配置を生成 |
+| [[DATA-MW-RENDERER-MERMAID-SOURCE]].colorStyleLines | [[DATA-MW-APP-PROCESS-STEP]].kind | target=app_process のstyleへ変換 | [[RULE-MW-BUSINESS-FLOW-STEP-KIND-RENDERING]] | N | Color Schemeがある場合だけclassDef / class行を生成 |
+| Business Flow interaction target | [[DATA-MW-APP-PROCESS-STEP]].input | ref-aware target解決 |  | N | hover / click target用。shape選択とは別 |
+| Business Flow interaction target | [[DATA-MW-APP-PROCESS-STEP]].output | ref-aware target解決 |  | N | hover / click target用。shape選択とは別 |
+| Business Flow interaction target | [[DATA-MW-APP-PROCESS-STEP]].rule | ref-aware target解決 |  | N | hover / click target用。shape選択とは別 |
+| Business Flow interaction target | [[DATA-MW-APP-PROCESS-STEP]].invoke | ref-aware target解決 |  | N | hover / click target用。shape選択とは別 |
+| Business Flow interaction target | [[DATA-MW-APP-PROCESS-STEP]].screen | ref-aware target解決 |  | N | hover / click target用。shape選択とは別 |
 
 ## Notes
 - このmappingはBusiness Flow描画用の派生出力への変換を表す。app_process Markdown本文を書き換えない。

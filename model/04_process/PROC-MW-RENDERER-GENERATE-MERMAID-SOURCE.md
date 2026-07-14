@@ -32,6 +32,7 @@ Color Schemeが渡された場合は、DFD object、Domain group、Business Flow
 | id | data | source | required | notes |
 |---|---|---|---|---|
 | graph | [[DATA-MW-RENDERER-GRAPH-MODEL]] | Graph Builder | Y | 抽象グラフモデル |
+| flowViewState | [[DATA-MW-FLOW-DIAGRAM-VIEW-STATE]] | Viewer | N | Flow Diagramのeffective detail / screen |
 | colorScheme | [[DATA-MW-VIEWER-STATE]].resolvedColorScheme | Preview pipeline | N | defaultColorSchemeRefから解決された配色 |
 
 ## Outputs
@@ -52,6 +53,7 @@ Color Schemeが渡された場合は、DFD object、Domain group、Business Flow
 |---|---|---|---|---|---|---|---|---|---|
 | start | renderer_area | Mermaidソース生成開始 | start | graph |  |  |  |  | ResolvedDiagram を受け取る |
 | chooseGenerator | renderer_area | 生成関数を選択する | decision | graph |  |  |  |  | DFD / Flow Diagram / Class / ER / objectで分岐する |
+| applyFlowDiagramView | renderer_area | Flow Diagram viewを適用する | decision | graph, flowViewState | graph | [[RULE-MW-FLOW-DIAGRAM-SCREEN-PROJECTION]] | | | screen時だけ派生graphにする |
 | initLines | renderer_area | ヘッダー行を作る | process | graph | sourceLines |  |  |  | flowchart / classDiagram / erDiagram |
 | addStyles | renderer_area | 必要なstyle行を追加する | process | sourceLines | sourceLines |  |  |  | classDef と palette を使う |
 | mapNodes | renderer_area | node IDを割り当てる | process | graph | nodeMap |  |  |  | sanitizeMermaidId 等を使う |
@@ -68,7 +70,8 @@ Color Schemeが渡された場合は、DFD object、Domain group、Business Flow
 | from | to | condition | label | notes |
 |---|---|---|---|---|
 | chooseGenerator | initLines | `diagram.kind === "dfd"` | DFD | buildDfdMermaidSource |
-| chooseGenerator | initLines | `diagram.schema === "flow_diagram"` | Flow Diagram | buildFlowDiagramMermaidSource |
+| chooseGenerator | applyFlowDiagramView | `diagram.schema === "flow_diagram"` | Flow Diagram | effective modeを使う |
+| applyFlowDiagramView | initLines | | Flow Diagram source | buildFlowDiagramMermaidSource |
 | chooseGenerator | initLines | `renderMode === "mermaid"` | overview | overview生成 |
 | chooseGenerator | initLines | `renderMode === "mermaid-detail"` | detail | detail生成 |
 | hasEdgeLabel | addLabeledEdge | `edge.label` | labeled | label付きedge |
@@ -83,7 +86,9 @@ Color Schemeが渡された場合は、DFD object、Domain group、Business Flow
 ## Notes
 
 - DFD は buildDfdMermaidSource で flowchart LR を生成する。
-- Flow Diagram MVPは schema: flow_diagram のResolvedDiagramからFlow Diagram専用の flowchart LR を生成する。
+- Flow Diagramは schema: flow_diagram のResolvedDiagramからFlow Diagram専用の flowchart LR を生成する。
+- Flow Diagram Screen viewではrenderer入力のeffective modeに従い、visible nodeへのprojectionを適用する。
+- rendererはfrontmatter `flow_view` を再評価せず、Viewerから渡されたeffective modeだけを使う。
 - DFDでは object kindを `target=dfd`、Domain subgraphを `target=domain` として配色する。
 - Flow Diagramでは object kindからnode shapeを選び、Objects.domainをDomain groupと `target=domain` 配色へ使う。
 - app_process Business Flowでは Steps.kindを `target=app_process`、Domain groupを `target=domain` として配色する。
@@ -107,7 +112,8 @@ Color Schemeが渡された場合は、DFD object、Domain group、Business Flow
 | path | notes |
 |---|---|
 | src/renderers/dfd-mermaid.ts | Steps: chooseGenerator, initLines, addStyles, mapNodes, emitNodes, emitEdges. buildDfdMermaidSource がDFD用Mermaid sourceを組み立てる |
-| src/renderers/dfd-mermaid.ts | Steps: chooseGenerator, initLines, addStyles, mapNodes, emitNodes, emitEdges. buildFlowDiagramMermaidSource がFlow Diagram MVPを組み立てる |
+| src/renderers/dfd-mermaid.ts | Steps: chooseGenerator, applyFlowDiagramView, initLines, addStyles, mapNodes, emitNodes, emitEdges. buildFlowDiagramMermaidSource がFlow Diagramを組み立てる |
+| src/renderers/dfd-mermaid.ts | Steps: applyFlowDiagramView. buildFlowDiagramScreenFlowProjection がScreen viewを派生生成する |
 | src/renderers/class-er-mermaid.ts | Steps: chooseGenerator, initLines, emitNodes, emitEdges. Class / ER overview and detail Mermaid sourceを生成する |
 | src/renderers/mermaid-helpers.ts | Steps: mapNodes, emitNodes. sanitizeMermaidId / escapeMermaidLabel がMermaid IDとlabelを整形する |
 | src/renderers/app-process-business-flow.ts | Steps: addStyles, emitNodes. Business FlowのDomain groupとStepにColor Schemeを適用する |

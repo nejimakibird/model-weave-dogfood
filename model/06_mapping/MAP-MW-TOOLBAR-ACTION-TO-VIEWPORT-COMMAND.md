@@ -27,10 +27,10 @@ tags:
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| fitToView | commandType | toolbar action id に応じて commandType を決定する | [[RULE-MW-VIEWER-TOOLBAR-VISIBILITY]] | Y | fitToView=fit / zoomIn=zoom_in / zoomOut=zoom_out / resetZoom=reset_zoom |
-| previewCanvas | targetViewport | use active preview viewport | | Y | 操作を適用する対象領域 |
+| commandType | fitToView | toolbar action id に応じて commandType を決定する | [[RULE-MW-VIEWER-TOOLBAR-VISIBILITY]] | Y | fitToView=fit / zoomIn=zoom_in / zoomOut=zoom_out / resetZoom=reset_zoom |
+| targetViewport | previewCanvas | use active preview viewport |  | Y | 操作を適用する対象領域 |
 
 ## Rules
 

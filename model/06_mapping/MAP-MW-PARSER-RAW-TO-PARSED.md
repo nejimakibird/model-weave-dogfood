@@ -26,15 +26,15 @@ Obsidian Vault上の物理ファイル（DATA-MW-CORE-VAULT-FILE）から、Mode
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| filePath | id | | | Y | getModelIdロジックによりIDを特定 |
-| basename | name | | | Y | 拡張子を除いたファイル基本名 |
-| content | type | detectFileType | | Y | フロントマターのtype/schemaから特定 |
-| content | kind | parser-specific kind extraction | | N | モデル固有のサブタイプ（Enum/Process等） |
-| content | sections | extractMarkdownSections | | Y | ヘッディングによる論理ブロック分割 |
-| content | tables | parseMarkdownTable | | Y | セクション内の表構造を抽出 |
-| content | diagnostics | parser warnings aggregation | | Y | 解析プロセスで発生した検証警告の集約 |
+| id | filePath |  |  | Y | getModelIdロジックによりIDを特定 |
+| name | basename |  |  | Y | 拡張子を除いたファイル基本名 |
+| type | content | detectFileType |  | Y | フロントマターのtype/schemaから特定 |
+| kind | content | parser-specific kind extraction |  | N | モデル固有のサブタイプ（Enum/Process等） |
+| sections | content | extractMarkdownSections |  | Y | ヘッディングによる論理ブロック分割 |
+| tables | content | parseMarkdownTable |  | Y | セクション内の表構造を抽出 |
+| diagnostics | content | parser warnings aggregation |  | Y | 解析プロセスで発生した検証警告の集約 |
 
 ## Source Links
 

@@ -32,28 +32,28 @@ tags:
 
 ## Mappings
 
-| source_ref                            | target_ref                                               | transform                         | rule                                          | required | notes                         |
+| target_ref | source_ref | transform | rule | required | notes |
 | ------------------------------------- | -------------------------------------------------------- | --------------------------------- | --------------------------------------------- | -------- | ----------------------------- |
-| [[DATA-MW-CORE-DIAGNOSTIC]].severity  | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSeverity   | severityに対応するアイコン/ラベルへ変換          | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | Y        | error / warning / info |
-| [[DATA-MW-CORE-DIAGNOSTIC]].code      | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticCode       | そのまま表示                            |                                               | Y        | 診断コード                         |
-| [[DATA-MW-CORE-DIAGNOSTIC]].message   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticMessage    | そのまま表示                            |                                               | Y        | ユーザー向け説明                      |
-| [[DATA-MW-CORE-DIAGNOSTIC]].filePath  | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSourceFile | RULE-MW-PATH-SHORTENER に従って表示用に短縮 | [[RULE-MW-PATH-SHORTENER]]                    | N        | 完全パスはジャンプ処理用に保持               |
-| [[DATA-MW-CORE-DIAGNOSTIC]].section   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSection    | そのまま表示                            |                                               | N        | 対象セクション                       |
-| [[DATA-MW-CORE-DIAGNOSTIC]].line      | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticRow        | 数値表示                              |                                               | N        | 対象行番号                         |
-| [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticTargetRef  | context内の関連情報を表示                     | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | 未解決参照等の補足情報                  |
-| [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticMetaList   | path / section / field / lineなどを抽出して表示 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | getDiagnosticMetadata相当           |
-| [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticDetailBox  | referenceやexpectedHeaderなどを抽出して表示       | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | getDiagnosticDetailEntries相当      |
-| [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticManualGuidance | what happened / cause / manual fixを抽出して表示 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Quick Fixとは別の手動修復案 |
-| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyAllDiagnosticsButton | all diagnosticsのMarkdownを生成            | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | bulk Markdown copy |
-| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyErrorsButton | errorsだけのMarkdownを生成                  | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | errorsがある場合だけ表示 |
-| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyWarningsButton | warningsだけのMarkdownを生成                | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | warningsがある場合だけ表示 |
-| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyNotesButton | info severityのnotesだけのMarkdownを生成     | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | notesがある場合だけ表示 |
-| [[DATA-MW-CORE-DIAGNOSTIC]].message   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyDiagnosticMessageButton | clipboardへコピーする文字列を作る             | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Copy Message                       |
-| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyDiagnosticMarkdownButton | formatDiagnosticAsMarkdownでMarkdown化      | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Copy Markdown                      |
-| [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyDiagnosticReferenceButton | reference値がある場合だけ表示                 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Copy Reference                     |
-| [[DATA-MW-CORE-DIAGNOSTIC]].context   | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyExpectedHeaderButton | expectedHeaderがある場合だけ表示              | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Copy Expected Header               |
-| [[DATA-MW-CORE-DIAGNOSTIC]].field     | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyFrontmatterExampleButton | missing frontmatter keyから例を生成          | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | Copy Frontmatter Example           |
-| [[DATA-MW-CORE-DIAGNOSTIC]]           | [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].quickFixButton | [[DATA-MW-DIAGNOSTIC-QUICK-FIX]] を生成       | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]]     | N        | missing frontmatter id / name のみ |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSeverity | [[DATA-MW-CORE-DIAGNOSTIC]].severity | severityに対応するアイコン/ラベルへ変換 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | Y | error / warning / info |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticCode | [[DATA-MW-CORE-DIAGNOSTIC]].code | そのまま表示 |  | Y | 診断コード |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticMessage | [[DATA-MW-CORE-DIAGNOSTIC]].message | そのまま表示 |  | Y | ユーザー向け説明 |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSourceFile | [[DATA-MW-CORE-DIAGNOSTIC]].filePath | RULE-MW-PATH-SHORTENER に従って表示用に短縮 | [[RULE-MW-PATH-SHORTENER]] | N | 完全パスはジャンプ処理用に保持 |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticSection | [[DATA-MW-CORE-DIAGNOSTIC]].section | そのまま表示 |  | N | 対象セクション |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticRow | [[DATA-MW-CORE-DIAGNOSTIC]].line | 数値表示 |  | N | 対象行番号 |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticTargetRef | [[DATA-MW-CORE-DIAGNOSTIC]].context | context内の関連情報を表示 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | 未解決参照等の補足情報 |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticMetaList | [[DATA-MW-CORE-DIAGNOSTIC]].context | path / section / field / lineなどを抽出して表示 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | getDiagnosticMetadata相当 |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticDetailBox | [[DATA-MW-CORE-DIAGNOSTIC]].context | referenceやexpectedHeaderなどを抽出して表示 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | getDiagnosticDetailEntries相当 |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].diagnosticManualGuidance | [[DATA-MW-CORE-DIAGNOSTIC]].context | what happened / cause / manual fixを抽出して表示 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | Quick Fixとは別の手動修復案 |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyAllDiagnosticsButton | [[DATA-MW-CORE-DIAGNOSTIC]] | all diagnosticsのMarkdownを生成 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | bulk Markdown copy |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyErrorsButton | [[DATA-MW-CORE-DIAGNOSTIC]] | errorsだけのMarkdownを生成 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | errorsがある場合だけ表示 |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyWarningsButton | [[DATA-MW-CORE-DIAGNOSTIC]] | warningsだけのMarkdownを生成 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | warningsがある場合だけ表示 |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyNotesButton | [[DATA-MW-CORE-DIAGNOSTIC]] | info severityのnotesだけのMarkdownを生成 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | notesがある場合だけ表示 |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyDiagnosticMessageButton | [[DATA-MW-CORE-DIAGNOSTIC]].message | clipboardへコピーする文字列を作る | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | Copy Message |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyDiagnosticMarkdownButton | [[DATA-MW-CORE-DIAGNOSTIC]] | formatDiagnosticAsMarkdownでMarkdown化 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | Copy Markdown |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyDiagnosticReferenceButton | [[DATA-MW-CORE-DIAGNOSTIC]].context | reference値がある場合だけ表示 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | Copy Reference |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyExpectedHeaderButton | [[DATA-MW-CORE-DIAGNOSTIC]].context | expectedHeaderがある場合だけ表示 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | Copy Expected Header |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].copyFrontmatterExampleButton | [[DATA-MW-CORE-DIAGNOSTIC]].field | missing frontmatter keyから例を生成 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | Copy Frontmatter Example |
+| [[SCR-MW-VIEWER-DIAGNOSTICS-PANEL]].quickFixButton | [[DATA-MW-CORE-DIAGNOSTIC]] | [[DATA-MW-DIAGNOSTIC-QUICK-FIX]] を生成 | [[RULE-MW-DIAGNOSTIC-GUIDANCE-DERIVATION]] | N | missing frontmatter id / name のみ |
 
 ## Rules
 

@@ -26,14 +26,14 @@ tags:
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| objectEntries | nodes | DFDオブジェクトをGraphNodeへ変換 | | Y | dfd_diagram.Objects由来 |
-| flows | edges | DFDフローをGraphEdgeへ変換 | | Y | dfd_diagram.Flows由来 |
-| flows | labels | DATA-MW-DFD-FLOW-ENTRY.data をエッジラベルへ採用 | | N | data列がある場合。source_refは親フィールドflowsを指定する |
-| level | shape | DFD階層を表示制御ヒントへ変換 | | N | Level 0/1等 |
-| id | sourceRefs | 原典DFD IDとして保持 | | Y | |
-| diagnostics | diagnostics | 診断情報を統合 | | Y | |
+| nodes | objectEntries | DFDオブジェクトをGraphNodeへ変換 |  | Y | dfd_diagram.Objects由来 |
+| edges | flows | DFDフローをGraphEdgeへ変換 |  | Y | dfd_diagram.Flows由来 |
+| labels | flows | DATA-MW-DFD-FLOW-ENTRY.data をエッジラベルへ採用 |  | N | data列がある場合。source_refは親フィールドflowsを指定する |
+| shape | level | DFD階層を表示制御ヒントへ変換 |  | N | Level 0/1等 |
+| sourceRefs | id | 原典DFD IDとして保持 |  | Y |  |
+| diagnostics | diagnostics | 診断情報を統合 |  | Y |  |
 
 
 

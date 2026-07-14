@@ -24,6 +24,7 @@ Source Links Explorerなどの将来Explorer画面は本オブジェクトの範
 | owner | views/modeling-preview-view.ts | ModelingPreviewView |
 | preview | showPreviewForFile | file pathからpreview stateを表示 |
 | settings | applyViewerSettings | viewerPreferencesを反映 |
+| flow_view_state | FlowDiagramViewModeState | Flow Diagramのfile scoped Detail / Screen view状態 |
 | refresh | refreshForSettingsChange | settings変更後の再描画 |
 | state | [[DATA-MW-VIEWER-STATE]] | PreviewState / viewerPreferences |
 | rendered_input | rendered preview content | Renderer / Source Links / Impact Summary から受け取る |
@@ -35,3 +36,4 @@ Source Links Explorerなどの将来Explorer画面は本オブジェクトの範
 | src/views/modeling-preview-view.ts | ModelingPreviewView |
 | src/views/modeling-preview-view.ts | applyViewerSettings / refreshForSettingsChange |
 | src/views/modeling-preview-view.ts | showPreviewForFile |
+| src/core/flow-diagram-view-mode.ts | FlowDiagramViewModeState |

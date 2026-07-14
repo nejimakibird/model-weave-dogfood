@@ -35,18 +35,18 @@ Model Weave 0.1.17時点では内部Vault Indexは実装済みだが、独立し
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | [[SCR-MW-MODEL-INDEX-VIEW]].modelFileCountLabel | collection件数を表示 | | N | Vault内の解析済みモデルファイル数 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetCountLabel | 表示対象モデル件数を算出 | | N | ModelAsset相当の表示件数 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].warningsByFilePath | [[SCR-MW-MODEL-INDEX-VIEW]].unresolvedReferenceCountLabel | unresolved-reference件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 0より大きい場合はwarning相当 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].warningsByFilePath | [[SCR-MW-MODEL-INDEX-VIEW]].diagnosticSummaryLabel | severity別に集計 | [[MAP-MW-DIAGNOSTIC-TO-SUMMARY-TEXT]] | N | 例: 2 Errors / 3 Warnings |
-| [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetList | フィルタ条件に従って一覧化 | | Y | ParsedFileModelをModelAsset相当の行として表示 |
-| [[ENT-MW-MODEL-ASSET]].assetId | [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetIdLabel | そのまま表示 | | N | モデル資産ID |
-| [[ENT-MW-MODEL-ASSET]].modelType | [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetTypeLabel | そのまま表示 | | N | モデル種別 |
-| [[ENT-MW-MODEL-ASSET]].name | [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetNameLabel | そのまま表示 | | N | 表示名 |
-| [[ENT-MW-MODEL-ASSET]].filePath | [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetPathLabel | 短縮表示 | [[RULE-MW-PATH-SHORTENER]] | N | 完全パスは内部的に保持 |
-| [[DATA-MW-CORE-DIAGNOSTIC]].severity | [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetDiagnosticBadge | バッジ変換 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 対象ModelAssetに紐づく診断状態 |
+| [[SCR-MW-MODEL-INDEX-VIEW]].modelFileCountLabel | [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | collection件数を表示 |  | N | Vault内の解析済みモデルファイル数 |
+| [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetCountLabel | [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | 表示対象モデル件数を算出 |  | N | ModelAsset相当の表示件数 |
+| [[SCR-MW-MODEL-INDEX-VIEW]].unresolvedReferenceCountLabel | [[DATA-MW-VAULT-MODEL-INDEX]].warningsByFilePath | unresolved-reference件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 0より大きい場合はwarning相当 |
+| [[SCR-MW-MODEL-INDEX-VIEW]].diagnosticSummaryLabel | [[DATA-MW-VAULT-MODEL-INDEX]].warningsByFilePath | severity別に集計 | [[MAP-MW-DIAGNOSTIC-TO-SUMMARY-TEXT]] | N | 例: 2 Errors / 3 Warnings |
+| [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetList | [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | フィルタ条件に従って一覧化 |  | Y | ParsedFileModelをModelAsset相当の行として表示 |
+| [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetIdLabel | [[ENT-MW-MODEL-ASSET]].assetId | そのまま表示 |  | N | モデル資産ID |
+| [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetTypeLabel | [[ENT-MW-MODEL-ASSET]].modelType | そのまま表示 |  | N | モデル種別 |
+| [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetNameLabel | [[ENT-MW-MODEL-ASSET]].name | そのまま表示 |  | N | 表示名 |
+| [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetPathLabel | [[ENT-MW-MODEL-ASSET]].filePath | 短縮表示 | [[RULE-MW-PATH-SHORTENER]] | N | 完全パスは内部的に保持 |
+| [[SCR-MW-MODEL-INDEX-VIEW]].modelAssetDiagnosticBadge | [[DATA-MW-CORE-DIAGNOSTIC]].severity | バッジ変換 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 対象ModelAssetに紐づく診断状態 |
 
 ## Rules
 

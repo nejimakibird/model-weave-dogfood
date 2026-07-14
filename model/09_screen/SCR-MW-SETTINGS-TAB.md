@@ -15,7 +15,7 @@ tags:
 ## Summary
 
 Model Weaveプラグインの設定値を表示・変更するObsidian設定タブのUIを定義する。
-Renderer、Business Flow、Domains表示、Viewer、Relationship View、Mermaid debug、UI language、Local source root、Color Schemeに関する設定項目を扱う。
+Renderer、Business Flow、Domains表示、Flow Diagram既定表示、Viewer、Relationship View、Mermaid debug、UI language、Local source root、Color Schemeに関する設定項目を扱う。
 
 ## Layout
 
@@ -43,6 +43,7 @@ Renderer、Business Flow、Domains表示、Viewer、Relationship View、Mermaid 
 | defaultScreenRenderModeSelect | Screen既定レンダリングモード | select | renderer_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultScreenRenderMode | [[RULE-MW-RENDERER-RENDER-MODE-RESOLUTION]] | implemented。Default Screen render mode。custom |
 | defaultDomainsViewModeSelect | Domains既定表示モード | select | domain_view_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultDomainsViewMode | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。Default Domains view mode。mindmap / area / tree |
 | defaultDomainDiagramViewModeSelect | Domain Diagram既定表示モード | select | domain_view_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultDomainDiagramViewMode | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。Default Domain Diagram view mode。mindmap / area / tree |
+| defaultFlowDiagramViewModeSelect | Flow Diagram既定表示モード | select | domain_view_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultFlowDiagramViewMode | [[RULE-MW-FLOW-DIAGRAM-VIEW-STATE]] | implemented。Default Flow Diagram view。detail / screen |
 | defaultRenderModeSelect | 旧既定レンダリングモード | select | renderer_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultRenderMode | [[RULE-MW-RENDERER-RENDER-MODE-RESOLUTION]] | legacy / not current UI。normalizeModelWeaveSettings の移行補助として旧 defaultRenderMode は読まれるが、現行Settings Tabには単一selectとして表示されない |
 | mermaidThemeModeSelect | Mermaidテーマモード | select | renderer_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].mermaidThemeMode | | planned。現行ModelWeaveSettingsには未実装 |
 | defaultZoomSelect | 既定ズーム | select | viewport_settings_area | string | N | [[DATA-MW-PLUGIN-SETTINGS]].defaultZoom | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | implemented。Default zoom。fit / 100 |
@@ -74,6 +75,7 @@ Renderer、Business Flow、Domains表示、Viewer、Relationship View、Mermaid 
 | changeDefaultScreenRenderMode | Screen既定レンダリングモード変更 | ui_action | defaultScreenRenderModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultScreenRenderMode }) |
 | changeDefaultDomainsViewMode | Domains既定表示モード変更 | ui_action | defaultDomainsViewModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultDomainsViewMode }) |
 | changeDefaultDomainDiagramViewMode | Domain Diagram既定表示モード変更 | ui_action | defaultDomainDiagramViewModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultDomainDiagramViewMode }) |
+| changeDefaultFlowDiagramViewMode | Flow Diagram既定表示モード変更 | ui_action | defaultFlowDiagramViewModeSelect | change | saveSettings | | [[RULE-MW-FLOW-DIAGRAM-VIEW-STATE]] | implemented。updateSettings({ defaultFlowDiagramViewMode }) |
 | changeDefaultRenderMode | 旧既定レンダリングモード変更 | ui_action | defaultRenderModeSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | legacy / not current UI。現行Settings Tabには単一defaultRenderMode変更UIはない |
 | changeMermaidThemeMode | Mermaidテーマモード変更 | ui_action | mermaidThemeModeSelect | change | saveSettings | | | planned process。現行ModelWeaveSettingsには未実装の設定UI |
 | changeDefaultZoom | 既定ズーム変更 | ui_action | defaultZoomSelect | change | saveSettings | | [[RULE-MW-VIEWER-GLOBAL-SETTINGS-RESOLUTION]] | implemented。updateSettings({ defaultZoom }) |
@@ -112,6 +114,8 @@ Renderer、Business Flow、Domains表示、Viewer、Relationship View、Mermaid 
 - defaultRenderMode は旧設定名であり、normalizeModelWeaveSettings の移行補助としてのみ扱う。現行Settings Tabの主UI項目ではない。
 - defaultBusinessFlowDirection は現行Settings Tabに実装済みで、app_process Business Flowの既定方向を設定する。toolbar direction controlは一時的なViewer状態であり、この保存設定より優先される。
 - defaultDomainsViewMode / defaultDomainDiagramViewMode は現行Settings Tabに実装済みで、domains / domain_diagram の既定表示モードを設定する。
+- defaultFlowDiagramViewMode は現行Settings Tabに実装済みで、frontmatter `flow_view` 未指定Flow Diagramの初期表示を設定する。
+- defaultFlowDiagramViewMode変更は有効なfrontmatter `flow_view` を持つファイルを上書きしない。frontmatter未指定ファイルは再初期化時に反映される。
 - defaultColorSchemeRef は現行Settings Tabに実装済みで、描画時に color_scheme を解決するための保存設定である。
 - defaultColorSchemeRefを変更すると、開いているPreviewの再表示時に解決済みColor SchemeとApplied Color Scheme sectionへ反映される。Markdownモデル本文は変更しない。
 - defaultColorSchemeRefが空または未解決の場合、Previewは組み込み配色へのfallback結果を表示する。
@@ -134,6 +138,7 @@ Renderer、Business Flow、Domains表示、Viewer、Relationship View、Mermaid 
 | src/settings/model-weave-settings.ts | symbol: ModelWeaveSettings; kind: type; プラグイン設定構造 |
 | src/settings/model-weave-settings.ts | symbol: DEFAULT_MODEL_WEAVE_SETTINGS; kind: constant; 既定設定値 |
 | src/settings/model-weave-settings.ts | symbol: normalizeModelWeaveSettings; kind: function; 設定値の正規化と旧defaultRenderModeの移行補助 |
+| src/core/flow-diagram-view-mode.ts | symbol: resolveInitialFlowDiagramViewMode; kind: function; Flow Diagram既定表示のfallback |
 | src/main.ts | symbol: ModelWeavePlugin.updateSettings; kind: method; 設定変更の正規化、saveData、Preview更新 |
 | src/main.ts | symbol: ModelWeavePlugin.refreshOpenModelWeaveViews; kind: method; 開いているPreviewへ設定を再反映 |
 | src/main.ts | symbol: ModelWeavePlugin.getViewerPreferences; kind: method; Viewerへ渡す表示設定の構成 |

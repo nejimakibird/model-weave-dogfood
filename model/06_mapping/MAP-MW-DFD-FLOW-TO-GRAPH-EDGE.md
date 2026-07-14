@@ -26,13 +26,13 @@ DFDの `## Flows` テーブルから解析された1行分のデータ（[[DATA-
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
 | id | id | そのまま設定。空の場合は from/to/data から生成 |  | N | フローの一意識別子 |
-| from | source | Objects.id または ref を GraphNode.id へ解決 |  | Y | 始点ノードIDへの解決 |
-| to | target | Objects.id または ref を GraphNode.id へ解決 |  | Y | 終点ノードIDへの解決 |
-| data | label | Mermaid edge label として使える文字列へサニタイズ |  | N | 表示用データ名。空の場合はラベルなし |
-| notes | metadata | 補足情報として保持 |  | N | 実装上は metadata.notes へ格納 |
+| source | from | Objects.id または ref を GraphNode.id へ解決 |  | Y | 始点ノードIDへの解決 |
+| target | to | Objects.id または ref を GraphNode.id へ解決 |  | Y | 終点ノードIDへの解決 |
+| label | data | Mermaid edge label として使える文字列へサニタイズ |  | N | 表示用データ名。空の場合はラベルなし |
+| metadata | notes | 補足情報として保持 |  | N | 実装上は metadata.notes へ格納 |
 
 ## Diagnostics Mapping
 
