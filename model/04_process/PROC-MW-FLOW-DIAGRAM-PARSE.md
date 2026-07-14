@@ -14,8 +14,8 @@ tags:
 
 ## Summary
 
-`type: flow_diagram` のMarkdownを、Flow Diagram MVPの `FlowDiagramModel` へ解析する処理。
-現行実装では `parseFlowDiagramFile` がDFD-like parserを共有しつつ、Flow Diagram専用の `Objects` / `Flows` headerと `kind: screen_communication` を検証する。
+`type: flow_diagram` のMarkdownを、Flow Diagramの `FlowDiagramModel` へ解析する処理。
+現行実装では `parseFlowDiagramFile` がDFD-like parserを共有しつつ、Flow Diagram専用の `Objects` / `Flows`、`Domain Sources`、local `Domains`、frontmatter `flow_view` を解析する。
 
 ## Inputs
 
@@ -37,6 +37,9 @@ tags:
 | start | parser_resolver | Flow Diagram解析を開始する | start | markdownFile | | | | | parseFlowDiagramFile |
 | readFrontmatter | parser_resolver | frontmatterを読む | process | markdownFile | | | | | typeとkindを確認する |
 | validateKind | parser_resolver | kindを検証する | decision | markdownFile | warnings | | | | `screen_communication` 以外はwarning |
+| parseFlowView | parser_resolver | flow_viewを解析する | process | markdownFile | parsedFlowDiagram, warnings | [[RULE-MW-FLOW-DIAGRAM-VIEW-STATE]] | | | detail / screen。invalid値はwarning |
+| parseDomainSources | parser_resolver | Domain Sourcesを解析する | process | markdownFile | parsedFlowDiagram, warnings | | | | external Domains参照 |
+| parseLocalDomains | parser_resolver | local Domainsを解析する | process | markdownFile | parsedFlowDiagram, warnings | | | | local定義は同一IDを上書きする |
 | parseObjects | parser_resolver | Objectsを解析する | process | markdownFile | parsedFlowDiagram | | | | id / label / kind / ref / domain / notes |
 | parseFlows | parser_resolver | Flowsを解析する | process | markdownFile | parsedFlowDiagram | | | | id / from / to / kind / trigger / data / condition / notes |
 | parseSourceLinks | source_links | Source Linksを解析する | process | markdownFile | parsedFlowDiagram | | | | `## Source Links` を保持する |
@@ -48,7 +51,10 @@ tags:
 |---|---|---|---|---|
 | start | readFrontmatter | | 開始 | |
 | readFrontmatter | validateKind | | kind確認 | |
-| validateKind | parseObjects | | 続行 | warningがあっても解析を継続する |
+| validateKind | parseFlowView | | flow_view | |
+| parseFlowView | parseDomainSources | | Domain Sources | |
+| parseDomainSources | parseLocalDomains | | local Domains | |
+| parseLocalDomains | parseObjects | | Objects | warningがあっても解析を継続する |
 | parseObjects | parseFlows | | Flows解析 | Objects header不正時は後段診断が抑制される |
 | parseFlows | parseSourceLinks | | Source Links | |
 | parseSourceLinks | end | | 完了 | |
@@ -56,13 +62,16 @@ tags:
 ## Notes
 
 - Flow Diagramは `type: flow_diagram` として検出される。`dfd_diagram` ではない。
-- MVPではInternal Detail Viewだけを扱う。Surface View、Communication View、folding、projection、transition coverage生成はfutureである。
+- Detail / Screen viewはv0.1.20で実装済みである。任意projection定義、Communication view、generic folding、transition coverage生成はfutureである。
 - `Flows.from` / `Flows.to` はローカル `Objects.id` を参照する。
+- `flow_view` は初期表示入力であり、toolbar切替後のViewer stateやMarkdown正本を固定しない。
+- `## Domain Sources` とlocal `## Domains` はFlow Diagram modelへ保持され、RendererでDomain name、parent、kindを使う。
 
 ## Source Links
 
 | path | notes |
 |---|---|
 | src/parsers/dfd-diagram-parser.ts | Steps: start, readFrontmatter, validateKind, parseObjects, parseFlows. parseFlowDiagramFile |
+| src/parsers/dfd-diagram-parser.ts | Steps: parseFlowView, parseDomainSources, parseLocalDomains. flow_view and domain parsing |
 | src/parsers/source-links-parser.ts | Steps: parseSourceLinks. Source Links section解析 |
 | src/types/models.ts | Steps: end. FlowDiagramModel / DfdDiagramObjectEntry / DfdFlowModel |

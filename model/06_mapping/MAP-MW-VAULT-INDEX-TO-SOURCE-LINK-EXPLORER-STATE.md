@@ -32,24 +32,24 @@ Model Weave 0.1.17時点では、各モデル内のSource Links section表示と
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| [[DATA-MW-VAULT-MODEL-INDEX]] | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourceIndexId | 表示用IDを派生 | | N | 実装IndexにindexId fieldはない |
-| [[ENT-MW-SOURCE-LINK]].sourceLinkId | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].selectedSourceLinkId | 初期状態では空 | | N | ユーザー選択後に設定 |
-| [[ENT-MW-SOURCE-LINK]].assetId | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].selectedAssetId | 初期状態では空 | | N | 選択時に設定 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourceLinkCount | 各ParsedFileModelのsourceLinks件数を集計 | | N | 現行Indexに専用Source Links mapはない |
-| [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].linkedAssetCount | sourceLinksを持つモデル件数を集計 | | N | Source Links付き資産数 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].missingSourceLinkCount | sourceLinksを持たないモデル件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | future Explorer用の派生値 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].visibleSourceLinks | 各モデルのsourceLinksを展開 | | Y | 複数のSource Linkを表示用に保持 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].relatedModelAssets | Source Link所有モデルを抽出 | | N | リンクに紐づく資産一覧 |
-| [[DATA-MW-VAULT-MODEL-INDEX]].warningsByFilePath | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].relatedDiagnostics | Source Links関連診断を抽出 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 設定漏れ等の診断 |
-| | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourcePathFilter | 空文字を設定 | | N | path検索条件 |
-| | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].symbolFilter | 空文字を設定 | | N | symbol検索条件 |
-| | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourceKindFilter | all を設定 | | N | kindフィルタ |
-| | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].modelTypeFilter | all を設定 | | N | model typeフィルタ |
-| | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].searchText | 空文字を設定 | | N | 全文検索 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].visibleSourceLinks | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].filteredSourceLinkCount | リストの件数を計算 | | N | 初期表示件数 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].visibleSourceLinks | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].explorerStatus | 件数や診断から決定 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | ready / empty / error |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourceIndexId | [[DATA-MW-VAULT-MODEL-INDEX]] | 表示用IDを派生 |  | N | 実装IndexにindexId fieldはない |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].selectedSourceLinkId | [[ENT-MW-SOURCE-LINK]].sourceLinkId | 初期状態では空 |  | N | ユーザー選択後に設定 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].selectedAssetId | [[ENT-MW-SOURCE-LINK]].assetId | 初期状態では空 |  | N | 選択時に設定 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourceLinkCount | [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | 各ParsedFileModelのsourceLinks件数を集計 |  | N | 現行Indexに専用Source Links mapはない |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].linkedAssetCount | [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | sourceLinksを持つモデル件数を集計 |  | N | Source Links付き資産数 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].missingSourceLinkCount | [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | sourceLinksを持たないモデル件数を集計 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | future Explorer用の派生値 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].visibleSourceLinks | [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | 各モデルのsourceLinksを展開 |  | Y | 複数のSource Linkを表示用に保持 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].relatedModelAssets | [[DATA-MW-VAULT-MODEL-INDEX]].modelsByFilePath | Source Link所有モデルを抽出 |  | N | リンクに紐づく資産一覧 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].relatedDiagnostics | [[DATA-MW-VAULT-MODEL-INDEX]].warningsByFilePath | Source Links関連診断を抽出 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 設定漏れ等の診断 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourcePathFilter |  | 空文字を設定 |  | N | path検索条件 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].symbolFilter |  | 空文字を設定 |  | N | symbol検索条件 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourceKindFilter |  | all を設定 |  | N | kindフィルタ |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].modelTypeFilter |  | all を設定 |  | N | model typeフィルタ |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].searchText |  | 空文字を設定 |  | N | 全文検索 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].filteredSourceLinkCount | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].visibleSourceLinks | リストの件数を計算 |  | N | 初期表示件数 |
+| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].explorerStatus | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].visibleSourceLinks | 件数や診断から決定 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | ready / empty / error |
 
 ## Rules
 

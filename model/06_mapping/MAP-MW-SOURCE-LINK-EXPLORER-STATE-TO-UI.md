@@ -34,26 +34,26 @@ Model Weave 0.1.17時点では、Preview内Source Links sectionの表示・Copy/
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourceLinkCount | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkCountLabel | 件数をそのまま表示 | | N | Source Links総数 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].linkedAssetCount | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].linkedAssetCountLabel | 件数をそのまま表示 | | N | Source Linksを持つModelAsset数 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].missingSourceLinkCount | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].missingSourceLinkCountLabel | 件数をそのまま表示 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 0より大きい場合はwarning相当 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].filteredSourceLinkCount | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].filteredSourceLinkCountLabel | 件数をそのまま表示 | | N | フィルタ後件数 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourcePathFilter | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourcePathFilterInput | 現在値として表示 | | N | path検索 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].symbolFilter | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].symbolFilterInput | 現在値として表示 | | N | symbol検索 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourceKindFilter | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceKindFilterSelect | 現在値として表示 | | N | kindフィルタ |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].modelTypeFilter | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].modelTypeFilterSelect | 現在値として表示 | | N | model typeフィルタ |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].searchText | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkSearchInput | 現在値として表示 | | N | 全文検索 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].visibleSourceLinks | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkList | 一覧として反復表示 | | Y | 複数のSource Linkを表示 |
-| [[ENT-MW-SOURCE-LINK]].assetId | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkAssetLabel | そのまま表示 | | N | 対応するModelAsset |
-| [[ENT-MW-SOURCE-LINK]].path | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourcePathLabel | 短縮表示 | [[RULE-MW-PATH-SHORTENER]] | N | 完全pathは内部的に保持 |
-| [[ENT-MW-SOURCE-LINK]].symbol | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceSymbolLabel | そのまま表示 | | N | 関数名 / 型名 / クラス名など |
-| [[ENT-MW-SOURCE-LINK]].kind | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceKindLabel | そのまま表示 | | N | シンボル種別 |
-| [[ENT-MW-SOURCE-LINK]].notes | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkNotesLabel | そのまま表示 | | N | Source Links行の補足 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].selectedSourceLinkId | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].selectedSourceLinkDetail | 選択詳細を表示 | | N | selectSourceLink後に更新 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].relatedModelAssets | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].relatedModelAssetsList | 関連資産を一覧表示 | | N | 対応するModelAsset一覧 |
-| [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].relatedDiagnostics | [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].relatedDiagnosticsList | 関連診断を一覧表示 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | Source Links不足など |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkCountLabel | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourceLinkCount | 件数をそのまま表示 |  | N | Source Links総数 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].linkedAssetCountLabel | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].linkedAssetCount | 件数をそのまま表示 |  | N | Source Linksを持つModelAsset数 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].missingSourceLinkCountLabel | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].missingSourceLinkCount | 件数をそのまま表示 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | 0より大きい場合はwarning相当 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].filteredSourceLinkCountLabel | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].filteredSourceLinkCount | 件数をそのまま表示 |  | N | フィルタ後件数 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourcePathFilterInput | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourcePathFilter | 現在値として表示 |  | N | path検索 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].symbolFilterInput | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].symbolFilter | 現在値として表示 |  | N | symbol検索 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceKindFilterSelect | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].sourceKindFilter | 現在値として表示 |  | N | kindフィルタ |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].modelTypeFilterSelect | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].modelTypeFilter | 現在値として表示 |  | N | model typeフィルタ |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkSearchInput | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].searchText | 現在値として表示 |  | N | 全文検索 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkList | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].visibleSourceLinks | 一覧として反復表示 |  | Y | 複数のSource Linkを表示 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkAssetLabel | [[ENT-MW-SOURCE-LINK]].assetId | そのまま表示 |  | N | 対応するModelAsset |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourcePathLabel | [[ENT-MW-SOURCE-LINK]].path | 短縮表示 | [[RULE-MW-PATH-SHORTENER]] | N | 完全pathは内部的に保持 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceSymbolLabel | [[ENT-MW-SOURCE-LINK]].symbol | そのまま表示 |  | N | 関数名 / 型名 / クラス名など |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceKindLabel | [[ENT-MW-SOURCE-LINK]].kind | そのまま表示 |  | N | シンボル種別 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].sourceLinkNotesLabel | [[ENT-MW-SOURCE-LINK]].notes | そのまま表示 |  | N | Source Links行の補足 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].selectedSourceLinkDetail | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].selectedSourceLinkId | 選択詳細を表示 |  | N | selectSourceLink後に更新 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].relatedModelAssetsList | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].relatedModelAssets | 関連資産を一覧表示 |  | N | 対応するModelAsset一覧 |
+| [[SCR-MW-SOURCE-LINK-EXPLORER-VIEW]].relatedDiagnosticsList | [[DATA-MW-SOURCE-LINK-EXPLORER-STATE]].relatedDiagnostics | 関連診断を一覧表示 | [[RULE-MW-RENDERER-DIAGNOSTICS-SEVERITY-MAP]] | N | Source Links不足など |
 
 ## Rules
 

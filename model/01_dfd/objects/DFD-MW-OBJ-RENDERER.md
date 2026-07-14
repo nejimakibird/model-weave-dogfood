@@ -21,7 +21,8 @@ tags:
 |---|---|---|
 | owner | Renderer Package | renderers 配下 |
 | diagram_rendering | renderDiagramModel | diagram kindとrenderModeに応じた表示 |
-| flow_diagram | renderDfdMermaidDiagram | schema: flow_diagram をFlow Diagram MVPとして描画 |
+| flow_diagram | renderDfdMermaidDiagram | schema: flow_diagram をDetail / Screen viewとして描画 |
+| flow_projection | buildFlowDiagramScreenFlowProjection | Screen view用の派生graphを生成 |
 | object_context_graph | buildObjectSubgraphScene | Class / ER object preview用の関連subgraph |
 | mermaid_source | [[DATA-MW-RENDERER-MERMAID-SOURCE]] | DFD / Class / ER Mermaid出力 |
 | business_flow | renderAppProcessBusinessFlow | app_process Steps / Flows表示 |
@@ -36,7 +37,7 @@ tags:
 |---|---|
 | src/renderers/diagram-renderer.ts | diagram renderer dispatch |
 | src/renderers/dfd-mermaid.ts | DFD Mermaid source / preview |
-| src/renderers/dfd-mermaid.ts | Flow Diagram Mermaid source / hover metadata |
+| src/renderers/dfd-mermaid.ts | Flow Diagram Mermaid source / Screen projection / hover metadata |
 | src/renderers/class-er-mermaid.ts | Class / ER Mermaid rendering |
 | src/renderers/app-process-business-flow.ts | Business Flow Mermaid rendering |
 | src/renderers/weave-map-mermaid.ts | Weave Map layer coloring |

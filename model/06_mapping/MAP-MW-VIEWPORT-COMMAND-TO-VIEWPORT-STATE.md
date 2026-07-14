@@ -28,19 +28,19 @@ tags:
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| commandType | lastCommandType | そのまま保持 | [[CODE-MW-VIEWER-COMMAND-TYPE]] | N | 最後に適用された操作種別 |
-| targetScale | scale | minZoom / maxZoom の範囲に丸めて反映 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | Y | zoom / reset / fit の結果 |
-| panX | panX | 計算済みX位置を反映 | | N | fit / pan 操作時 |
-| panY | panY | 計算済みY位置を反映 | | N | fit / pan 操作時 |
-| viewportBounds | viewportWidth | viewportBounds.width を反映 | | N | fit計算に使用 |
-| viewportBounds | viewportHeight | viewportBounds.height を反映 | | N | fit計算に使用 |
-| contentBounds | contentWidth | contentBounds.width を反映 | | N | fit計算に使用 |
-| contentBounds | contentHeight | contentBounds.height を反映 | | N | fit計算に使用 |
-|  | minScale | RULE-MW-VIEWER-ZOOM-LIMITS の minZoom を参照値として保持 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | N | ズーム下限 |
-|  | maxScale | RULE-MW-VIEWER-ZOOM-LIMITS の maxZoom を参照値として保持 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | N | ズーム上限 |
-|  | defaultScale | RULE-MW-VIEWER-ZOOM-LIMITS の defaultZoom を参照値として保持 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | N | resetZoom時の既定倍率 |
+| lastCommandType | commandType | そのまま保持 | [[CODE-MW-VIEWER-COMMAND-TYPE]] | N | 最後に適用された操作種別 |
+| scale | targetScale | minZoom / maxZoom の範囲に丸めて反映 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | Y | zoom / reset / fit の結果 |
+| panX | panX | 計算済みX位置を反映 |  | N | fit / pan 操作時 |
+| panY | panY | 計算済みY位置を反映 |  | N | fit / pan 操作時 |
+| viewportWidth | viewportBounds | viewportBounds.width を反映 |  | N | fit計算に使用 |
+| viewportHeight | viewportBounds | viewportBounds.height を反映 |  | N | fit計算に使用 |
+| contentWidth | contentBounds | contentBounds.width を反映 |  | N | fit計算に使用 |
+| contentHeight | contentBounds | contentBounds.height を反映 |  | N | fit計算に使用 |
+| minScale |  | RULE-MW-VIEWER-ZOOM-LIMITS の minZoom を参照値として保持 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | N | ズーム下限 |
+| maxScale |  | RULE-MW-VIEWER-ZOOM-LIMITS の maxZoom を参照値として保持 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | N | ズーム上限 |
+| defaultScale |  | RULE-MW-VIEWER-ZOOM-LIMITS の defaultZoom を参照値として保持 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | N | resetZoom時の既定倍率 |
 
 ## Rules
 

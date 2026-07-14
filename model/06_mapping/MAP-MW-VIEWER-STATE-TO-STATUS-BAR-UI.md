@@ -34,14 +34,14 @@ tags:
 
 ## Mappings
 
-| source_ref | target_ref | transform | rule | required | notes |
+| target_ref | source_ref | transform | rule | required | notes |
 |---|---|---|---|---|---|
-| scale | zoomPercentLabel | scaleを百分率文字列へ変換 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | N | 例: 1.25 -> 125% |
-| lastCommandType | manualViewportLabel | 手動操作由来なら Manual Zoom Active を表示 | [[RULE-MW-VIEWER-VIEWPORT-STATE-PERSISTENCE]] | N | pan / wheel_zoom 由来時。色・強調は [[RULE-MW-VIEWER-STATUS-BAR-COLOR-POLICY]] に従う |
-| renderStatus | autoFitStatusLabel | Auto Fit / Preserved Viewport / Error などに変換 | [[RULE-MW-VIEWER-AUTO-FIT-ON-LOAD]] | N | 色・強調は [[RULE-MW-VIEWER-STATUS-BAR-COLOR-POLICY]] に従う |
-| diagnostics | diagnosticsSummaryLabel | MAP-MW-DIAGNOSTIC-TO-SUMMARY-TEXT に従って診断件数サマリーを生成 | [[MAP-MW-DIAGNOSTIC-TO-SUMMARY-TEXT]] | N | 色・強調は [[RULE-MW-VIEWER-STATUS-BAR-COLOR-POLICY]] に従う |
-| activeFilePath | currentFilePathLabel | Vault相対パスをUI表示用に短縮 | [[RULE-MW-PATH-SHORTENER]] | N | 完全パスは内部的に保持し、表示のみ短縮 |
-| renderStatus | renderStatusLabel | ready / error / empty / unsupported を表示 | [[RULE-MW-VIEWER-STATUS-BAR-COLOR-POLICY]] | N | renderStatusに応じて error / muted / neutral tone を適用 |
+| zoomPercentLabel | scale | scaleを百分率文字列へ変換 | [[RULE-MW-VIEWER-ZOOM-LIMITS]] | N | 例: 1.25 -> 125% |
+| manualViewportLabel | lastCommandType | 手動操作由来なら Manual Zoom Active を表示 | [[RULE-MW-VIEWER-VIEWPORT-STATE-PERSISTENCE]] | N | pan / wheel_zoom 由来時。色・強調は [[RULE-MW-VIEWER-STATUS-BAR-COLOR-POLICY]] に従う |
+| autoFitStatusLabel | renderStatus | Auto Fit / Preserved Viewport / Error などに変換 | [[RULE-MW-VIEWER-AUTO-FIT-ON-LOAD]] | N | 色・強調は [[RULE-MW-VIEWER-STATUS-BAR-COLOR-POLICY]] に従う |
+| diagnosticsSummaryLabel | diagnostics | MAP-MW-DIAGNOSTIC-TO-SUMMARY-TEXT に従って診断件数サマリーを生成 | [[MAP-MW-DIAGNOSTIC-TO-SUMMARY-TEXT]] | N | 色・強調は [[RULE-MW-VIEWER-STATUS-BAR-COLOR-POLICY]] に従う |
+| currentFilePathLabel | activeFilePath | Vault相対パスをUI表示用に短縮 | [[RULE-MW-PATH-SHORTENER]] | N | 完全パスは内部的に保持し、表示のみ短縮 |
+| renderStatusLabel | renderStatus | ready / error / empty / unsupported を表示 | [[RULE-MW-VIEWER-STATUS-BAR-COLOR-POLICY]] | N | renderStatusに応じて error / muted / neutral tone を適用 |
 
 ## Rules
 

@@ -27,6 +27,7 @@ Templates help you start new models with the correct frontmatter and section str
 - `Model Weave: Insert ER Diagram Template`: For ER diagrams.
 - `Model Weave: Insert DFD Object Template`: For DFD processes, stores, or external entities.
 - `Model Weave: Insert DFD Diagram Template`: For DFD diagrams (Mermaid-first).
+- `Model Weave: Insert Flow Diagram Template`: For screen communication and data handoff flows.
 
 ### Data Modeling
 - `Model Weave: Insert Data Object Template`: Use for **logical data structures** (e.g., API requests, responses, payloads, or internal application data).
@@ -57,6 +58,7 @@ Templates help you start new models with the correct frontmatter and section str
 You can configure the following in **Settings** > **Model Weave**:
 
 - **Default render mode**: Choose between `Auto`, `Custom`, or `Mermaid`.
+- **Default Flow Diagram view**: Choose `Detail` or `Screen` as the initial view for Flow Diagrams without `flow_view`. The Viewer `Flow view` selector can temporarily switch the current Flow Diagram without modifying its Markdown.
 - **Default zoom**: Set the initial zoom state (`Fit` or `100%`).
 - **Font size**: Adjust text size in the preview.
 - **Node density**: Control how compact diagrams appear.
